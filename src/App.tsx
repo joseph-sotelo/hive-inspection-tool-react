@@ -2,7 +2,7 @@ import './App.css';
 import "@arcgis/core/assets/esri/themes/dark/main.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import PowerPlantsList from './pages/PowerPlantsList';
-import WebMap from './pages/map/[slug]/WebMap';
+import WebMap from './pages/WebMap';
 
 
 function App() {
