@@ -1,5 +1,5 @@
 import { getPowerPlants } from '../utils';
-import PowerPlants from '../components/PowerPlants';
+import PowerPlants from '../customComponents/PowerPlants';
 import { useEffect, useState } from 'react';
 
 export default function PowerPlantsList() {
