@@ -1,42 +1,14 @@
 import './App.css';
 import "@arcgis/core/assets/esri/themes/dark/main.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import WebMap from './pages/WebMap';
+import { ArcgisMap } from '@arcgis/map-components-react';
+import { defineCustomElements } from '@arcgis/map-components/dist/loader';
 
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuIndicator,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  NavigationMenuViewport,
-} from "@/components/ui/navigation-menu"
-
-
+defineCustomElements();
 
 function App() {
 
   return (
-    <div>
-      <NavigationMenu>
-        <NavigationMenuList>
-          <NavigationMenuItem>
-            <NavigationMenuTrigger>Item One</NavigationMenuTrigger>
-            <NavigationMenuContent>
-              <NavigationMenuLink>Link</NavigationMenuLink>
-            </NavigationMenuContent>
-          </NavigationMenuItem>
-        </NavigationMenuList>
-      </NavigationMenu>
-      <BrowserRouter>
-        <Routes>
-          {/* <Route path = "/" element = {<PowerPlantsList />} /> */}
-          <Route path = "/map/:slug" element = {<WebMap />} />
-        </Routes>
-    </BrowserRouter>
-    </div>
+    <ArcgisMap itemID="e0a3f1236e3e446e980a5a48cd12af15" id="map"/>
   );
 }
 

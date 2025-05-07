@@ -1,3 +1,4 @@
-#main-map {
-    width: 50vw
+#map {
+    width:100vw;
+    height: 600px;
 }
