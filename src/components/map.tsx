@@ -6,11 +6,14 @@ import ArcGISMap from "@arcgis/core/Map";
 import MapView from "@arcgis/core/views/MapView";
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import "@arcgis/core/assets/esri/themes/light/main.css";
-import { Annoyed } from "lucide-react";
+
 
 // env setup
 config.apiKey = import.meta.env.VITE_ARCGIS_LAYER_API_KEY as string;
 const featureLayerURL = import.meta.env.VITE_ARCGIS_MOCK_LAYER_API_URL as string;
+
+// ui imports
+import MobileSheet from "./mobile-sheet";
 
 export default function Map() {
 
@@ -21,7 +24,14 @@ export default function Map() {
     y: number;
   }
 
+  type MobileSheetProps = {
+  F_title: string,
+  F_status: string,
+}
+
   const [selectedFeature, setSelectedFeature] = useState<OrchardFeature | null>(null);
+  const [mobileSheetProps, setMobileSheetProps] = useState<MobileSheetProps | null>(null);
+  const [isSelected, setIsSelected] = useState<boolean>(false);
 
   // useEffect endures DOM is loaded for arcGIS core elements before they are created
   useEffect(() => {
@@ -45,8 +55,7 @@ export default function Map() {
       zoom: 10,
     });
 
-    // get feature attributes when the feature is clicked
-    view.on("click", async (event) => {
+        view.on("click", async (event) => {
 
       // get the feature that the user clicked
       const response = await view.hitTest(event);
@@ -75,18 +84,22 @@ export default function Map() {
           x: x,
           y: y
         }
+
+        const mobileSheetContent = {
+          F_title: feature.graphic.attributes.F_title,
+          F_status: feature.graphic.attributes.F_status,
+        }
         // store the object in state
         setSelectedFeature(selectedFeatureContent)
+        setMobileSheetProps(mobileSheetContent)
+        setIsSelected(true)
+
       } else {
         // causes popover to disappear when user clicks away
         setSelectedFeature(null);
       }
       
     });
-
-    view.on("drag", async (event) => {
-      
-    })
 
     // cleanup function to prevent memory leaks and clear event listeners
     return () => {
@@ -98,12 +111,9 @@ export default function Map() {
 
   // returns the rendered map
   return (
-    <div id="viewDiv" className="w-full h-screen">
-      {selectedFeature?.F_title && (
-        <div className="absolute z-10 bg-white p-4 m-4 rounded shadow" style={{top: selectedFeature.y, left: selectedFeature.x}}>
-          {selectedFeature.F_title}
-        </div>
-      )}
+    <div>
+      {isSelected && mobileSheetProps && <MobileSheet props={mobileSheetProps} />}
+      <div id="viewDiv" className="w-full h-screen"> </div>
     </div>
   );
 }
