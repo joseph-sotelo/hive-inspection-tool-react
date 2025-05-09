@@ -6,6 +6,7 @@ import ArcGISMap from "@arcgis/core/Map";
 import MapView from "@arcgis/core/views/MapView";
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import "@arcgis/core/assets/esri/themes/light/main.css";
+import { Annoyed } from "lucide-react";
 
 // env setup
 config.apiKey = import.meta.env.VITE_ARCGIS_LAYER_API_KEY as string;
@@ -16,6 +17,8 @@ export default function Map() {
   type OrchardFeature = {
     F_title: string;
     F_status: string;
+    x: number;
+    y: number;
   }
 
   const [selectedFeature, setSelectedFeature] = useState<OrchardFeature | null>(null);
@@ -25,7 +28,7 @@ export default function Map() {
     // creates featurelayer showing all orchards
     const orchardLayer = new FeatureLayer({
       url: featureLayerURL,
-      outFields: ["*"]
+      outFields: ["F_title", "F_status"]
     });
 
     // creates map showing all layers
@@ -45,21 +48,45 @@ export default function Map() {
     // get feature attributes when the feature is clicked
     view.on("click", async (event) => {
 
+      // get the feature that the user clicked
       const response = await view.hitTest(event);
       // make sure the feature is the right type - a graphic
-      const feature = response.results.find((result): result is __esri.MapViewGraphicHit => result.type ==="graphic")
-        
+      const feature = response.results.find((result): result is __esri.MapViewGraphicHit => result.type ==="graphic");
+      // get attributes from the selected feature and store them in state so they can be reflected in the popup
       if (feature) {
+        // get the geometry of the feature to access the x and y coordinates
+        const mapPoint = feature.graphic.geometry as __esri.Point;
+        let x = 0;
+        let y = 0;
+        // if statement for safety
+        if (mapPoint) {
+          // convert mercador coords to pixel coords
+          const screenPoint = view.toScreen(mapPoint);
+          // if statement for safety
+          if (screenPoint) {
+            x = screenPoint.x;
+            y = screenPoint.y;
+          }
+        }
+        // create an object to store in state
         const selectedFeatureContent = {
           F_title: feature.graphic.attributes.F_title,
-          F_status: feature.graphic.attributes.F_status
+          F_status: feature.graphic.attributes.F_status,
+          x: x,
+          y: y
         }
+        // store the object in state
         setSelectedFeature(selectedFeatureContent)
+      } else {
+        // causes popover to disappear when user clicks away
+        setSelectedFeature(null);
       }
-
-      console.log("selectedFeature title: ", selectedFeature?.F_title);
       
     });
+
+    view.on("drag", async (event) => {
+      
+    })
 
     // cleanup function to prevent memory leaks and clear event listeners
     return () => {
@@ -71,15 +98,12 @@ export default function Map() {
 
   // returns the rendered map
   return (
-    <div>
-      {selectedFeature && (
-        <div className="absolute top-0 left-0 z-10 bg-white p-4 m-4 rounded shadow">
+    <div id="viewDiv" className="w-full h-screen">
+      {selectedFeature?.F_title && (
+        <div className="absolute z-10 bg-white p-4 m-4 rounded shadow" style={{top: selectedFeature.y, left: selectedFeature.x}}>
           {selectedFeature.F_title}
         </div>
       )}
-      <div id="viewDiv" style={{ height: "100vh", width: "100vw" }}>
-      </div>
     </div>
-
   );
 }
