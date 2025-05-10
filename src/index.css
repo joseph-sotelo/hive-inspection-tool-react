@@ -127,3 +127,11 @@ html, body, #root {
     @apply bg-background text-foreground;
   }
 }
+
+/* typography */
+
+h4 {
+  font-size: 1.25rem;
+  line-height: 1.75rem; 
+  font-weight: 600; 
+}
