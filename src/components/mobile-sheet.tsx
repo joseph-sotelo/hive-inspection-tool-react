@@ -17,7 +17,8 @@ import { Button } from "@/components/ui/button"
 
 type MobileSheetProps = {
   F_title: string,
-  F_status: string
+  F_status: string,
+  fieldmap_id_primary: string
 }
 
 const clients = {
@@ -53,6 +54,16 @@ const members = {
 }
 
 export default function MobileSheet({props}: {props: MobileSheetProps}) {
+
+  const [formData, setFormData] = useState({
+    F_title: props.F_title,
+    F_status: props.F_status,
+    fieldmap_id_primary: props.fieldmap_id_primary
+  })
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({...formData, fieldmap_id_primary: event.target.value})
+  }
 
   const [isOpen, setIsOpen] = useState(true);
 
@@ -116,7 +127,7 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
               </div>
               <div className="grid w-full max-w-sm items-center gap-1.5">
                 <Label htmlFor="text">Primary field ID</Label>
-                <Input type="text" id="primary-field-id" placeholder="Primary field ID" />
+                <Input type="text" id="primary-field-id" placeholder="Primary field ID" value={formData.fieldmap_id_primary || ""} onChange={handleChange}/>
               </div>
               <div className="grid w-full max-w-sm items-center gap-1.5">
                 <Label htmlFor="text">Auxilary Field ID</Label>
@@ -153,7 +164,7 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
             </AccordionContent>
           </AccordionItem>
         </Accordion>
-        <Button>Mark Complete</Button>
+        <Button onClick={() => console.log(formData)}>Mark Complete</Button>
       </div>
     </div>
   );

@@ -27,6 +27,7 @@ export default function Map() {
   type MobileSheetProps = {
   F_title: string,
   F_status: string,
+  fieldmap_id_primary: string
 }
 
   const [selectedFeature, setSelectedFeature] = useState<OrchardFeature | null>(null);
@@ -38,7 +39,7 @@ export default function Map() {
     // creates featurelayer showing all orchards
     const orchardLayer = new FeatureLayer({
       url: featureLayerURL,
-      outFields: ["F_title", "F_status"]
+      outFields: ["F_title", "F_status", "fieldmap_id_primary"]
     });
 
     // creates map showing all layers
@@ -88,6 +89,7 @@ export default function Map() {
         const mobileSheetContent = {
           F_title: feature.graphic.attributes.F_title,
           F_status: feature.graphic.attributes.F_status,
+          fieldmap_id_primary: feature.graphic.attributes.fieldmap_id_primary
         }
         // store the object in state
         setSelectedFeature(selectedFeatureContent)
