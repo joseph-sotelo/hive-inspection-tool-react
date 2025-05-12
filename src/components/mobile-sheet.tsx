@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import clsx from "clsx";
 
 import { ChevronDown } from "lucide-react";
@@ -15,10 +15,8 @@ import { Input } from "@/components/ui/input"
 import { Combobox } from "./combobox";
 import { Button } from "@/components/ui/button"
 
-type MobileSheetProps = {
-  F_title: string,
-  F_status: string
-}
+// types
+import { MobileSheetProps } from "./types";
 
 const clients = {
   optionsType: "client",
@@ -54,6 +52,28 @@ const members = {
 
 export default function MobileSheet({props}: {props: MobileSheetProps}) {
 
+  // formData will be passed to the applyEdits method when Mark Complete button is pressed
+  const [formData, setFormData] = useState({
+    F_title: props.F_title,
+    F_status: props.F_status,
+    fieldmap_id_primary: props.fieldmap_id_primary
+  })
+
+  // ensures the mobile sheet content updates when a new feature is clicked
+  useEffect(() => {
+    setFormData({
+      F_title: props.F_title,
+      F_status: props.F_status,
+      fieldmap_id_primary: props.fieldmap_id_primary
+    });
+  }, [props.F_title, props.F_status, props.fieldmap_id_primary]);
+
+  // updates formData to inclue the user inputs
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({...formData, fieldmap_id_primary: event.target.value})
+  }
+
+  // toggles the mobile sheet open and closed
   const [isOpen, setIsOpen] = useState(true);
 
   return (
@@ -116,7 +136,7 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
               </div>
               <div className="grid w-full max-w-sm items-center gap-1.5">
                 <Label htmlFor="text">Primary field ID</Label>
-                <Input type="text" id="primary-field-id" placeholder="Primary field ID" />
+                <Input type="text" id="primary-field-id" placeholder="Primary field ID" value={formData.fieldmap_id_primary || ""} onChange={handleChange}/>
               </div>
               <div className="grid w-full max-w-sm items-center gap-1.5">
                 <Label htmlFor="text">Auxilary Field ID</Label>
@@ -153,7 +173,7 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
             </AccordionContent>
           </AccordionItem>
         </Accordion>
-        <Button>Mark Complete</Button>
+        <Button onClick={() =>props.onMarkComplete(formData)}>Mark Complete</Button>
       </div>
     </div>
   );

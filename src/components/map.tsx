@@ -5,8 +5,8 @@ import config from "@arcgis/core/config";
 import ArcGISMap from "@arcgis/core/Map";
 import MapView from "@arcgis/core/views/MapView";
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
+import Graphic from "@arcgis/core/Graphic";
 import "@arcgis/core/assets/esri/themes/light/main.css";
-
 
 // env setup
 config.apiKey = import.meta.env.VITE_ARCGIS_LAYER_API_KEY as string;
@@ -15,30 +15,23 @@ const featureLayerURL = import.meta.env.VITE_ARCGIS_MOCK_LAYER_API_URL as string
 // ui imports
 import MobileSheet from "./mobile-sheet";
 
+// types
+import { FormData, MobileSheetProps } from "./types";
+
 export default function Map() {
 
-  type OrchardFeature = {
-    F_title: string;
-    F_status: string;
-    x: number;
-    y: number;
-  }
+  // will be set to the object id of the feature that is clicked
+  let featureObjectId = 0;
 
-  type MobileSheetProps = {
-  F_title: string,
-  F_status: string,
-}
-
-  const [selectedFeature, setSelectedFeature] = useState<OrchardFeature | null>(null);
+  // state that will be passed to the mobile sheet for prefilling form fields
   const [mobileSheetProps, setMobileSheetProps] = useState<MobileSheetProps | null>(null);
-  const [isSelected, setIsSelected] = useState<boolean>(false);
 
-  // useEffect endures DOM is loaded for arcGIS core elements before they are created
+  // useEffect ensures DOM is loaded before arcGIS core elements are created
   useEffect(() => {
-    // creates featurelayer showing all orchards
+    // creates a feature layer showing all orchards
     const orchardLayer = new FeatureLayer({
       url: featureLayerURL,
-      outFields: ["F_title", "F_status"]
+      outFields: ["F_title", "F_status", "fieldmap_id_primary"]
     });
 
     // creates map showing all layers
@@ -55,48 +48,45 @@ export default function Map() {
       zoom: 10,
     });
 
-        view.on("click", async (event) => {
+    // updates the feature with the new data
+    const updateFeature = (formData: FormData) => {
+      console.log(formData);
+
+      const updates = new Graphic({
+        attributes: {
+          ObjectId: featureObjectId,
+          fieldmap_id_primary: formData.fieldmap_id_primary,
+        }
+      })
+
+      orchardLayer
+      .applyEdits({ updateFeatures: [updates]})
+      .then((result) => {
+        console.log("Update result: ", result);
+      })
+      .catch((error) => {
+        console.error("Error applying edits: ", error);
+      })
+    }
+
+    view.on("click", async (event) => {
 
       // get the feature that the user clicked
       const response = await view.hitTest(event);
       // make sure the feature is the right type - a graphic
       const feature = response.results.find((result): result is __esri.MapViewGraphicHit => result.type ==="graphic");
-      // get attributes from the selected feature and store them in state so they can be reflected in the popup
+      // get attributes from the selected feature and store them in state so they can be reflected in the sheet
       if (feature) {
-        // get the geometry of the feature to access the x and y coordinates
-        const mapPoint = feature.graphic.geometry as __esri.Point;
-        let x = 0;
-        let y = 0;
-        // if statement for safety
-        if (mapPoint) {
-          // convert mercador coords to pixel coords
-          const screenPoint = view.toScreen(mapPoint);
-          // if statement for safety
-          if (screenPoint) {
-            x = screenPoint.x;
-            y = screenPoint.y;
-          }
-        }
-        // create an object to store in state
-        const selectedFeatureContent = {
-          F_title: feature.graphic.attributes.F_title,
-          F_status: feature.graphic.attributes.F_status,
-          x: x,
-          y: y
-        }
-
+        console.log(feature.graphic.attributes)
         const mobileSheetContent = {
           F_title: feature.graphic.attributes.F_title,
           F_status: feature.graphic.attributes.F_status,
+          fieldmap_id_primary: feature.graphic.attributes.fieldmap_id_primary,
+          onMarkComplete: updateFeature,
         }
+        featureObjectId = feature.graphic.attributes.ObjectId;
         // store the object in state
-        setSelectedFeature(selectedFeatureContent)
         setMobileSheetProps(mobileSheetContent)
-        setIsSelected(true)
-
-      } else {
-        // causes popover to disappear when user clicks away
-        setSelectedFeature(null);
       }
       
     });
@@ -112,7 +102,8 @@ export default function Map() {
   // returns the rendered map
   return (
     <div>
-      {isSelected && mobileSheetProps && <MobileSheet props={mobileSheetProps} />}
+      {/* renders the mobile sheet if the user has clicked on a feature */}
+      {mobileSheetProps && <MobileSheet props={mobileSheetProps} />}
       <div id="viewDiv" className="w-full h-screen"> </div>
     </div>
   );
