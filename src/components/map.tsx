@@ -8,7 +8,6 @@ import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import Graphic from "@arcgis/core/Graphic";
 import "@arcgis/core/assets/esri/themes/light/main.css";
 
-
 // env setup
 config.apiKey = import.meta.env.VITE_ARCGIS_LAYER_API_KEY as string;
 const featureLayerURL = import.meta.env.VITE_ARCGIS_MOCK_LAYER_API_URL as string;
@@ -16,25 +15,13 @@ const featureLayerURL = import.meta.env.VITE_ARCGIS_MOCK_LAYER_API_URL as string
 // ui imports
 import MobileSheet from "./mobile-sheet";
 
+// types
+import { FormData, MobileSheetProps } from "./types";
+
 export default function Map() {
 
   // will be set to the object id of the feature that is clicked
   let featureObjectId = 0;
-
-  // type for data that will be passed to applyEdits, for updating features
-  type FormData = {
-    F_title: string,
-    F_status: string,
-    fieldmap_id_primary: string,
-  }
-
-  // props are used to fill in known form fields in the mobile Sheet, and a function for sharing the new data with this parent component. Then it is passed to applyEdits().
-  type MobileSheetProps = {
-    F_title: string,
-    F_status: string,
-    fieldmap_id_primary: string,
-    onMarkComplete: (formData: FormData) => void
-  }
 
   // state that will be passed to the mobile sheet for prefilling form fields
   const [mobileSheetProps, setMobileSheetProps] = useState<MobileSheetProps | null>(null);

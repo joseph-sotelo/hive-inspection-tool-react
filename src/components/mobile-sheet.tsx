@@ -15,18 +15,8 @@ import { Input } from "@/components/ui/input"
 import { Combobox } from "./combobox";
 import { Button } from "@/components/ui/button"
 
-type FormData = {
-  F_title: string,
-  F_status: string,
-  fieldmap_id_primary: string
-}
-
-type MobileSheetProps = {
-  F_title: string,
-  F_status: string,
-  fieldmap_id_primary: string,
-  onMarkComplete: (formData: FormData) => void
-}
+// types
+import { MobileSheetProps } from "./types";
 
 const clients = {
   optionsType: "client",
@@ -62,12 +52,14 @@ const members = {
 
 export default function MobileSheet({props}: {props: MobileSheetProps}) {
 
+  // formData will be passed to the applyEdits method when Mark Complete button is pressed
   const [formData, setFormData] = useState({
     F_title: props.F_title,
     F_status: props.F_status,
     fieldmap_id_primary: props.fieldmap_id_primary
   })
 
+  // ensures the mobile sheet content updates when a new feature is clicked
   useEffect(() => {
     setFormData({
       F_title: props.F_title,
@@ -76,10 +68,12 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
     });
   }, [props.F_title, props.F_status, props.fieldmap_id_primary]);
 
+  // updates formData to inclue the user inputs
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({...formData, fieldmap_id_primary: event.target.value})
   }
 
+  // toggles the mobile sheet open and closed
   const [isOpen, setIsOpen] = useState(true);
 
   return (

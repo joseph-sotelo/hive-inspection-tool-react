@@ -1,3 +1,5 @@
+// this function came from a tutorial and will eventually need to be updated
+
 import { Link } from "react-router-dom";
 
 export default function PowerPlants({ types }: {types: string[] }) {

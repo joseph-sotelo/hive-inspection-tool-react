@@ -11,6 +11,7 @@ export function cn(...inputs: ClassValue[]) {
 config.request.useIdentity = false;
 config.apiKey = import.meta.env.VITE_ARCGIS_BASEMAP_API_KEY as string;
 
+// below function will be used to get global json. Came from a tutorial and needs to be updated
 const PLANT_URL = "https://services3.arcgis.com/rejQdffKHRccBBY1/arcgis/rest/services/bee_inspector_2023/FeatureServer/0";
 
 let cachedData: { types: string[] } | null = null;
