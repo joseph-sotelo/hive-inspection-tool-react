@@ -5,8 +5,8 @@ import config from "@arcgis/core/config";
 import ArcGISMap from "@arcgis/core/Map";
 import MapView from "@arcgis/core/views/MapView";
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
-import "@arcgis/core/assets/esri/themes/light/main.css";
 import Graphic from "@arcgis/core/Graphic";
+import "@arcgis/core/assets/esri/themes/light/main.css";
 
 
 // env setup
@@ -18,26 +18,30 @@ import MobileSheet from "./mobile-sheet";
 
 export default function Map() {
 
+  // will be set to the object id of the feature that is clicked
   let featureObjectId = 0;
 
+  // type for data that will be passed to applyEdits, for updating features
   type FormData = {
     F_title: string,
     F_status: string,
     fieldmap_id_primary: string,
   }
 
+  // props are used to fill in known form fields in the mobile Sheet, and a function for sharing the new data with this parent component. Then it is passed to applyEdits().
   type MobileSheetProps = {
-  F_title: string,
-  F_status: string,
-  fieldmap_id_primary: string,
-  onMarkComplete: (formData: FormData) => void
+    F_title: string,
+    F_status: string,
+    fieldmap_id_primary: string,
+    onMarkComplete: (formData: FormData) => void
   }
 
+  // state that will be passed to the mobile sheet for prefilling form fields
   const [mobileSheetProps, setMobileSheetProps] = useState<MobileSheetProps | null>(null);
 
-  // useEffect endures DOM is loaded for arcGIS core elements before they are created
+  // useEffect ensures DOM is loaded before arcGIS core elements are created
   useEffect(() => {
-    // creates featurelayer showing all orchards
+    // creates a feature layer showing all orchards
     const orchardLayer = new FeatureLayer({
       url: featureLayerURL,
       outFields: ["F_title", "F_status", "fieldmap_id_primary"]
@@ -57,7 +61,8 @@ export default function Map() {
       zoom: 10,
     });
 
-    const testFunction = (formData: FormData) => {
+    // updates the feature with the new data
+    const updateFeature = (formData: FormData) => {
       console.log(formData);
 
       const updates = new Graphic({
@@ -68,14 +73,14 @@ export default function Map() {
       })
 
       orchardLayer
-        .applyEdits({ updateFeatures: [updates]})
-        .then((result) => {
-          console.log("Update result: ", result);
-        })
-        .catch((error) => {
-          console.error("Error applying edits: ", error);
-        })
-  }
+      .applyEdits({ updateFeatures: [updates]})
+      .then((result) => {
+        console.log("Update result: ", result);
+      })
+      .catch((error) => {
+        console.error("Error applying edits: ", error);
+      })
+    }
 
     view.on("click", async (event) => {
 
@@ -90,7 +95,7 @@ export default function Map() {
           F_title: feature.graphic.attributes.F_title,
           F_status: feature.graphic.attributes.F_status,
           fieldmap_id_primary: feature.graphic.attributes.fieldmap_id_primary,
-          onMarkComplete: testFunction,
+          onMarkComplete: updateFeature,
         }
         featureObjectId = feature.graphic.attributes.ObjectId;
         // store the object in state
@@ -110,6 +115,7 @@ export default function Map() {
   // returns the rendered map
   return (
     <div>
+      {/* renders the mobile sheet if the user has clicked on a feature */}
       {mobileSheetProps && <MobileSheet props={mobileSheetProps} />}
       <div id="viewDiv" className="w-full h-screen"> </div>
     </div>
