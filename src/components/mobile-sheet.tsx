@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import clsx from "clsx";
 
 import { ChevronDown } from "lucide-react";
@@ -15,10 +15,17 @@ import { Input } from "@/components/ui/input"
 import { Combobox } from "./combobox";
 import { Button } from "@/components/ui/button"
 
-type MobileSheetProps = {
+type FormData = {
   F_title: string,
   F_status: string,
   fieldmap_id_primary: string
+}
+
+type MobileSheetProps = {
+  F_title: string,
+  F_status: string,
+  fieldmap_id_primary: string,
+  onMarkComplete: (formData: FormData) => void
 }
 
 const clients = {
@@ -60,6 +67,14 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
     F_status: props.F_status,
     fieldmap_id_primary: props.fieldmap_id_primary
   })
+
+  useEffect(() => {
+    setFormData({
+      F_title: props.F_title,
+      F_status: props.F_status,
+      fieldmap_id_primary: props.fieldmap_id_primary
+    });
+  }, [props.F_title, props.F_status, props.fieldmap_id_primary]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({...formData, fieldmap_id_primary: event.target.value})
@@ -164,7 +179,7 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
             </AccordionContent>
           </AccordionItem>
         </Accordion>
-        <Button onClick={() => console.log(formData)}>Mark Complete</Button>
+        <Button onClick={() =>props.onMarkComplete(formData)}>Mark Complete</Button>
       </div>
     </div>
   );
