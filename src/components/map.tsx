@@ -8,6 +8,9 @@ import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import Graphic from "@arcgis/core/Graphic";
 import "@arcgis/core/assets/esri/themes/light/main.css";
 
+// map symbols
+import { symbolAlert, symbolFail, symbolLow, symbolPass } from "@/assets/symbols";
+
 // env setup
 config.apiKey = import.meta.env.VITE_ARCGIS_LAYER_API_KEY as string;
 const featureLayerURL = import.meta.env.VITE_ARCGIS_MOCK_LAYER_API_URL as string;
@@ -49,20 +52,44 @@ export default function Map() {
     });
 
     // custom pin
-    const alertSVG = {
-      type: "picture-marker" as const,
-      url: "/alert.svg",
-      width: "40px",
-      height: "50px"
-    }
 
     orchardLayer.renderer = {
       type: "unique-value",
       field: "F_status",
-      uniqueValueInfos: [{
+      uniqueValueInfos: [
+        {
         value: "nodata_fulldeliv",
-        symbol: alertSVG
-      }]
+        symbol: symbolAlert
+        },
+        {
+        value: "nodata_partdeliv",
+        symbol: symbolAlert
+        },
+        {
+        value: "fail_comp",
+        symbol: symbolFail
+        },
+        {
+          value: "fail_incomp",
+          symbol: symbolFail
+        },
+        {
+        value: "low_comp",
+        symbol: symbolLow
+        },
+        {
+          value: "low_incomp",
+          symbol: symbolLow
+        },
+        {
+        value: "pass_comp",
+        symbol: symbolPass
+        },
+        {
+        value: "pass_incomp",
+        symbol: symbolPass
+        }
+      ]
     }
     // updates the feature with the new data
     const updateFeature = (formData: FormData) => {
