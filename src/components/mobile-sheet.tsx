@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import clsx from "clsx";
 
 import { ChevronDown } from "lucide-react";
-import { Badge } from "./ui/badge";
+// import { Badge } from "./ui/badge";
 import {
   Accordion,
   AccordionContent,
@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Combobox } from "./combobox";
 import { Button } from "@/components/ui/button"
+import { Badge, badgeVariantsType } from "@/components/ui/badge"
 
 // types
 import { MobileSheetProps } from "./types";
@@ -54,7 +55,7 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
 
   // formData will be passed to the applyEdits method when Mark Complete button is pressed
   const [formData, setFormData] = useState({
-    F_title: props.F_title,
+    client: props.client,
     F_status: props.F_status,
     fieldmap_id_primary: props.fieldmap_id_primary
   })
@@ -62,11 +63,11 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
   // ensures the mobile sheet content updates when a new feature is clicked
   useEffect(() => {
     setFormData({
-      F_title: props.F_title,
+      client: props.client,
       F_status: props.F_status,
       fieldmap_id_primary: props.fieldmap_id_primary
     });
-  }, [props.F_title, props.F_status, props.fieldmap_id_primary]);
+  }, [props.client, props.F_status, props.fieldmap_id_primary]);
 
   // updates formData to inclue the user inputs
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,32 +77,41 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
   // toggles the mobile sheet open and closed
   const [isOpen, setIsOpen] = useState(true);
 
+  const status = props.F_status.split("_")[0] as badgeVariantsType
+
   return (
-    <div className={clsx("px-6 pt-6 pb-20 rounded-xl w-full transition-all duration-400 h-9/10 absolute z-10 bg-white", {"top-1/10": isOpen, "top-9/10": !isOpen})}>
-      <div id="peek" className="h-12 flex justify-between">
-        <div>
+    <div className={clsx("shadow-md-reverse rounded-t-xl w-full transition-all duration-400 h-9/10 absolute z-10", {"top-1/10": isOpen, "top-9/10": !isOpen})}>
+      {/* <div id="peek" className={clsx("p-6 flex justify-between border-1 rounded-t-xl border-border-flexible bg-background", {"bg-status-fail": status === "fail", "bg-status-low": status === "low", "bg-status-pass": status === "pass"})}> */}
+      <div id="peek" className={clsx("p-6 flex justify-between border-1 rounded-t-xl bg-[#F5F7F6]")}>
+        <div className="flex flex-col gap-2">
           <h4>
-            {props.F_title}
-            <Badge variant="statusLow">Low</Badge>
+            {props.client} | {props.fieldmap_id_primary}
           </h4>
+          <div className="flex items-center gap-2">
+            <Badge variant={status}>Status: {status}</Badge> 
+            <small className="text-sm font-semibold leading-none text-foreground-flexible">Delivery complete</small>
+          </div>
+          
         </div>
         <div onClick={() => (setIsOpen(!isOpen))}>
           <ChevronDown className={clsx({"rotate-180": !isOpen})}/>
         </div>
       </div>
-      <div id="sheet-body" className="flex flex-col justify-between h-full">
-        <Accordion type="single" collapsible>
-          <AccordionItem value="item-1">
-            <AccordionTrigger>Hive Contract Info</AccordionTrigger>
+      <div id="sheet-body" className="px-2 pt-2 pb-20 flex flex-col justify-between h-full bg-[#F5F7F6] border-border">
+        <Accordion type="single" collapsible className="flex flex-col gap-2">
+          <AccordionItem value="item-1" className="border-1 rounded-2xl bg-background px-3 ">
+            <AccordionTrigger>
+              <div className="text-lg px-2">Hive Contract Info</div>
+            </AccordionTrigger>
             <AccordionContent>
-              <div className="flex flex-col gap-6">
+              <div className="flex flex-col gap-6 p-2">
                 <div className="flex items-center space-x-2">
                 <Switch id="airplane-mode" />
                 <Label htmlFor="airplane-mode">Deliery Complete</Label>
               </div>
               <div className="grid w-full max-w-sm items-center gap-1.5">
                 <Label htmlFor="text">Beekeeper</Label>
-                <Input type="text" id="beekeper" placeholder="Beekeeper" />
+                <Input type="text" id="beekeper" placeholder="Beekeeper"/>
               </div>
               <div className="grid w-full max-w-sm items-center gap-1.5">
                 <Label htmlFor="text">Bee broker</Label>
@@ -122,10 +132,12 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
               </div>
             </AccordionContent>
           </AccordionItem>
-          <AccordionItem value="item-2">
-            <AccordionTrigger>Field Info</AccordionTrigger>
+          <AccordionItem value="item-2" className="border-1 rounded-2xl bg-background px-3 ">
+            <AccordionTrigger>
+              <div className="text-lg px-2">Field Info</div>
+            </AccordionTrigger>
             <AccordionContent>
-              <div className="flex flex-col gap-6"> 
+              <div className="flex flex-col gap-6 p-2"> 
                 <div className="grid w-full max-w-sm items-center gap-1.5">
                 <Label >Client</Label>
                 <Combobox props={clients} />
@@ -149,10 +161,12 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
               </div>
             </AccordionContent>
           </AccordionItem>
-          <AccordionItem value="item-3">
-            <AccordionTrigger>Team Info</AccordionTrigger>
+          <AccordionItem value="item-3" className="border-1 rounded-2xl bg-background px-3 ">
+            <AccordionTrigger>
+              <div className="text-lg px-2">Team Info</div>
+            </AccordionTrigger>
             <AccordionContent>
-              <div className="flex flex-col gap-6">
+              <div className="flex flex-col gap-6 p-2">
                 <div className="grid w-full max-w-sm items-center gap-1.5">
                   <Label >Team leader</Label>
                   <Combobox props={members} />
@@ -164,11 +178,13 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
               </div>
             </AccordionContent>
           </AccordionItem>
-          <AccordionItem value="item-4">
-            <AccordionTrigger>Inspection Data</AccordionTrigger>
+          <AccordionItem value="item-4" className="border-1 rounded-2xl bg-background px-3 ">
+            <AccordionTrigger>
+              <div className="text-lg px-2">Inspection Data</div>
+            </AccordionTrigger>
             <AccordionContent>
-              <div className="flex flex-col gap-6">
-                <Button>Begin Inspection</Button>
+              <div className="flex flex-col gap-6 p-2">
+                <Button variant="outline">Begin Inspection</Button>
               </div>
             </AccordionContent>
           </AccordionItem>

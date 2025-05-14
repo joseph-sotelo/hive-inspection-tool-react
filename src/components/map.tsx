@@ -31,7 +31,7 @@ export default function Map() {
     // creates a feature layer showing all orchards
     const orchardLayer = new FeatureLayer({
       url: featureLayerURL,
-      outFields: ["F_title", "F_status", "fieldmap_id_primary"]
+      outFields: ["F_status", "fieldmap_id_primary", "client"]
     });
 
     // creates map showing all layers
@@ -48,6 +48,22 @@ export default function Map() {
       zoom: 10,
     });
 
+    // custom pin
+    const alertSVG = {
+      type: "picture-marker" as const,
+      url: "/alert.svg",
+      width: "40px",
+      height: "50px"
+    }
+
+    orchardLayer.renderer = {
+      type: "unique-value",
+      field: "F_status",
+      uniqueValueInfos: [{
+        value: "nodata_fulldeliv",
+        symbol: alertSVG
+      }]
+    }
     // updates the feature with the new data
     const updateFeature = (formData: FormData) => {
       console.log(formData);
@@ -79,7 +95,7 @@ export default function Map() {
       if (feature) {
         console.log(feature.graphic.attributes)
         const mobileSheetContent = {
-          F_title: feature.graphic.attributes.F_title,
+          client: feature.graphic.attributes.client,
           F_status: feature.graphic.attributes.F_status,
           fieldmap_id_primary: feature.graphic.attributes.fieldmap_id_primary,
           onMarkComplete: updateFeature,
