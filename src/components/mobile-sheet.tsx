@@ -89,22 +89,21 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
           </h4>
           <div className="flex items-center gap-2">
             <Badge variant={status}>Status: {status}</Badge> 
-            <small className="text-sm font-semibold leading-none text-foreground-flexible">Delivery complete</small>
+            <small className="text-sm leading-none text-foreground-flexible">Delivery complete: 214 hives</small>
           </div>
-          
         </div>
         <div onClick={() => (setIsOpen(!isOpen))}>
           <ChevronDown className={clsx({"rotate-180": !isOpen})}/>
         </div>
       </div>
-      <div id="sheet-body" className="px-2 pt-2 pb-20 flex flex-col justify-between h-full bg-[#F5F7F6] border-border">
-        <Accordion type="single" collapsible className="flex flex-col gap-2">
+      <div id="sheet-body" className="px-2 pt-2 pb-20 flex flex-col justify-between items-center h-full bg-[#F5F7F6] border-border">
+        <Accordion type="single" collapsible defaultValue="item-4" className="flex flex-col gap-2 w-full">
           <AccordionItem value="item-1" className="border-1 rounded-2xl bg-background px-3 ">
-            <AccordionTrigger>
-              <div className="text-lg px-2">Hive Contract Info</div>
+            <AccordionTrigger className="pl-1 pr-1.5">
+              <div>Hive Contract Info</div>
             </AccordionTrigger>
-            <AccordionContent>
-              <div className="flex flex-col gap-6 p-2">
+            <AccordionContent className="px-1 pb-5">
+              <div className="flex flex-col gap-6">
                 <div className="flex items-center space-x-2">
                 <Switch id="airplane-mode" />
                 <Label htmlFor="airplane-mode">Deliery Complete</Label>
@@ -133,11 +132,11 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-2" className="border-1 rounded-2xl bg-background px-3 ">
-            <AccordionTrigger>
-              <div className="text-lg px-2">Field Info</div>
+            <AccordionTrigger className="pl-1 pr-1.5">
+              <div>Field Info</div>
             </AccordionTrigger>
-            <AccordionContent>
-              <div className="flex flex-col gap-6 p-2"> 
+            <AccordionContent className="px-1 pb-5">
+              <div className="flex flex-col gap-6"> 
                 <div className="grid w-full max-w-sm items-center gap-1.5">
                 <Label >Client</Label>
                 <Combobox props={clients} />
@@ -162,11 +161,11 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-3" className="border-1 rounded-2xl bg-background px-3 ">
-            <AccordionTrigger>
-              <div className="text-lg px-2">Team Info</div>
+            <AccordionTrigger className="pl-1 pr-1.5">
+              <div>Team Info</div>
             </AccordionTrigger>
-            <AccordionContent>
-              <div className="flex flex-col gap-6 p-2">
+            <AccordionContent className="px-1 pb-5">
+              <div className="flex flex-col gap-6">
                 <div className="grid w-full max-w-sm items-center gap-1.5">
                   <Label >Team leader</Label>
                   <Combobox props={members} />
@@ -179,17 +178,17 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-4" className="border-1 rounded-2xl bg-background px-3 ">
-            <AccordionTrigger>
-              <div className="text-lg px-2">Inspection Data</div>
+            <AccordionTrigger className="pl-1 pr-1.5" >
+              <div>Inspection Data</div>
             </AccordionTrigger>
-            <AccordionContent>
-              <div className="flex flex-col gap-6 p-2">
-                <Button variant="outline">Begin Inspection</Button>
+            <AccordionContent className="px-1 pb-5">
+              <div className="flex flex-col gap-6">
+                <Button variant="action" size="action">Begin Inspection</Button>
               </div>
             </AccordionContent>
           </AccordionItem>
         </Accordion>
-        <Button onClick={() =>props.onMarkComplete(formData)}>Mark Complete</Button>
+        <Button variant="outlineBranded" size="action" onClick={() =>props.onMarkComplete(formData)}>Mark Complete</Button>
       </div>
     </div>
   );
