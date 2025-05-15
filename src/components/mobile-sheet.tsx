@@ -15,6 +15,8 @@ import { Input } from "@/components/ui/input"
 import { Combobox } from "./combobox";
 import { Button } from "@/components/ui/button"
 import { Badge, badgeVariantsType } from "@/components/ui/badge"
+import { Separator } from "@/components/ui/separator"
+
 
 // types
 import { MobileSheetProps } from "./types";
@@ -81,7 +83,6 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
 
   return (
     <div className={clsx("shadow-md-reverse rounded-t-xl w-full transition-all duration-400 h-9/10 absolute z-10", {"top-1/10": isOpen, "top-9/10": !isOpen})}>
-      {/* <div id="peek" className={clsx("p-6 flex justify-between border-1 rounded-t-xl border-border-flexible bg-background", {"bg-status-fail": status === "fail", "bg-status-low": status === "low", "bg-status-pass": status === "pass"})}> */}
       <div id="peek" className={clsx("p-6 flex justify-between border-1 rounded-t-xl bg-[#F5F7F6]")}>
         <div className="flex flex-col gap-2">
           <h4>
@@ -100,9 +101,10 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
         <Accordion type="single" collapsible defaultValue="item-4" className="flex flex-col gap-2 w-full">
           <AccordionItem value="item-1" className="border-1 rounded-2xl bg-background px-3 ">
             <AccordionTrigger className="pl-1 pr-1.5">
-              <div>Hive Contract Info</div>
+              <div className="text-base">Hive Contract Info</div>
             </AccordionTrigger>
             <AccordionContent className="px-1 pb-5">
+              <Separator className="mb-5"/>
               <div className="flex flex-col gap-6">
                 <div className="flex items-center space-x-2">
                 <Switch id="airplane-mode" />
@@ -133,9 +135,10 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
           </AccordionItem>
           <AccordionItem value="item-2" className="border-1 rounded-2xl bg-background px-3 ">
             <AccordionTrigger className="pl-1 pr-1.5">
-              <div>Field Info</div>
+              <div className="text-base">Field Info</div>
             </AccordionTrigger>
             <AccordionContent className="px-1 pb-5">
+              <Separator className="mb-5"/>
               <div className="flex flex-col gap-6"> 
                 <div className="grid w-full max-w-sm items-center gap-1.5">
                 <Label >Client</Label>
@@ -162,9 +165,10 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
           </AccordionItem>
           <AccordionItem value="item-3" className="border-1 rounded-2xl bg-background px-3 ">
             <AccordionTrigger className="pl-1 pr-1.5">
-              <div>Team Info</div>
+              <div className="text-base">Team Info</div>
             </AccordionTrigger>
             <AccordionContent className="px-1 pb-5">
+              <Separator className="mb-5"/>
               <div className="flex flex-col gap-6">
                 <div className="grid w-full max-w-sm items-center gap-1.5">
                   <Label >Team leader</Label>
@@ -179,9 +183,10 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
           </AccordionItem>
           <AccordionItem value="item-4" className="border-1 rounded-2xl bg-background px-3 ">
             <AccordionTrigger className="pl-1 pr-1.5" >
-              <div>Inspection Data</div>
+              <div className="text-base">Inspection Data</div>
             </AccordionTrigger>
             <AccordionContent className="px-1 pb-5">
+              <Separator className="mb-5"/>
               <div className="flex flex-col gap-6">
                 <Button variant="action" size="action">Begin Inspection</Button>
               </div>
