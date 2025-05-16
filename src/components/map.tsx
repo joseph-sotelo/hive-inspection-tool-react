@@ -29,6 +29,8 @@ export default function Map() {
   // state that will be passed to the mobile sheet for prefilling form fields
   const [mobileSheetProps, setMobileSheetProps] = useState<MobileSheetProps | null>(null);
 
+  const [isMobileSheetOpen, setIsMobileSheetOpen] = useState(false);
+
   // useEffect ensures DOM is loaded before arcGIS core elements are created
   useEffect(() => {
     // creates a feature layer showing all orchards
@@ -129,7 +131,10 @@ export default function Map() {
         }
         featureObjectId = feature.graphic.attributes.ObjectId;
         // store the object in state
-        setMobileSheetProps(mobileSheetContent)
+        setMobileSheetProps(mobileSheetContent);
+        setIsMobileSheetOpen(true);
+      } else {
+        setIsMobileSheetOpen(false);
       }
       
     });
@@ -146,7 +151,7 @@ export default function Map() {
   return (
     <div>
       {/* renders the mobile sheet if the user has clicked on a feature */}
-      {mobileSheetProps && <MobileSheet props={mobileSheetProps} />}
+      {isMobileSheetOpen && mobileSheetProps && (<MobileSheet props={mobileSheetProps} key={mobileSheetProps.fieldmap_id_primary}/>)}
       <div id="viewDiv" className="w-full h-screen"> </div>
     </div>
   );

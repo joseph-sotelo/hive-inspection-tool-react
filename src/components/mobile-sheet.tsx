@@ -1,13 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import clsx from "clsx";
 
 import { ChevronDown } from "lucide-react";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
@@ -63,26 +58,49 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
   })
 
   // ensures the mobile sheet content updates when a new feature is clicked
-  useEffect(() => {
+  useEffect(() => { 
     setFormData({
       client: props.client,
       F_status: props.F_status,
       fieldmap_id_primary: props.fieldmap_id_primary
     });
+
+    setIsOpen(false)
   }, [props.client, props.F_status, props.fieldmap_id_primary]);
 
+  const [isOffScreen, setIsOffScreen] = useState(true);
+
+  useEffect(() => {
+    console.log("props.fieldmap_id_primary", props.fieldmap_id_primary)
+    if (props.fieldmap_id_primary !== undefined){
+      console.log("props.fieldmap_id_primary", props.fieldmap_id_primary)
+      setIsOffScreen(false);
+    } else {
+      setIsOffScreen(true);
+    }
+  }, [props]);
+
+  const exitSheet = (event: MouseEvent) => {
+    if (sheetRef.current && !sheetRef.current.contains(event.target as Node)){
+      setIsOffScreen(true);
+    }
+  }
   // updates formData to inclue the user inputs
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({...formData, fieldmap_id_primary: event.target.value})
   }
 
   // toggles the mobile sheet open and closed
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
-  const status = props.F_status.split("_")[0] as badgeVariantsType
+  const status = props.F_status ? props.F_status.split("_")[0] as badgeVariantsType : "default";
+
+  const sheetRef = useRef<HTMLDivElement>(null);
+
+  document.addEventListener("click", exitSheet)
 
   return (
-    <div className={clsx("shadow-md-reverse rounded-t-xl w-full transition-all duration-400 h-8/10 absolute z-10", {"top-1/10": isOpen, "top-[calc(100vh-108px)]": !isOpen})}>
+    <div ref={sheetRef} className={clsx("shadow-md-reverse rounded-t-xl w-full transition-all duration-400 overflow-hidden bottom-0 absolute z-10", {"h-0": isOffScreen && !isOpen || isOffScreen && isOpen, "h-[108px]": !isOffScreen && !isOpen, "h-9/10": !isOffScreen && isOpen})}>
       <div id="peek" className={clsx("p-6 flex justify-between border-1 rounded-t-xl bg-[#F5F7F6]")}>
         <div className="flex flex-col gap-2">
           <h4>
@@ -199,7 +217,7 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
             <SignatureCanvas penColor="black" canvasProps={{width: 270, height: 200, className: 'sigCanvas'}} backgroundColor="rgba(255, 255, 255, 1)"/>
           </div>
         </div>
-        <Button variant="outlineBranded" size="action" onClick={() =>props.onMarkComplete(formData)}>Mark Complete</Button>
+        <Button variant="outlineBranded" size="action" onClick={() => props.onMarkComplete(formData)}>Mark Complete</Button>
       </div>
     </div>
   );
