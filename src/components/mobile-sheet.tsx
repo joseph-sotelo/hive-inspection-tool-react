@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import clsx from "clsx";
 
 import { ChevronDown } from "lucide-react";
-// import { Badge } from "./ui/badge";
 import {
   Accordion,
   AccordionContent,
@@ -16,6 +15,7 @@ import { Combobox } from "./combobox";
 import { Button } from "@/components/ui/button"
 import { Badge, badgeVariantsType } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
+import SignatureCanvas from 'react-signature-canvas'
 
 
 // types
@@ -82,7 +82,7 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
   const status = props.F_status.split("_")[0] as badgeVariantsType
 
   return (
-    <div className={clsx("shadow-md-reverse rounded-t-xl w-full transition-all duration-400 h-9/10 absolute z-10", {"top-1/10": isOpen, "top-9/10": !isOpen})}>
+    <div className={clsx("shadow-md-reverse rounded-t-xl w-full transition-all duration-400 h-8/10 absolute z-10", {"top-1/10": isOpen, "top-[calc(100vh-108px)]": !isOpen})}>
       <div id="peek" className={clsx("p-6 flex justify-between border-1 rounded-t-xl bg-[#F5F7F6]")}>
         <div className="flex flex-col gap-2">
           <h4>
@@ -97,7 +97,7 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
           <ChevronDown className={clsx({"rotate-180": !isOpen})}/>
         </div>
       </div>
-      <div id="sheet-body" className="px-2 pt-2 pb-20 flex flex-col justify-between items-center h-full bg-[#F5F7F6] border-border">
+      <div id="sheet-body" className="px-2 pt-6 flex flex-col gap-6 items-center h-full bg-[#F5F7F6] border-border">
         <Accordion type="single" collapsible defaultValue="item-4" className="flex flex-col gap-2 w-full">
           <AccordionItem value="item-1" className="border-1 rounded-2xl bg-background px-3 ">
             <AccordionTrigger className="pl-1 pr-1.5">
@@ -193,6 +193,12 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
             </AccordionContent>
           </AccordionItem>
         </Accordion>
+        <div id="signature-section" className="w-full flex flex-col items-center gap-3">
+          <div className="text-base">Signature</div>
+          <div id="signature-canvas-wrapper" className="bg-white inset-shadow-md rounded-2xl border-1 border-border p-2 flex items-center justify-center">
+            <SignatureCanvas penColor="black" canvasProps={{width: 270, height: 200, className: 'sigCanvas'}} backgroundColor="rgba(255, 255, 255, 1)"/>
+          </div>
+        </div>
         <Button variant="outlineBranded" size="action" onClick={() =>props.onMarkComplete(formData)}>Mark Complete</Button>
       </div>
     </div>
