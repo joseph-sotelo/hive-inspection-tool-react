@@ -22,7 +22,7 @@ const buttonVariants = cva(
         link: 
           "text-primary underline-offset-4 hover:underline",
         action:
-          "bg-brand-light border-1 border-foreground-flexible-light text-foreground-flexible font-bold tracking-wide shadow-lg shadow-brand-light/50 hover:bg-brand-light/60",
+          "bg-brand-light border-1 border-foreground-flexible-light text-foreground-flexible font-bold tracking-wide shadow-lg shadow-brand-light/60 hover:bg-brand-light/60",
         outlineBranded:
           "text-foreground-flexible font-semibold tracking-wide bg-foreground-flexible/10 hover:bg-foreground-flexible/30",
       },

@@ -49,8 +49,9 @@ html, body, #root {
   /* customized vars */
   --color-background: var(--background);
   --color-secondary: var(--secondary);
+  
   /* custom vars */
-  --color-background-secondary: oklch(0.32 0.0109 168.01);
+  --color-background-secondary: oklch(0.97 0.0025 165.08);
   --shadow-md-reverse: 0 -4px 6px -1px rgb(0 0 0 / 0.1), 0 -2px 4px -2px rgb(0 0 0 / 0.1);
   --color-foreground-flexible: oklch(0 0 0 / 0.7);
   --color-foreground-flexible-light: oklch(0 0 0 / 0.1);

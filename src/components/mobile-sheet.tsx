@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import clsx from "clsx";
 
+// ui imports
 import { ChevronDown } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Switch } from "@/components/ui/switch"
@@ -57,76 +58,82 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
     fieldmap_id_primary: props.fieldmap_id_primary
   })
 
-  // ensures the mobile sheet content updates when a new feature is clicked
   useEffect(() => { 
+    // ensures the mobile sheet content updates when a new feature is clicked
     setFormData({
       client: props.client,
       F_status: props.F_status,
       fieldmap_id_primary: props.fieldmap_id_primary
     });
-
+    // ensures the mobile sheet does not mount in the 'open' position
     setIsOpen(false)
   }, [props.client, props.F_status, props.fieldmap_id_primary]);
-
+  
+  // used for mounting and unmounting animations
   const [isOffScreen, setIsOffScreen] = useState(true);
 
   useEffect(() => {
-    console.log("props.fieldmap_id_primary", props.fieldmap_id_primary)
     if (props.fieldmap_id_primary !== undefined){
-      console.log("props.fieldmap_id_primary", props.fieldmap_id_primary)
+      // causes the mobile sheet to slide up rather than appear
       setIsOffScreen(false);
     } else {
+      // prevents an empty mobile sheet from appearing when the user clicks on a non-feature part of the map
       setIsOffScreen(true);
     }
   }, [props]);
 
-  const exitSheet = (event: MouseEvent) => {
+  // used to animate the mobile sheet closing when the user clicks outside of it
+  const exit = (event: MouseEvent) => {
     if (sheetRef.current && !sheetRef.current.contains(event.target as Node)){
       setIsOffScreen(true);
     }
   }
+
   // updates formData to inclue the user inputs
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({...formData, fieldmap_id_primary: event.target.value})
   }
 
-  // toggles the mobile sheet open and closed
+  // used for toggling the mobile sheet open and closed
   const [isOpen, setIsOpen] = useState(false);
 
+  // gets the first part of the F_status attribute for conditional styling and text
   const status = props.F_status ? props.F_status.split("_")[0] as badgeVariantsType : "default";
 
+  // references the entire mobile sheet so that exit() can detect when the user clicked outside of it
   const sheetRef = useRef<HTMLDivElement>(null);
 
-  document.addEventListener("click", exitSheet)
+  // used to call exit() on click
+  document.addEventListener("click", exit)
 
   return (
     <div ref={sheetRef} className={clsx("shadow-md-reverse rounded-t-xl w-full transition-all duration-400 overflow-hidden bottom-0 absolute z-10", {"h-0": isOffScreen && !isOpen || isOffScreen && isOpen, "h-[108px]": !isOffScreen && !isOpen, "h-9/10": !isOffScreen && isOpen})}>
-      <div id="peek" className={clsx("p-6 flex justify-between border-1 rounded-t-xl bg-[#F5F7F6]")}>
+      <div id="peek" className={clsx("p-6 flex justify-between border-1 rounded-t-xl bg-background")}>
         <div className="flex flex-col gap-2">
           <h4>
             {props.client} | {props.fieldmap_id_primary}
           </h4>
-          <div className="flex items-center gap-2">
+          <div>
             <Badge variant={status}>Status: {status}</Badge> 
-            <small className="text-sm leading-none text-foreground-flexible">Delivery complete: 214 hives</small>
+            <small className="text-sm text-foreground-flexible ml-2">Delivery complete: 214 hives</small>
           </div>
         </div>
         <div onClick={() => (setIsOpen(!isOpen))}>
           <ChevronDown className={clsx({"rotate-180": !isOpen})}/>
         </div>
       </div>
-      <div id="sheet-body" className="px-2 pt-6 flex flex-col gap-6 items-center h-full bg-[#F5F7F6] border-border">
-        <Accordion type="single" collapsible defaultValue="item-4" className="flex flex-col gap-2 w-full">
-          <AccordionItem value="item-1" className="border-1 rounded-2xl bg-background px-3 ">
-            <AccordionTrigger className="pl-1 pr-1.5">
-              <div className="text-base">Hive Contract Info</div>
+      <div id="body" className="px-2 pt-6 flex flex-col gap-6 items-center h-full overflow-scroll bg-background-secondary border-x-1 border-border">
+        <Accordion type="single" collapsible defaultValue="item-4">
+          <AccordionItem value="item-1">
+            <AccordionTrigger>
+              Hive Contract Info
             </AccordionTrigger>
-            <AccordionContent className="px-1 pb-5">
+            <AccordionContent>
               <Separator className="mb-5"/>
               <div className="flex flex-col gap-6">
                 <div className="flex items-center space-x-2">
-                <Switch id="airplane-mode" />
-                <Label htmlFor="airplane-mode">Deliery Complete</Label>
+                <Switch id="delivery-complete" />
+                <Label htmlFor="delivery-complete">Delivery Complete</Label>
               </div>
               <div className="grid w-full max-w-sm items-center gap-1.5">
                 <Label htmlFor="text">Beekeeper</Label>
@@ -151,9 +158,9 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
               </div>
             </AccordionContent>
           </AccordionItem>
-          <AccordionItem value="item-2" className="border-1 rounded-2xl bg-background px-3 ">
-            <AccordionTrigger className="pl-1 pr-1.5">
-              <div className="text-base">Field Info</div>
+          <AccordionItem value="item-2">
+            <AccordionTrigger>
+              Field Info
             </AccordionTrigger>
             <AccordionContent className="px-1 pb-5">
               <Separator className="mb-5"/>
@@ -181,11 +188,11 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
               </div>
             </AccordionContent>
           </AccordionItem>
-          <AccordionItem value="item-3" className="border-1 rounded-2xl bg-background px-3 ">
-            <AccordionTrigger className="pl-1 pr-1.5">
-              <div className="text-base">Team Info</div>
+          <AccordionItem value="item-3">
+            <AccordionTrigger>
+              Team Info
             </AccordionTrigger>
-            <AccordionContent className="px-1 pb-5">
+            <AccordionContent>
               <Separator className="mb-5"/>
               <div className="flex flex-col gap-6">
                 <div className="grid w-full max-w-sm items-center gap-1.5">
@@ -199,11 +206,11 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
               </div>
             </AccordionContent>
           </AccordionItem>
-          <AccordionItem value="item-4" className="border-1 rounded-2xl bg-background px-3 ">
-            <AccordionTrigger className="pl-1 pr-1.5" >
-              <div className="text-base">Inspection Data</div>
+          <AccordionItem value="item-4">
+            <AccordionTrigger>
+              Inspection Data
             </AccordionTrigger>
-            <AccordionContent className="px-1 pb-5">
+            <AccordionContent>
               <Separator className="mb-5"/>
               <div className="flex flex-col gap-6">
                 <Button variant="action" size="action">Begin Inspection</Button>
