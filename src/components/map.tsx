@@ -110,8 +110,6 @@ export default function Map() {
         }
       })
 
-      console.log(formData)
-
       // applies the updates
       orchardLayer
       .applyEdits({ updateFeatures: [updates]})
@@ -146,6 +144,8 @@ export default function Map() {
         featureObjectId = feature.graphic.attributes.ObjectId;
         // // store the object in state
         setMobileSheetProps(mobileSheetContent);
+
+        console.log(mobileSheetProps)
         // // since a feature was selected, open the mobile sheet
         setIsMobileSheetOpen(true);
       } else {

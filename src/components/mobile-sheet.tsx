@@ -96,7 +96,6 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
   // updates formData to inclue the user inputs
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({...formData, fieldmap_id_primary: event.target.value})
-    console.log(formData);
   }
 
   // used for toggling the mobile sheet open and closed
@@ -106,7 +105,7 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
   let statusString = props.F_status.split("_")[0]
   // will be passed to the badge component as a variant type
   const status = props.F_status ? statusString as badgeVariantsType : "default";
-  if (statusString = "nodata") {
+  if (statusString === "nodata") {
     statusString = "no data";
   }
 
