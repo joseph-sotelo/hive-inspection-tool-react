@@ -55,7 +55,9 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
   const [formData, setFormData] = useState({
     client: props.client,
     F_status: props.F_status,
-    fieldmap_id_primary: props.fieldmap_id_primary
+    fieldmap_id_primary: props.fieldmap_id_primary,
+    partdeliv_yn: props.partdeliv_yn,
+    hives_contracted: props.hives_contracted
   })
 
   useEffect(() => { 
@@ -63,7 +65,9 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
     setFormData({
       client: props.client,
       F_status: props.F_status,
-      fieldmap_id_primary: props.fieldmap_id_primary
+      fieldmap_id_primary: props.fieldmap_id_primary,
+      partdeliv_yn: props.partdeliv_yn,
+      hives_contracted: props.hives_contracted
     });
     // ensures the mobile sheet does not mount in the 'open' position
     setIsOpen(false)
@@ -92,19 +96,28 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
   // updates formData to inclue the user inputs
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({...formData, fieldmap_id_primary: event.target.value})
+    console.log(formData);
   }
 
   // used for toggling the mobile sheet open and closed
   const [isOpen, setIsOpen] = useState(false);
 
   // gets the first part of the F_status attribute for conditional styling and text
-  const status = props.F_status ? props.F_status.split("_")[0] as badgeVariantsType : "default";
+  let statusString = props.F_status.split("_")[0]
+  // will be passed to the badge component as a variant type
+  const status = props.F_status ? statusString as badgeVariantsType : "default";
+  if (statusString = "nodata") {
+    statusString = "no data";
+  }
 
   // references the entire mobile sheet so that exit() can detect when the user clicked outside of it
   const sheetRef = useRef<HTMLDivElement>(null);
 
   // used to call exit() on click
   document.addEventListener("click", exit)
+
+  // used for conditionally rendering the text in the 'peek'
+  let deliveryStatus = props.partdeliv_yn === "no" ? "complete" : "incomplete";
 
   return (
     <div ref={sheetRef} className={clsx("shadow-md-reverse rounded-t-xl w-full transition-all duration-400 overflow-hidden bottom-0 absolute z-10", {"h-0": isOffScreen && !isOpen || isOffScreen && isOpen, "h-[108px]": !isOffScreen && !isOpen, "h-9/10": !isOffScreen && isOpen})}>
@@ -114,8 +127,10 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
             {props.client} | {props.fieldmap_id_primary}
           </h4>
           <div>
-            <Badge variant={status}>Status: {status}</Badge> 
-            <small className="text-sm text-foreground-flexible ml-2">Delivery complete: 214 hives</small>
+            <Badge variant={status}>Status: {statusString}</Badge> 
+            <small className="text-sm text-foreground-flexible ml-2">
+              Delivery {deliveryStatus}: {props.hives_contracted} hives
+            </small>
           </div>
         </div>
         <div onClick={() => (setIsOpen(!isOpen))}>
@@ -132,7 +147,7 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
               <Separator className="mb-5"/>
               <div className="flex flex-col gap-6">
                 <div className="flex items-center space-x-2">
-                <Switch id="delivery-complete" />
+                <Switch id="delivery-complete" checked={props.partdeliv_yn === "no"}/>
                 <Label htmlFor="delivery-complete">Delivery Complete</Label>
               </div>
               <div className="grid w-full max-w-sm items-center gap-1.5">

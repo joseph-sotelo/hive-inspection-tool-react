@@ -36,7 +36,13 @@ export default function Map() {
     // creates a feature layer showing all orchards
     const orchardLayer = new FeatureLayer({
       url: featureLayerURL,
-      outFields: ["F_status", "fieldmap_id_primary", "client"]
+      outFields: [
+        "F_status", 
+        "fieldmap_id_primary", 
+        "client",
+        "partdeliv_yn",
+        "hives_contracted"
+      ]
     });
 
     // creates map showing all layers
@@ -100,8 +106,11 @@ export default function Map() {
         attributes: {
           ObjectId: featureObjectId,
           fieldmap_id_primary: formData.fieldmap_id_primary,
+          partdeliv_yn: formData.partdeliv_yn
         }
       })
+
+      console.log(formData)
 
       // applies the updates
       orchardLayer
@@ -122,20 +131,22 @@ export default function Map() {
       // for typescript - make sure the feature is the right type - a graphic
       const feature = response.results.find((result): result is __esri.MapViewGraphicHit => result.type ==="graphic");
 
-      // create an object from the attributes of the selected feature so it can be passed to the mobile sheet
-      if (feature) {
+      // // create an object from the attributes of the selected feature so it can be passed to the mobile sheet
+      if (feature?.graphic.attributes.fieldmap_id_primary != undefined) {
         const mobileSheetContent = {
           client: feature.graphic.attributes.client,
           F_status: feature.graphic.attributes.F_status,
           fieldmap_id_primary: feature.graphic.attributes.fieldmap_id_primary,
+          partdeliv_yn: feature.graphic.attributes.partdeliv_yn,
+          hives_contracted: feature.graphic.attributes.hives_contracted,
           onMarkComplete: updateFeature,
         }
 
-        // used as a key for the mobile sheet and for applyEdits
+        // // used as a key for the mobile sheet and for applyEdits
         featureObjectId = feature.graphic.attributes.ObjectId;
-        // store the object in state
+        // // store the object in state
         setMobileSheetProps(mobileSheetContent);
-        // since a feature was selected, open the mobile sheet
+        // // since a feature was selected, open the mobile sheet
         setIsMobileSheetOpen(true);
       } else {
         // since no feature was selected, close the mobile sheet
