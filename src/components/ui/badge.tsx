@@ -4,6 +4,8 @@ import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
 
+export type badgeVariantsType = "default" | "destructive" | "outline" | "secondary" | "fail" | "low" | "pass" | null | undefined
+
 const badgeVariants = cva(
   "inline-flex items-center justify-center rounded-md border px-2 py-0.5 text-xs font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-[color,box-shadow] overflow-hidden",
   {
@@ -17,8 +19,12 @@ const badgeVariants = cva(
           "border-transparent bg-destructive text-white [a&]:hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
         outline:
           "text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
-        statusLow:
-          "border-transparent bg-status-low text-white [a&]:hover:bg-status-low/90 focus-visible:ring-status-low/20 dark:focus-visible:ring-status-low/40 dark:bg-status-low/60"
+        fail:
+          "border-transparent bg-status-fail text-foreground-flexible font-semibold [a&]:hover:bg-secondary/90",
+        low:
+          "border-transparent bg-status-low text-foreground-flexible font-semibold [a&]:hover:bg-secondary/90",
+        pass:
+          "border-transparent bg-status-pass text-foreground-flexible font-semibold [a&]:hover:bg-secondary/90"
       },
     },
     defaultVariants: {
@@ -46,3 +52,4 @@ function Badge({
 }
 
 export { Badge, badgeVariants }
+export type { badgeVariantsType as BadgeVariant }
