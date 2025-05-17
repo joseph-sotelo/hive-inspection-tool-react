@@ -57,7 +57,11 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
     F_status: props.F_status,
     fieldmap_id_primary: props.fieldmap_id_primary,
     partdeliv_yn: props.partdeliv_yn,
-    hives_contracted: props.hives_contracted
+    hives_contracted: props.hives_contracted,
+    beekeeper: props.beekeeper,
+    bee_broker: props.bee_broker,
+    average: props.average,
+    minimum: props.minimum
   })
 
   useEffect(() => { 
@@ -67,7 +71,11 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
       F_status: props.F_status,
       fieldmap_id_primary: props.fieldmap_id_primary,
       partdeliv_yn: props.partdeliv_yn,
-      hives_contracted: props.hives_contracted
+      hives_contracted: props.hives_contracted === null ? "" : props.hives_contracted,
+      beekeeper: props.beekeeper === null ? "" : props.beekeeper,
+      bee_broker: props.bee_broker === null ? "" : props.bee_broker,
+      average: props.average === null ? "" : props.average,
+      minimum: props.minimum === null ? "" : props.minimum
     });
     // ensures the mobile sheet does not mount in the 'open' position
     setIsOpen(false)
@@ -94,8 +102,9 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
   }
 
   // updates formData to inclue the user inputs
-  const handleChange = (key: string, value: string | number | boolean) => {
+  const handleChange = (key: string, value: string | boolean | number) => {
     setFormData({...formData, [key]: value})
+    console.log(formData)
   }
 
   // used for toggling the mobile sheet open and closed
@@ -103,6 +112,7 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
 
   // gets the first part of the F_status attribute for conditional styling and text
   let statusString = props.F_status.split("_")[0]
+  
   // will be passed to the badge component as a variant type
   const status = props.F_status ? statusString as badgeVariantsType : "default";
   if (statusString === "nodata") {
@@ -146,28 +156,28 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
               <Separator className="mb-5"/>
               <div className="flex flex-col gap-6">
                 <div className="flex items-center space-x-2">
-                <Switch id="delivery-complete" defaultChecked={formData.partdeliv_yn === "no" ? true : false} onCheckedChange={(checked) => handleChange("partdeliv_yn", checked ? "no" : "yes")}/>
+                <Switch id="partdeliv_yn" defaultChecked={formData.partdeliv_yn === "no" ? true : false} onCheckedChange={(checked) => handleChange("partdeliv_yn", checked ? "no" : "yes")}/>
                 <Label htmlFor="delivery-complete">Delivery Complete</Label>
               </div>
               <div className="grid w-full max-w-sm items-center gap-1.5">
                 <Label htmlFor="text">Beekeeper</Label>
-                <Input type="text" id="beekeper" placeholder="Beekeeper"/>
+                <Input type="text" id="beekeeper" placeholder="Beekeeper" value={formData.beekeeper} onChange={(event) => handleChange(event.target.id, event.target.value)}/>
               </div>
               <div className="grid w-full max-w-sm items-center gap-1.5">
                 <Label htmlFor="text">Bee broker</Label>
-                <Input type="text" id="bee-broker" placeholder="Bee broker" />
+                <Input type="text" id="bee-broker" placeholder="Bee broker" value={formData.bee_broker} onChange={(event) => handleChange(event.target.id, event.target.value)}/>
               </div>
               <div className="grid w-full max-w-sm items-center gap-1.5">
                 <Label htmlFor="number">Total hives</Label>
-                <Input type="number" id="total-hives" placeholder="0" />
+                <Input type="number" id="hives_contracted" placeholder="number" value={formData.hives_contracted} onChange={(event) => handleChange(event.target.id, Number(event.target.value))}/>
               </div>
               <div className="grid w-full max-w-sm items-center gap-1.5">
                 <Label htmlFor="number">Average frames</Label>
-                <Input type="number" id="average-frames" placeholder="0" />
+                <Input type="number" id="average" placeholder="number" value={formData.average} onChange={(event) => handleChange(event.target.id, Number(event.target.value))}/>
               </div>
               <div className="grid w-full max-w-sm items-center gap-1.5">
                 <Label htmlFor="number">Minimum frames</Label>
-                <Input type="number" id="minimum-frames" placeholder="0" />
+                <Input type="number" id="minimum" placeholder="number" value={formData.minimum} onChange={(event) => handleChange(event.target.id, Number(event.target.value))}/>
               </div>
               </div>
             </AccordionContent>
@@ -189,7 +199,7 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
               </div>
               <div className="grid w-full max-w-sm items-center gap-1.5">
                 <Label htmlFor="text">Primary field ID</Label>
-                <Input type="text" id="primary-field-id" placeholder="Primary field ID" value={formData.fieldmap_id_primary || ""} onChange={(e) => handleChange("fieldmap_id_primary", e.target.value)}/>
+                <Input type="text" id="fieldmap_id_primary" placeholder="Primary field ID" value={formData.fieldmap_id_primary} onChange={(event) => handleChange(event.target.id, event.target.value)}/>
               </div>
               <div className="grid w-full max-w-sm items-center gap-1.5">
                 <Label htmlFor="text">Auxilary Field ID</Label>

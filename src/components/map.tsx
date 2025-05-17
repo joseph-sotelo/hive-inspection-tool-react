@@ -41,7 +41,11 @@ export default function Map() {
         "fieldmap_id_primary", 
         "client",
         "partdeliv_yn",
-        "hives_contracted"
+        "hives_contracted",
+        "beekeeper",
+        "bee_broker",
+        "average",
+        "minimum",
       ]
     });
 
@@ -106,7 +110,12 @@ export default function Map() {
         attributes: {
           ObjectId: featureObjectId,
           fieldmap_id_primary: formData.fieldmap_id_primary,
-          partdeliv_yn: formData.partdeliv_yn
+          hives_contracted: formData.hives_contracted,
+          partdeliv_yn: formData.partdeliv_yn,
+          beekeeper: formData.beekeeper,
+          bee_broker: formData.bee_broker,
+          average: formData.average,
+          minimum: formData.minimum
         }
       })
 
@@ -139,15 +148,19 @@ export default function Map() {
           fieldmap_id_primary: feature.graphic.attributes.fieldmap_id_primary,
           partdeliv_yn: feature.graphic.attributes.partdeliv_yn,
           hives_contracted: feature.graphic.attributes.hives_contracted,
+          beekeeper: feature.graphic.attributes.beekeeper,
+          bee_broker: feature.graphic.attributes.bee_broker,
+          average: feature.graphic.attributes.average,
+          minimum: feature.graphic.attributes.minimum,
           onMarkComplete: updateFeature,
         }
+
+        console.log(feature.graphic.attributes)
 
         // // used as a key for the mobile sheet and for applyEdits
         featureObjectId = feature.graphic.attributes.ObjectId;
         // // store the object in state
         setMobileSheetProps(mobileSheetContent);
-
-        console.log(mobileSheetProps)
         // // since a feature was selected, open the mobile sheet
         setIsMobileSheetOpen(true);
       } else {
