@@ -94,8 +94,8 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
   }
 
   // updates formData to inclue the user inputs
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({...formData, fieldmap_id_primary: event.target.value})
+  const handleChange = (key: string, value: string | number | boolean) => {
+    setFormData({...formData, [key]: value})
   }
 
   // used for toggling the mobile sheet open and closed
@@ -146,7 +146,7 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
               <Separator className="mb-5"/>
               <div className="flex flex-col gap-6">
                 <div className="flex items-center space-x-2">
-                <Switch id="delivery-complete" checked={props.partdeliv_yn === "no"}/>
+                <Switch id="delivery-complete" defaultChecked={formData.partdeliv_yn === "no" ? true : false} onCheckedChange={(checked) => handleChange("partdeliv_yn", checked ? "no" : "yes")}/>
                 <Label htmlFor="delivery-complete">Delivery Complete</Label>
               </div>
               <div className="grid w-full max-w-sm items-center gap-1.5">
@@ -189,7 +189,7 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
               </div>
               <div className="grid w-full max-w-sm items-center gap-1.5">
                 <Label htmlFor="text">Primary field ID</Label>
-                <Input type="text" id="primary-field-id" placeholder="Primary field ID" value={formData.fieldmap_id_primary || ""} onChange={handleChange}/>
+                <Input type="text" id="primary-field-id" placeholder="Primary field ID" value={formData.fieldmap_id_primary || ""} onChange={(e) => handleChange("fieldmap_id_primary", e.target.value)}/>
               </div>
               <div className="grid w-full max-w-sm items-center gap-1.5">
                 <Label htmlFor="text">Auxilary Field ID</Label>

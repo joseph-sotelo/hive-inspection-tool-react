@@ -110,6 +110,8 @@ export default function Map() {
         }
       })
 
+      console.log(updates.attributes.partdeliv_yn)
+
       // applies the updates
       orchardLayer
       .applyEdits({ updateFeatures: [updates]})
