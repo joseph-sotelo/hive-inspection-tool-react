@@ -8,18 +8,12 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+// below function will be used to get all of the client names. Modified from this tutorial: https://www.youtube.com/watch?v=CjtDYdNr_iE&t=1621s
 config.request.useIdentity = false;
 config.apiKey = import.meta.env.VITE_ARCGIS_BASEMAP_API_KEY as string;
-
-// below function will be used to get global json. Came from a tutorial and needs to be updated
 const PLANT_URL = "https://services3.arcgis.com/rejQdffKHRccBBY1/arcgis/rest/services/bee_inspector_2023/FeatureServer/0";
 
-let cachedData: { types: string[] } | null = null;
-
-export const getPowerPlants = async () => {
-    if (cachedData) {
-        return cachedData;
-    }
+export const getClients = async () => {
 
     const query = {
         outFields: ["client"],
@@ -33,6 +27,5 @@ export const getPowerPlants = async () => {
         .filter(Boolean)
         .sort();
 
-    cachedData = { types: values } as const;
-    return cachedData;
+    return values;
 };

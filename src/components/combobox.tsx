@@ -19,17 +19,17 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 
-type ComboBoxOption = {
+export type ComboBoxOptionType = {
     value: string,
     label: string
 }
 
-type ComboBox ={
+export type ComboBoxType ={
     optionsType: string,
-    options: ComboBoxOption[]
+    options: ComboBoxOptionType[]
 }
 
-export function Combobox({props}: {props: ComboBox}) {
+export function Combobox({props}: {props: ComboBoxType}) {
   const [open, setOpen] = React.useState(false)
   const [value, setValue] = React.useState("")
 
