@@ -1,21 +1,21 @@
-import { getPowerPlants } from '../utils';
-import PowerPlants from '../components/PowerPlants';
+import { getClients } from '../utils';
+import Clients from '../components/Clients';
 import { useEffect, useState } from 'react';
 
-export default function PowerPlantsList() {
+export default function ClientsList() {
   const [data, setData] = useState<PowerPlantData | null>(null);
 
   type PowerPlantData = {
-    types: string[];
+    clients: string[];
   };
 
   useEffect(() => {
-    getPowerPlants().then(setData);
+    getClients().then(setData);
   }, []);
 
   return (
     <>
-      {data && <PowerPlants {...data} />}
+      {data && <Clients {...data} />}
     </>
   );
 }

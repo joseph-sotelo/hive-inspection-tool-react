@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 
-export default function PowerPlants({ types }: {types: string[] }) {
+export default function Clients({ clients }: {clients: string[] }) {
     return (
         <ul >
-            {types.map((value, index) => (
+            {clients.map((value, index) => (
                 <li key = {`${value}-${index}`}
                 >
                     <Link to={`/map/${value}`}>
