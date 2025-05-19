@@ -36,7 +36,22 @@ export default function Map() {
     // creates a feature layer showing all orchards
     const orchardLayer = new FeatureLayer({
       url: featureLayerURL,
-      outFields: ["F_status", "fieldmap_id_primary", "client"]
+      outFields: [
+        "F_status", 
+        "fieldmap_id_primary", 
+        "client",
+        "partdeliv_yn",
+        "hives_contracted",
+        "beekeeper",
+        "bee_broker",
+        "average",
+        "minimum",
+        "grower",
+        "fieldmap_id_auxiliary",
+        "crossroads",
+        "team_leader",
+        "assistants"
+      ]
     });
 
     // creates map showing all layers
@@ -100,8 +115,22 @@ export default function Map() {
         attributes: {
           ObjectId: featureObjectId,
           fieldmap_id_primary: formData.fieldmap_id_primary,
+          hives_contracted: formData.hives_contracted,
+          partdeliv_yn: formData.partdeliv_yn,
+          beekeeper: formData.beekeeper,
+          bee_broker: formData.bee_broker,
+          average: formData.average,
+          minimum: formData.minimum,
+          client: formData.client,
+          grower: formData.grower,
+          fieldmap_id_auxiliary: formData.fieldmap_id_auxiliary,
+          crossroads: formData.crossroads,
+          team_leader: formData.team_leader,
+          assistants: formData.assistants
         }
       })
+
+      console.log(updates.attributes.partdeliv_yn)
 
       // applies the updates
       orchardLayer
@@ -122,20 +151,33 @@ export default function Map() {
       // for typescript - make sure the feature is the right type - a graphic
       const feature = response.results.find((result): result is __esri.MapViewGraphicHit => result.type ==="graphic");
 
-      // create an object from the attributes of the selected feature so it can be passed to the mobile sheet
-      if (feature) {
+      // // create an object from the attributes of the selected feature so it can be passed to the mobile sheet
+      if (feature?.graphic.attributes.fieldmap_id_primary != undefined) {
         const mobileSheetContent = {
           client: feature.graphic.attributes.client,
           F_status: feature.graphic.attributes.F_status,
           fieldmap_id_primary: feature.graphic.attributes.fieldmap_id_primary,
+          partdeliv_yn: feature.graphic.attributes.partdeliv_yn,
+          hives_contracted: feature.graphic.attributes.hives_contracted,
+          beekeeper: feature.graphic.attributes.beekeeper,
+          bee_broker: feature.graphic.attributes.bee_broker,
+          average: feature.graphic.attributes.average,
+          minimum: feature.graphic.attributes.minimum,
+          grower: feature.graphic.attributes.grower,
+          fieldmap_id_auxiliary: feature.graphic.attributes.fieldmap_id_auxiliary,
+          crossroads: feature.graphic.attributes.crossroads,
+          team_leader: feature.graphic.attributes.team_leader,
+          assistants: feature.graphic.attributes.assistants,
           onMarkComplete: updateFeature,
         }
 
-        // used as a key for the mobile sheet and for applyEdits
+        console.log(feature.graphic.attributes)
+
+        // // used as a key for the mobile sheet and for applyEdits
         featureObjectId = feature.graphic.attributes.ObjectId;
-        // store the object in state
+        // // store the object in state
         setMobileSheetProps(mobileSheetContent);
-        // since a feature was selected, open the mobile sheet
+        // // since a feature was selected, open the mobile sheet
         setIsMobileSheetOpen(true);
       } else {
         // since no feature was selected, close the mobile sheet
