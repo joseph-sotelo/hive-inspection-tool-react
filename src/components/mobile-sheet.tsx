@@ -8,7 +8,6 @@ import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Combobox } from "./combobox";
-import OptionsBox from "./ui/optionsBox";
 import { Button } from "@/components/ui/button"
 import { Badge, badgeVariantsType } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
@@ -17,19 +16,8 @@ import SignatureCanvas from 'react-signature-canvas'
 // types
 import { MobileSheetProps } from "./types";
 
-const clients = {
-  optionsType: "client",
-  options: [
-    {
-      value: "Matthews",
-      label: "Matthews"
-    },
-    {
-      value: "Pittigliano/Everret",
-      label: "Pittigliano/Everret"
-    }
-  ]
-}
+// utils
+import { comboBoxOptions } from "@/lib/utils";
 
 const members = {
   optionsType: "member",
@@ -61,7 +49,12 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
     beekeeper: props.beekeeper,
     bee_broker: props.bee_broker,
     average: props.average,
-    minimum: props.minimum
+    minimum: props.minimum,
+    grower: props.grower,
+    fieldmap_id_auxiliary: props.fieldmap_id_auxiliary,
+    crossroads: props.crossroads,
+    team_leader: props.team_leader,
+    assistants: props.assistants
   })
 
   useEffect(() => { 
@@ -75,7 +68,12 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
       beekeeper: props.beekeeper === null ? "" : props.beekeeper,
       bee_broker: props.bee_broker === null ? "" : props.bee_broker,
       average: props.average === null ? "" : props.average,
-      minimum: props.minimum === null ? "" : props.minimum
+      minimum: props.minimum === null ? "" : props.minimum,
+      grower: props.grower === null ? "" : props.grower,
+      fieldmap_id_auxiliary: props.fieldmap_id_auxiliary === null ? "" : props.fieldmap_id_auxiliary,
+      crossroads: props.crossroads === null ? "" : props.crossroads,
+      team_leader: props.team_leader === null ? "" : props.team_leader,
+      assistants: props.assistants === null ? [] : props.assistants
     });
     // ensures the mobile sheet does not mount in the 'open' position
     setIsOpen(false)
@@ -165,7 +163,7 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
               </div>
               <div className="grid w-full max-w-sm items-center gap-1.5">
                 <Label htmlFor="text">Bee broker</Label>
-                <Input type="text" id="bee-broker" placeholder="Bee broker" value={formData.bee_broker} onChange={(event) => handleChange(event.target.id, event.target.value)}/>
+                <Input type="text" id="bee_broker" placeholder="Bee broker" value={formData.bee_broker} onChange={(event) => handleChange(event.target.id, event.target.value)}/>
               </div>
               <div className="grid w-full max-w-sm items-center gap-1.5">
                 <Label htmlFor="number">Total hives</Label>
@@ -191,11 +189,11 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
               <div className="flex flex-col gap-6"> 
                 <div className="grid w-full max-w-sm items-center gap-1.5">
                 <Label >Client</Label>
-                <OptionsBox />
+                <Combobox props={comboBoxOptions("client")} defaultValue={formData.client} onChange={(value) => handleChange("client", value)}/>
               </div>
               <div className="grid w-full max-w-sm items-center gap-1.5">
                 <Label htmlFor="text">Grower</Label>
-                <Input type="text" id="grower" placeholder="Grower" />
+                <Input type="text" id="grower" placeholder="Grower" value={formData.grower} onChange={(event) => handleChange(event.target.id, event.target.value)}/>
               </div>
               <div className="grid w-full max-w-sm items-center gap-1.5">
                 <Label htmlFor="text">Primary field ID</Label>
@@ -203,11 +201,11 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
               </div>
               <div className="grid w-full max-w-sm items-center gap-1.5">
                 <Label htmlFor="text">Auxilary Field ID</Label>
-                <Input type="text" id="auxilary-field-id" placeholder="Auxilary Field ID" />
+                <Input type="text" id="fieldmap_id_auxiliary" placeholder="Auxilary Field ID" value={formData.fieldmap_id_auxiliary} onChange={(event) => handleChange(event.target.id, event.target.value)}/>
               </div>
               <div className="grid w-full max-w-sm items-center gap-1.5">
                 <Label htmlFor="text">Crossroads</Label>
-                <Input type="text" id="crossroads" placeholder="Crossroads" />
+                <Input type="text" id="crossroads" placeholder="Crossroads" value={formData.crossroads} onChange={(event) => handleChange(event.target.id, event.target.value)}/>
               </div>
               </div>
             </AccordionContent>
@@ -221,11 +219,11 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
               <div className="flex flex-col gap-6">
                 <div className="grid w-full max-w-sm items-center gap-1.5">
                   <Label >Team leader</Label>
-                  <Combobox props={members} />
+                  <Combobox props={comboBoxOptions("team_leader")} defaultValue={formData.team_leader} onChange={(value) => handleChange("team_leader", value)}/>
                 </div>
                 <div className="grid w-full max-w-sm items-center gap-1.5">
                   <Label >Assistants</Label>
-                  <Combobox props={members} />
+                  <Combobox props={comboBoxOptions("team_leader")} defaultValue={formData.team_leader} onChange={(value) => handleChange("assistants", value)}/>
                 </div>
               </div>
             </AccordionContent>

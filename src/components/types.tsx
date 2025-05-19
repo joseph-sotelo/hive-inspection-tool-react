@@ -8,6 +8,11 @@ export type FormData = {
   bee_broker: string,
   average: number | string,
   minimum: number | string,
+  grower: string,
+  fieldmap_id_auxiliary: string,
+  crossroads: string,
+  team_leader: string,
+  assistants: string[]
 }
 
 export type MobileSheetProps = {
@@ -19,6 +24,11 @@ export type MobileSheetProps = {
   beekeeper: string,
   bee_broker: string,
   average: number | string,
-  minimum: number | string
+  minimum: number | string,
+  grower: string,
+  fieldmap_id_auxiliary: string,
+  crossroads: string,
+  team_leader: string,
+  assistants: string[],
   onMarkComplete: (formData: FormData) => void
 }

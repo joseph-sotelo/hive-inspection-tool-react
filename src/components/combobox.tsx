@@ -29,9 +29,9 @@ export type ComboBoxType ={
     options: ComboBoxOptionType[]
 }
 
-export function Combobox({props}: {props: ComboBoxType}) {
+export function Combobox({props, defaultValue, onChange}: {props: ComboBoxType, defaultValue?: string, onChange?: (value: string) => void}) {
   const [open, setOpen] = React.useState(false)
-  const [value, setValue] = React.useState("")
+  const [value, setValue] = React.useState(defaultValue || "")
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -48,7 +48,7 @@ export function Combobox({props}: {props: ComboBoxType}) {
           <ChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
+      <PopoverContent className="w-[200px] p-0" onClick={(e) => e.stopPropagation()}>
         <Command>
           <CommandInput placeholder={`Search ${props.optionsType}...`} className="h-9" />
           <CommandList>
@@ -60,6 +60,7 @@ export function Combobox({props}: {props: ComboBoxType}) {
                   value={option.value}
                   onSelect={(currentValue) => {
                     setValue(currentValue === value ? "" : currentValue)
+                    onChange?.(currentValue === value ? "" : currentValue)
                     setOpen(false)
                   }}
                 >

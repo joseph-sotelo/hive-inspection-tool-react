@@ -46,6 +46,11 @@ export default function Map() {
         "bee_broker",
         "average",
         "minimum",
+        "grower",
+        "fieldmap_id_auxiliary",
+        "crossroads",
+        "team_leader",
+        "assistants"
       ]
     });
 
@@ -115,7 +120,13 @@ export default function Map() {
           beekeeper: formData.beekeeper,
           bee_broker: formData.bee_broker,
           average: formData.average,
-          minimum: formData.minimum
+          minimum: formData.minimum,
+          client: formData.client,
+          grower: formData.grower,
+          fieldmap_id_auxiliary: formData.fieldmap_id_auxiliary,
+          crossroads: formData.crossroads,
+          team_leader: formData.team_leader,
+          assistants: formData.assistants
         }
       })
 
@@ -152,6 +163,11 @@ export default function Map() {
           bee_broker: feature.graphic.attributes.bee_broker,
           average: feature.graphic.attributes.average,
           minimum: feature.graphic.attributes.minimum,
+          grower: feature.graphic.attributes.grower,
+          fieldmap_id_auxiliary: feature.graphic.attributes.fieldmap_id_auxiliary,
+          crossroads: feature.graphic.attributes.crossroads,
+          team_leader: feature.graphic.attributes.team_leader,
+          assistants: feature.graphic.attributes.assistants,
           onMarkComplete: updateFeature,
         }
 
