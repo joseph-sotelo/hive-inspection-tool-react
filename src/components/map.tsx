@@ -5,15 +5,17 @@ import config from "@arcgis/core/config";
 import ArcGISMap from "@arcgis/core/Map";
 import MapView from "@arcgis/core/views/MapView";
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
+import Track from "@arcgis/core/widgets/Track";
 import Graphic from "@arcgis/core/Graphic";
 import "@arcgis/core/assets/esri/themes/light/main.css";
 
 // map symbols
-import { symbolAlert, symbolFail, symbolLow, symbolPass } from "@/assets/symbols";
+import { symbolAlert, symbolFail, symbolLow, symbolPass, symbolHiveDrop } from "@/assets/symbols";
 
 // env setup
 config.apiKey = import.meta.env.VITE_ARCGIS_LAYER_API_KEY as string;
-const featureLayerURL = import.meta.env.VITE_ARCGIS_MOCK_LAYER_API_URL as string;
+const orchardsLayerURL = import.meta.env.VITE_ARCGIS_MOCK_ORCHARDS_LAYER_API_URL as string;
+const hiveDropsLayerURL = "https://services3.arcgis.com/rejQdffKHRccBBY1/arcgis/rest/services/bee_inspector_2023_hive_drop_inspection/FeatureServer/0";
 
 // ui imports
 import MobileSheet from "./mobile-sheet";
@@ -35,7 +37,7 @@ export default function Map() {
   useEffect(() => {
     // creates a feature layer showing all orchards
     const orchardLayer = new FeatureLayer({
-      url: featureLayerURL,
+      url: orchardsLayerURL,
       outFields: [
         "F_status", 
         "fieldmap_id_primary", 
@@ -50,15 +52,24 @@ export default function Map() {
         "fieldmap_id_auxiliary",
         "crossroads",
         "team_leader",
-        "assistants"
+        "assistants",
+        "F_record_id"
       ]
+    });
+
+    const hiveDropsLayer = new FeatureLayer({
+      url: hiveDropsLayerURL,
+      outFields: ["F_record_id"],
+      definitionExpression: "1=0"
     });
 
     // creates map showing all layers
     const map = new ArcGISMap({
       basemap: "arcgis/outdoor",
-      layers: [orchardLayer]
+      layers: [orchardLayer, hiveDropsLayer]
     });
+
+
 
     // renders the map
     const view = new MapView({
@@ -67,6 +78,12 @@ export default function Map() {
       center: [-119.4179, 36.7783],
       zoom: 10,
     });
+
+    const track = new Track({
+      view: view
+    })
+    view.ui.add(track, "top-right");
+    track.start();
 
     // applies custom symbols to the map features based on their status
     orchardLayer.renderer = {
@@ -106,6 +123,11 @@ export default function Map() {
         symbol: symbolPass
         }
       ]
+    }
+
+    hiveDropsLayer.renderer = {
+      type: "simple",
+      symbol: symbolHiveDrop
     }
     // pases user input (formData) to applyEdits() to update feautures on the server
     const updateFeature = (formData: FormData) => {
@@ -153,6 +175,20 @@ export default function Map() {
 
       // // create an object from the attributes of the selected feature so it can be passed to the mobile sheet
       if (feature?.graphic.attributes.fieldmap_id_primary != undefined) {
+        hiveDropsLayer.definitionExpression = `F_record_id = '${feature.graphic.attributes.F_record_id}'`
+        hiveDropsLayer.refresh();
+        orchardLayer.visible = false;
+        view.goTo({
+          target: feature.graphic.geometry,
+          zoom: 15,
+          padding: {
+            top: 50,
+            bottom: 50,
+            left: 50,
+            right: 50
+          }
+        });
+
         const mobileSheetContent = {
           client: feature.graphic.attributes.client,
           F_status: feature.graphic.attributes.F_status,
@@ -182,6 +218,9 @@ export default function Map() {
       } else {
         // since no feature was selected, close the mobile sheet
         setIsMobileSheetOpen(false);
+        orchardLayer.visible = true;
+        hiveDropsLayer.visible = false;
+        hiveDropsLayer.refresh();
       }
       
     });
