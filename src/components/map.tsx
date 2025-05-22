@@ -14,8 +14,9 @@ import { symbolAlert, symbolFail, symbolLow, symbolPass, symbolHiveDrop } from "
 
 // env setup
 config.apiKey = import.meta.env.VITE_ARCGIS_LAYER_API_KEY as string;
-const orchardsLayerURL = import.meta.env.VITE_ARCGIS_MOCK_ORCHARDS_LAYER_API_URL as string;
-const hiveDropsLayerURL = "https://services3.arcgis.com/rejQdffKHRccBBY1/arcgis/rest/services/bee_inspector_2023_hive_drop_inspection/FeatureServer/0";
+const orchardsLayerURL = import.meta.env.VITE_ARCGIS_ORCHARDS_LAYER_API_URL as string;
+const hiveDropsLayerURL = import.meta.env.VITE_ARCGIS_HIVEDROPS_LAYER_API_URL as string;
+const perimitersLayerURL = import.meta.env.VITE_ARCGIS_PERIMITERS_LAYER_API_URL as string;
 
 // ui imports
 import MobileSheet from "./mobile-sheet";
@@ -28,12 +29,12 @@ export default function Map() {
   // will be used as a key for selected features
   let featureObjectId = 0;
 
-  // state that will be passed to the mobile sheet for prefilling form fields
+  // used for prefilling form fields, also has an onclick function for editing the map in this file
   const [mobileSheetProps, setMobileSheetProps] = useState<MobileSheetProps | null>(null);
 
   const [isMobileSheetOpen, setIsMobileSheetOpen] = useState(false);
 
-  // useEffect ensures DOM is loaded before arcGIS core elements are created
+  // useEffect ensures DOM is loaded before arcGIS core elements are created inside
   useEffect(() => {
     // creates a feature layer showing all orchards
     const orchardLayer = new FeatureLayer({
@@ -57,19 +58,25 @@ export default function Map() {
       ]
     });
 
+    // creates a feature layer showing all hive-drops
     const hiveDropsLayer = new FeatureLayer({
       url: hiveDropsLayerURL,
       outFields: ["F_record_id"],
       definitionExpression: "1=0"
     });
 
-    // creates map showing all layers
-    const map = new ArcGISMap({
-      basemap: "arcgis/outdoor",
-      layers: [orchardLayer, hiveDropsLayer]
+    // creates a feature layer showing the perimiters of the orchards
+    const perimitersLayer = new FeatureLayer({
+      url: perimitersLayerURL,
+      outFields: ["client"],
+      definitionExpression: "1=0"
     });
 
-
+    // creates map showing all lfeature layers
+    const map = new ArcGISMap({
+      basemap: "arcgis/imagery",
+      layers: [perimitersLayer, orchardLayer, hiveDropsLayer]
+    });
 
     // renders the map
     const view = new MapView({
@@ -79,13 +86,14 @@ export default function Map() {
       zoom: 10,
     });
 
+    // adds a location tracker to the map view
     const track = new Track({
       view: view
     })
-    view.ui.add(track, "top-right");
+    view.ui.add(track, "top-left");
     track.start();
 
-    // applies custom symbols to the map features based on their status
+    // applies custom symbols to the orchard layer features based on their status
     orchardLayer.renderer = {
       type: "unique-value",
       field: "F_status",
@@ -125,10 +133,26 @@ export default function Map() {
       ]
     }
 
+    // applies a custom symbol to the hive-drop symbols
     hiveDropsLayer.renderer = {
       type: "simple",
       symbol: symbolHiveDrop
     }
+
+    // applies custom styles to the perimiters layer
+    perimitersLayer.renderer = {
+      type: "simple",
+      symbol: {
+        type: "simple-fill",
+        color: [211, 247, 5, 0.3],
+        style: "solid",
+        outline: {
+          color: [211, 247, 5, 1],
+          width: 2
+        }
+      }
+    }
+
     // pases user input (formData) to applyEdits() to update feautures on the server
     const updateFeature = (formData: FormData) => {
 
@@ -152,8 +176,6 @@ export default function Map() {
         }
       })
 
-      console.log(updates.attributes.partdeliv_yn)
-
       // applies the updates
       orchardLayer
       .applyEdits({ updateFeatures: [updates]})
@@ -165,7 +187,7 @@ export default function Map() {
       })
     }
 
-    // listens for user click and opens the mobile sheet if a feature is clicked
+    // handles when a user clicks or taps on the map
     view.on("click", async (event) => {
       // get the feature that the user clicked
       const response = await view.hitTest(event);
@@ -173,22 +195,30 @@ export default function Map() {
       // for typescript - make sure the feature is the right type - a graphic
       const feature = response.results.find((result): result is __esri.MapViewGraphicHit => result.type ==="graphic");
 
-      // // create an object from the attributes of the selected feature so it can be passed to the mobile sheet
+      // handles what happens if a feature was clicked
       if (feature?.graphic.attributes.fieldmap_id_primary != undefined) {
-        hiveDropsLayer.definitionExpression = `F_record_id = '${feature.graphic.attributes.F_record_id}'`
-        hiveDropsLayer.refresh();
+        // show details for the feature that was selected and hide everything else
         orchardLayer.visible = false;
+        hiveDropsLayer.definitionExpression = `F_record_id = '${feature.graphic.attributes.F_record_id}'`;
+        perimitersLayer.definitionExpression = `client = '${feature.graphic.attributes.client}'`;
+        hiveDropsLayer.visible = true;
+        perimitersLayer.visible = true;
+        hiveDropsLayer.refresh();
+        perimitersLayer.refresh();
+        
+        // zooms in on the details of the feature that was selected
         view.goTo({
           target: feature.graphic.geometry,
           zoom: 15,
           padding: {
-            top: 50,
-            bottom: 50,
+            top: 25,
+            bottom: 200,
             left: 50,
             right: 50
           }
         });
-
+        
+        // creates an object based on the selected feature's attributes to be passed to the mobile sheet to prefill fields. onMarkComplete is used for applying edits
         const mobileSheetContent = {
           client: feature.graphic.attributes.client,
           F_status: feature.graphic.attributes.F_status,
@@ -204,10 +234,8 @@ export default function Map() {
           crossroads: feature.graphic.attributes.crossroads,
           team_leader: feature.graphic.attributes.team_leader,
           assistants: feature.graphic.attributes.assistants,
-          onMarkComplete: updateFeature,
+          onMarkComplete: updateFeature
         }
-
-        console.log(feature.graphic.attributes)
 
         // // used as a key for the mobile sheet and for applyEdits
         featureObjectId = feature.graphic.attributes.ObjectId;
@@ -218,9 +246,12 @@ export default function Map() {
       } else {
         // since no feature was selected, close the mobile sheet
         setIsMobileSheetOpen(false);
+        // return the map to showing all orchards
         orchardLayer.visible = true;
         hiveDropsLayer.visible = false;
-        hiveDropsLayer.refresh();
+        hiveDropsLayer.definitionExpression = "1=0";
+        perimitersLayer.visible = false;
+        perimitersLayer.definitionExpression = "1=0";
       }
       
     });
@@ -236,9 +267,8 @@ export default function Map() {
   // returns the rendered map
   return (
     <div>
-      {/* if the user has selected a feature, the mobile sheet will be rendered displaying that feature's data */}
-      {isMobileSheetOpen && mobileSheetProps && (<MobileSheet props={mobileSheetProps} key={mobileSheetProps.fieldmap_id_primary}/>)}
-      <div id="viewDiv" className="w-full h-screen"> </div>
+        {isMobileSheetOpen && mobileSheetProps && (<MobileSheet props={mobileSheetProps} key={mobileSheetProps.fieldmap_id_primary}/>)}
+        <div id="viewDiv" className="w-full h-screen"> </div>
     </div>
   );
 }
