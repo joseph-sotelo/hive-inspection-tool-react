@@ -1,3 +1,17 @@
-import { createContext } from "react";
+import { createContext, useContext } from "react";
 
-export const InspectionDataContext = createContext(true)
+type InspectionDataType = {
+    isInspectionModeActive: boolean
+}
+
+export const InspectionDataContext = createContext<InspectionDataType | undefined>(undefined);
+
+export function useInspectionDataContext(){
+    const inspectionData = useContext(InspectionDataContext);
+
+    if (inspectionData === undefined){
+        throw new Error("useInspectionDataContext must be used with an InspectionDataContext");
+    }
+
+    return inspectionData;
+}

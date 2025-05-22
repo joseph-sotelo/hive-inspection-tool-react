@@ -19,7 +19,12 @@ import { MobileSheetProps } from "./types";
 // functions
 import { comboBoxOptions } from "@/lib/utils";
 
+// context
+import { useInspectionDataContext } from "@/data/inspectionDataContext";
+
 export default function MobileSheet({props}: {props: MobileSheetProps}) {
+
+  const inspectionData = useInspectionDataContext()
 
   // formData will be passed to the applyEdits method when onMarkComplete button is pressed
   const [formData, setFormData] = useState({
@@ -222,6 +227,7 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
                   <Label ><p className="text-sm text-muted-foreground">Enter the orchard to begin an inspection</p></Label>
                   <Button id="begin-inspection" variant="action" size="action" onClick={() => {
                     setIsOpen(!isOpen);
+                    console.log(inspectionData)
                   }}>
                     Begin Inspection
                   </Button>

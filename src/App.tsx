@@ -1,11 +1,17 @@
 import './App.css';
-import "@arcgis/core/assets/esri/themes/dark/main.css";
 import Map from './components/map';
+import { InspectionDataContext } from './data/inspectionDataContext';
+
+const defaultInspectionData = {
+  isInspectionModeActive: true
+}
 
 function App() {
 
   return (
-    <Map />
+    <InspectionDataContext.Provider value={defaultInspectionData}>
+      <Map />
+    </InspectionDataContext.Provider>
   );
 }
 
