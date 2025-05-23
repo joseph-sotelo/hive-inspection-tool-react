@@ -23,8 +23,10 @@ const buttonVariants = cva(
           "text-primary underline-offset-4 hover:underline",
         action:
           "bg-brand-light border-1 border-foreground-flexible-light text-foreground-flexible font-bold tracking-wide shadow-lg shadow-brand-light/60 hover:bg-brand-light/60",
-        outlineBranded:
+        customSecondary:
           "text-foreground-flexible font-semibold tracking-wide bg-foreground-flexible/10 hover:bg-foreground-flexible/30",
+        text:
+          "hover:text-accent-foreground dark:hover:bg-accent/50 items-start",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",
@@ -32,6 +34,7 @@ const buttonVariants = cva(
         lg: "h-10 rounded-md px-6 has-[>svg]:px-4",
         action: "rounded-md py-3 px-6",
         icon: "size-9",
+        text: "pl-0"
       },
     },
     defaultVariants: {

@@ -241,7 +241,7 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
               <SignatureCanvas penColor="black" canvasProps={{width: 270, height: 200, className: 'sigCanvas'}} backgroundColor="rgba(255, 255, 255, 1)"/>
             </div>
           </div>
-          <Button variant="outlineBranded" size="action" onClick={() => props.onMarkComplete(formData)}>Mark Complete</Button>
+          <Button variant="customSecondary" size="action" onClick={() => props.onMarkComplete(formData)}>Mark Complete</Button>
         </div>
       </div>
     </div>
