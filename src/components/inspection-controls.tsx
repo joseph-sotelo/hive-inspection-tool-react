@@ -23,20 +23,19 @@ export default function InspectionControls() {
     // const confidenceInterval = 1.960;
     // const marginOfError = 2
     // const sampleSize = Math.pow(confidenceInterval * standardDeviation / marginOfError, 2)
-    const sampleSize = 100
-    const populationSize = 1000
-    const samplePercentage = sampleSize / populationSize * 100
+    const sampleSize = 40
+    const populationSize = 200
+    const samplePercentage = sampleSize / populationSize
 
-    const [hivesCounted, setHivesCounted] = useState<number>(10);
-    
-
+    const [hivesCounted, setHivesCounted] = useState<number>(0);
+    const [totalHiveGrades, setTotalHiveGrades] = useState<number[][]>([]);
 
     const { isInspectionModeActive } = useInspectionDataContext();
-    const [gradedHives, setGradedHives] = useState<number[]>([]);
+    const [hiveGrades, setHiveGrades] = useState<number[]>([]);
     const [isOpen, setIsOpen] = useState(false);
 
     const resetDialog = () => {
-        setGradedHives([]);
+        setHiveGrades([]);
     };
 
     return (
@@ -57,21 +56,24 @@ export default function InspectionControls() {
                         <DialogTitle>
                             New Hive-Drop
                         </DialogTitle>
-                        <Progress className="border-1 border-foreground-flexible-light" value={gradedHives.length/hivesCounted*100}/>
+                        <Progress 
+                            className="border-1 border-foreground-flexible-light"
+                            value={(hiveGrades.length / (hivesCounted * samplePercentage)) * 100}
+                        />
                     </DialogHeader>                
                     <Button variant="customSecondary"> Re-capture Location </Button>
                         <div className="grid w-full max-w-sm items-center gap-1.5">
                             <Label htmlFor="count">Hives counted</Label>
                             <Input type="number" id="count" placeholder="number" onChange={(event) => {
-                                setHivesCounted(Number(event.target.value))
-                                console.log(hivesCounted)
+                                setHivesCounted(Number(event.target.value));
+                                console.log(hivesCounted)                                
                             }}/>
                             <p className="text-sm text-muted-foreground">How many hives are there in this hive-drop?</p>
                         </div>
                         <Separator />
-                        <h4>Hives graded: {gradedHives.length}</h4>
+                        <h4>Hives graded: {hiveGrades.length}</h4>
                         <div className="max-h-[300px] overflow-y-scroll">
-                            {gradedHives.map((value, index) => (
+                            {hiveGrades.map((value, index) => (
                                 <div key={index} className="flex gap-2">
                                     <p>Hive {index}</p>
                                     <Slider 
@@ -80,27 +82,35 @@ export default function InspectionControls() {
                                     step={1}
                                     color="brand-light"
                                     onValueChange={(newValue) => {
-                                        gradedHives[index] = newValue[0];
-                                        console.log(gradedHives)
+                                        hiveGrades[index] = newValue[0];
+                                        console.log(totalHiveGrades)
                                     }}
                                     />                                
                                 </div>
                             ))}                        
-                        <Button variant="text" size="text" onClick={() => setGradedHives([...gradedHives, 12])}>Add hive +</Button>
+                            <Button variant="text" size="text" onClick={() => {
+                                setHiveGrades([...hiveGrades, 12])
+                                console.log(hivesCounted*samplePercentage)
+                            }}>Add hive +</Button>
                         </div>                    
                         <Separator />
                         <Label htmlFor="notes">Notes</Label>
                         <Textarea id="notes" placeholder="Notes"/>
                         <Button variant="customSecondary" size="action">Add Photos</Button>
                         <DialogFooter>
-                            <Button variant="action" size="action">Finish</Button>
+                            <Button variant="action" size="action" onClick={() => {
+                                setTotalHiveGrades([...totalHiveGrades, hiveGrades])
+                                console.log(totalHiveGrades)
+                                setIsOpen(false);
+                                resetDialog();
+                            }}>Finish</Button>
                         </DialogFooter>
                 </DialogContent>            
             </Dialog>
             <Accordion type="single" collapsible defaultValue="progress">
                 <AccordionItem value="progress">
                     <AccordionTrigger>
-                        <Progress className="border-1 border-foreground-flexible-light" value={50}/> 
+                        <Progress className="border-1 border-foreground-flexible-light" value={totalHiveGrades.flat().length/sampleSize*100}/> 
                     </AccordionTrigger>
                     <AccordionContent>
                         <h4>Statistics</h4>
