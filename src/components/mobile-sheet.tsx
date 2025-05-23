@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useContext } from "react";
+import { useState, useEffect, useRef } from "react";
 import clsx from "clsx";
 
 // ui imports
@@ -23,8 +23,7 @@ import { comboBoxOptions } from "@/lib/utils";
 import { useInspectionDataContext } from "@/data/inspectionDataContext";
 
 export default function MobileSheet({props}: {props: MobileSheetProps}) {
-
-  const inspectionData = useInspectionDataContext()
+  const { isInspectionModeActive, toggleInspectionMode } = useInspectionDataContext();
 
   // formData will be passed to the applyEdits method when onMarkComplete button is pressed
   const [formData, setFormData] = useState({
@@ -226,10 +225,11 @@ export default function MobileSheet({props}: {props: MobileSheetProps}) {
                 <div className="flex flex-col gap-2">
                   <Label ><p className="text-sm text-muted-foreground">Enter the orchard to begin an inspection</p></Label>
                   <Button id="begin-inspection" variant="action" size="action" onClick={() => {
+                    toggleInspectionMode();
                     setIsOpen(!isOpen);
-                    console.log(inspectionData)
+                    console.log(isInspectionModeActive)
                   }}>
-                    Begin Inspection
+                    {isInspectionModeActive ? "End Inspection" : "Begin Inspection"}
                   </Button>
                 </div>
               </AccordionContent>

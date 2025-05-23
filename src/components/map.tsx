@@ -14,22 +14,20 @@ import { symbolAlert, symbolFail, symbolLow, symbolPass, symbolHiveDrop } from "
 
 // env setup
 config.apiKey = import.meta.env.VITE_ARCGIS_LAYER_API_KEY as string;
-const orchardsLayerURL = import.meta.env.VITE_ARCGIS_MOCK_ORCHARDS_LAYER_API_URL as string;
+const orchardsLayerURL = import.meta.env.VITE_ARCGIS_ORCHARDS_LAYER_API_URL as string;
 const hiveDropsLayerURL = import.meta.env.VITE_ARCGIS_HIVEDROPS_LAYER_API_URL as string;
 const perimitersLayerURL = import.meta.env.VITE_ARCGIS_PERIMITERS_LAYER_API_URL as string;
 
 // ui imports
 import MobileSheet from "./mobile-sheet";
+import InspectionControls from "./inspection-controls";
 
 // types
 import { FormData, MobileSheetProps } from "./types";
 
 // context
-import { useInspectionDataContext } from "@/data/inspectionDataContext";
 
 export default function Map() {
-
-  const inspectionData = useInspectionDataContext()
 
   // will be used as a key for selected features
   let featureObjectId = 0;
@@ -95,7 +93,7 @@ export default function Map() {
     const track = new Track({
       view: view
     })
-    view.ui.add(track, "top-left");
+    view.ui.add(track, "top-right");
     track.start();
 
     // applies custom symbols to the orchard layer features based on their status
@@ -153,7 +151,7 @@ export default function Map() {
         style: "solid",
         outline: {
           color: [211, 247, 5, 1],
-          width: 2
+          width: 3
         }
       }
     }
@@ -194,8 +192,6 @@ export default function Map() {
 
     // handles when a user clicks or taps on the map
     view.on("click", async (event) => {
-
-      console.log(inspectionData)
 
       // get the feature that the user clicked
       const response = await view.hitTest(event);
@@ -276,6 +272,7 @@ export default function Map() {
   return (
     <div>
         {isMobileSheetOpen && mobileSheetProps && (<MobileSheet props={mobileSheetProps} key={mobileSheetProps.fieldmap_id_primary}/>)}
+        <InspectionControls></InspectionControls>
         <div id="viewDiv" className="w-full h-screen"> </div>
     </div>
   );

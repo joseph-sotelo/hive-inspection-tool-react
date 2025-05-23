@@ -1,6 +1,6 @@
 import './App.css';
 import Map from './components/map';
-import { InspectionDataContext } from './data/inspectionDataContext';
+import { InspectionDataProvider } from './data/inspectionDataContext';
 
 const defaultInspectionData = {
   isInspectionModeActive: true
@@ -9,9 +9,9 @@ const defaultInspectionData = {
 function App() {
 
   return (
-    <InspectionDataContext.Provider value={defaultInspectionData}>
+    <InspectionDataProvider>
       <Map />
-    </InspectionDataContext.Provider>
+    </InspectionDataProvider>
   );
 }
 
