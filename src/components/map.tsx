@@ -271,8 +271,12 @@ export default function Map() {
   // returns the rendered map
   return (
     <div>
-        {isMobileSheetOpen && mobileSheetProps && (<MobileSheet props={mobileSheetProps} key={mobileSheetProps.fieldmap_id_primary}/>)}
-        <InspectionControls></InspectionControls>
+        {isMobileSheetOpen && mobileSheetProps && (
+          <>
+            <MobileSheet props={mobileSheetProps} key={mobileSheetProps.fieldmap_id_primary}/>
+            <InspectionControls></InspectionControls>
+          </>          
+          )}
         <div id="viewDiv" className="w-full h-screen"> </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // UI
 import { Button } from "@/components/ui/button";
@@ -19,12 +19,12 @@ import { useInspectionDataContext } from "@/data/inspectionDataContext";
 
 export default function InspectionControls() {
 
-    // const [standardDeviation, setStandardDeviation] = useState<number>(0);
-    // const confidenceInterval = 1.960;
-    // const marginOfError = 2
-    // const sampleSize = Math.pow(confidenceInterval * standardDeviation / marginOfError, 2)
-    const sampleSize = 40
-    const populationSize = 200
+    const populationSize = 200;
+
+    const [standardDeviation, setStandardDeviation] = useState<number>(0);
+    const confidenceInterval = 1.960;
+    const marginOfError = 2
+    const sampleSize = Math.pow(confidenceInterval * standardDeviation / marginOfError, 2)    
     const samplePercentage = sampleSize / populationSize
 
     const [hivesCounted, setHivesCounted] = useState<number>(0);
@@ -33,6 +33,34 @@ export default function InspectionControls() {
     const { isInspectionModeActive } = useInspectionDataContext();
     const [hiveGrades, setHiveGrades] = useState<number[]>([]);
     const [isOpen, setIsOpen] = useState(false);
+    const [currentHiveDropIndex, setCurrentHiveDropIndex] = useState<number>(0);
+
+    useEffect(() => {
+        if (totalHiveGrades.length > 0) {
+            calculateStandardDeviation();
+        }
+    }, [totalHiveGrades]);
+
+    const calculateStandardDeviation = () => {
+        console.log("here");
+        const grades = totalHiveGrades.flat();
+        if (grades.length === 0) return;
+
+        // calculate mean
+        const sum = grades.reduce((sum, grade) => sum + grade, 0);
+        const mean = sum / grades.length;
+
+        // calculate deviations
+        const deviations = grades.reduce((sum, grade) => sum + Math.pow(grade - mean, 2), 0);
+
+        // calculate variance
+        const variance = deviations / grades.length;
+
+        // calculate standard deviation
+        const standardDeviation = Math.sqrt(variance);
+
+        setStandardDeviation(standardDeviation);
+    };
 
     const resetDialog = () => {
         setHiveGrades([]);
@@ -65,8 +93,8 @@ export default function InspectionControls() {
                         <div className="grid w-full max-w-sm items-center gap-1.5">
                             <Label htmlFor="count">Hives counted</Label>
                             <Input type="number" id="count" placeholder="number" onChange={(event) => {
-                                setHivesCounted(Number(event.target.value));
-                                console.log(hivesCounted)                                
+                                setHivesCounted(Number(event.target.value));    
+                                console.log(standardDeviation)                                                            
                             }}/>
                             <p className="text-sm text-muted-foreground">How many hives are there in this hive-drop?</p>
                         </div>
@@ -82,15 +110,20 @@ export default function InspectionControls() {
                                     step={1}
                                     color="brand-light"
                                     onValueChange={(newValue) => {
-                                        hiveGrades[index] = newValue[0];
-                                        console.log(totalHiveGrades)
+                                        const newHiveGrades = [...hiveGrades];
+                                        newHiveGrades[index] = newValue[0];
+                                        setHiveGrades(newHiveGrades);
+                                        
+                                        const newTotalHiveGrades = [...totalHiveGrades];
+                                        newTotalHiveGrades[currentHiveDropIndex] = newHiveGrades;
+                                        setTotalHiveGrades(newTotalHiveGrades);
                                     }}
                                     />                                
                                 </div>
                             ))}                        
                             <Button variant="text" size="text" onClick={() => {
                                 setHiveGrades([...hiveGrades, 12])
-                                console.log(hivesCounted*samplePercentage)
+                                console.log(standardDeviation)         
                             }}>Add hive +</Button>
                         </div>                    
                         <Separator />
@@ -100,7 +133,8 @@ export default function InspectionControls() {
                         <DialogFooter>
                             <Button variant="action" size="action" onClick={() => {
                                 setTotalHiveGrades([...totalHiveGrades, hiveGrades])
-                                console.log(totalHiveGrades)
+                                setCurrentHiveDropIndex(currentHiveDropIndex + 1);
+                                console.log(standardDeviation)         
                                 setIsOpen(false);
                                 resetDialog();
                             }}>Finish</Button>
