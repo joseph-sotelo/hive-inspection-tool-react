@@ -2,20 +2,20 @@ import { useState, useEffect } from "react";
 
 // UI
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
-import { Separator } from "./ui/separator";
-import { Slider } from "./ui/slider";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
-import { Progress } from "./ui/progress";
-import { Textarea } from "./ui/textarea";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "./ui/accordion";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
+import { Separator } from "../ui/separator";
+import { Slider } from "../ui/slider";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
+import { Progress } from "../ui/progress";
+import { Textarea } from "../ui/textarea";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion";
 
 // styling
 import clsx from "clsx";
 
 // context
-import { useInspectionDataContext } from "@/data/inspectionDataContext";
+import { useInspectionData } from "@/context/inspectionData"
 
 export default function InspectionControls() {
 
@@ -30,7 +30,7 @@ export default function InspectionControls() {
     const [hivesCounted, setHivesCounted] = useState<number>(0);
     const [totalHiveGrades, setTotalHiveGrades] = useState<number[][]>([]);
 
-    const { isInspectionModeActive } = useInspectionDataContext();
+    const { isShown } = useInspectionData();
     const [hiveGrades, setHiveGrades] = useState<number[]>([]);
     const [isOpen, setIsOpen] = useState(false);
     const [currentHiveDropIndex, setCurrentHiveDropIndex] = useState<number>(0);
@@ -73,7 +73,7 @@ export default function InspectionControls() {
                 if (!open) resetDialog();
             }}>
                 <DialogTrigger>
-                    <div id="button-wrapper" className={clsx(isInspectionModeActive ? "block" : "hidden")}>
+                    <div id="button-wrapper" className={clsx(isShown ? "block" : "hidden")}>
                         <Button variant="action" size="action">
                             Add hive-drop
                         </Button>

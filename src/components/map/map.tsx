@@ -1,5 +1,3 @@
-// Refactored map component with separated concerns
-// This approach makes the component easier to understand and maintain
 import { useEffect, useState, useRef } from "react";
 
 // ArcGIS imports
@@ -11,7 +9,7 @@ import "@arcgis/core/assets/esri/themes/light/main.css";
 
 // Local imports
 import { MobileSheet } from "../mobile-sheet";
-import InspectionControls from "../inspection-controls";
+import InspectionControls from "../inspection-controls/inspection-controls";
 import { MobileSheetProps } from "../types";
 
 // Map utilities (separated for better organization)

@@ -1,22 +1,17 @@
-// Inspection controls section
-// Separating this makes the inspection logic easier to manage
+// UI
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { useInspectionDataContext } from "@/data/inspectionDataContext";
+
+// context
+import { useInspectionData } from "@/context/inspectionData"
 
 interface InspectionSectionProps {
   toggleOpen: () => void;
 }
 
 export default function InspectionSection({ toggleOpen }: InspectionSectionProps) {
-  const { isInspectionModeActive, toggleInspectionMode } = useInspectionDataContext();
-
-  const handleInspectionToggle = () => {
-    toggleInspectionMode();
-    toggleOpen();
-    console.log(isInspectionModeActive);
-  };
+  const { setIsShown, isShown } = useInspectionData();
 
   return (
     <>
@@ -31,9 +26,13 @@ export default function InspectionSection({ toggleOpen }: InspectionSectionProps
           id="begin-inspection" 
           variant="action" 
           size="action" 
-          onClick={handleInspectionToggle}
+          onClick={() => (
+            setIsShown(true),
+            toggleOpen(),
+            console.log(isShown)
+          )}
         >
-          {isInspectionModeActive ? "End Inspection" : "Begin Inspection"}
+        Begin Inspection
         </Button>
       </div>
     </>

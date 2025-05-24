@@ -1,5 +1,3 @@
-// Map interaction handlers separated for better organization
-// This pattern makes event handling logic easier to test and maintain
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import MapView from "@arcgis/core/views/MapView";
 import { MobileSheetProps } from "../types";

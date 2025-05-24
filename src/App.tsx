@@ -1,6 +1,6 @@
 import './App.css';
 import { Map } from './components/map';
-import { InspectionDataProvider } from './data/inspectionDataContext';
+import InspectionDataProvider from './context/inspectionData/InspectionData';
 
 function App() {
 

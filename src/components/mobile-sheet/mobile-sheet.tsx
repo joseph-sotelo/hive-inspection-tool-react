@@ -1,5 +1,3 @@
-// Refactored mobile sheet using custom hooks for better maintainability
-// Custom hooks extract reusable logic and make components easier to test
 import { useRef } from "react";
 import clsx from "clsx";
 
