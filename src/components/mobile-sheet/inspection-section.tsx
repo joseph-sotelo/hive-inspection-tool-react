@@ -6,16 +6,15 @@ import { Separator } from "@/components/ui/separator";
 import { useInspectionDataContext } from "@/data/inspectionDataContext";
 
 interface InspectionSectionProps {
-  setIsOpen: (open: boolean) => void;
-  isOpen: boolean;
+  toggleOpen: () => void;
 }
 
-export default function InspectionSection({ setIsOpen, isOpen }: InspectionSectionProps) {
+export default function InspectionSection({ toggleOpen }: InspectionSectionProps) {
   const { isInspectionModeActive, toggleInspectionMode } = useInspectionDataContext();
 
   const handleInspectionToggle = () => {
     toggleInspectionMode();
-    setIsOpen(!isOpen);
+    toggleOpen();
     console.log(isInspectionModeActive);
   };
 

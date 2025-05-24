@@ -10,7 +10,7 @@ import Track from "@arcgis/core/widgets/Track";
 import "@arcgis/core/assets/esri/themes/light/main.css";
 
 // Local imports
-import MobileSheet from "../mobile-sheet/mobile-sheet";
+import { MobileSheet } from "../mobile-sheet";
 import InspectionControls from "../inspection-controls";
 import { MobileSheetProps } from "../types";
 
@@ -18,9 +18,11 @@ import { MobileSheetProps } from "../types";
 import { createOrchardsLayer, createHiveDropsLayer, createPerimitersLayer } from "./layer-config";
 import { handleFeatureSelection, handleDeselection } from "./map-handlers";
 import { createFeatureUpdater } from "./feature-updater";
+import { MAP_CONFIG, FIELD_NAMES } from "@/constants";
+import { ENV } from "@/utils/env-validation";
 
-// Environment setup
-config.apiKey = import.meta.env.VITE_ARCGIS_LAYER_API_KEY as string;
+// Environment setup with validation
+config.apiKey = ENV.VITE_ARCGIS_LAYER_API_KEY;
 
 export default function Map() {
   // State for mobile sheet
@@ -46,8 +48,8 @@ export default function Map() {
     const view = new MapView({
       container: "viewDiv",
       map: map,
-      center: [-119.4179, 36.7783],
-      zoom: 10,
+      center: MAP_CONFIG.DEFAULT_CENTER,
+      zoom: MAP_CONFIG.DEFAULT_ZOOM,
     });
 
     // Add GPS tracking widget
@@ -69,9 +71,9 @@ export default function Map() {
       );
 
       // Handle feature selection or deselection
-      if (feature?.graphic.attributes.fieldmap_id_primary != undefined) {
+      if (feature?.graphic.attributes[FIELD_NAMES.FIELDMAP_ID_PRIMARY] != undefined) {
         // Store feature ID for updates
-        featureObjectIdRef.current = feature.graphic.attributes.ObjectId;
+        featureObjectIdRef.current = feature.graphic.attributes[FIELD_NAMES.OBJECT_ID];
         
         handleFeatureSelection(
           feature.graphic,

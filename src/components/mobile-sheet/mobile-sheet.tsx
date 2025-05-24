@@ -1,6 +1,6 @@
-// Refactored mobile sheet with extracted sections for better maintainability
-// Breaking up large components makes them easier to understand and modify
-import { useState, useEffect, useRef } from "react";
+// Refactored mobile sheet using custom hooks for better maintainability
+// Custom hooks extract reusable logic and make components easier to test
+import { useRef, useEffect } from "react";
 import clsx from "clsx";
 
 // UI imports
@@ -8,6 +8,9 @@ import { ChevronDown } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { Badge, badgeVariantsType } from "@/components/ui/badge";
+
+// Custom hooks - extracted logic for reusability and testability
+import { useMobileSheetAnimation, useFormData, useClickOutside } from "@/hooks";
 
 // Local component imports - each section is now its own component
 import HiveContractSection from "./hive-contract-section";
@@ -19,96 +22,50 @@ import SignatureSection from "./signature-section";
 // Types
 import { MobileSheetProps } from "../types";
 
-export default function MobileSheet({ props }: { props: MobileSheetProps }) {
-  // Form data state - centralized for all sections
-  const [formData, setFormData] = useState({
-    client: props.client,
-    F_status: props.F_status,
-    fieldmap_id_primary: props.fieldmap_id_primary,
-    partdeliv_yn: props.partdeliv_yn,
-    hives_contracted: props.hives_contracted,
-    beekeeper: props.beekeeper,
-    bee_broker: props.bee_broker,
-    average: props.average,
-    minimum: props.minimum,
-    grower: props.grower,
-    fieldmap_id_auxiliary: props.fieldmap_id_auxiliary,
-    crossroads: props.crossroads,
-    team_leader: props.team_leader,
-    assistants: props.assistants
-  });
+// Constants
+import { MOBILE_SHEET, STATUS_CONFIG } from "@/constants";
 
-  // Animation and visibility state
-  const [isOffScreen, setIsOffScreen] = useState(true);
-  const [isOpen, setIsOpen] = useState(false);
+export default function MobileSheet({ props }: { props: MobileSheetProps }) {
   const sheetRef = useRef<HTMLDivElement>(null);
 
-  // Update form data when props change (new feature selected)
-  useEffect(() => { 
-    setFormData({
-      client: props.client,
-      F_status: props.F_status,
-      fieldmap_id_primary: props.fieldmap_id_primary,
-      partdeliv_yn: props.partdeliv_yn,
-      hives_contracted: props.hives_contracted === null ? "" : props.hives_contracted,
-      beekeeper: props.beekeeper === null ? "" : props.beekeeper,
-      bee_broker: props.bee_broker === null ? "" : props.bee_broker,
-      average: props.average === null ? "" : props.average,
-      minimum: props.minimum === null ? "" : props.minimum,
-      grower: props.grower === null ? "" : props.grower,
-      fieldmap_id_auxiliary: props.fieldmap_id_auxiliary === null ? "" : props.fieldmap_id_auxiliary,
-      crossroads: props.crossroads === null ? "" : props.crossroads,
-      team_leader: props.team_leader === null ? "" : props.team_leader,
-      assistants: props.assistants === null ? [] : props.assistants
-    });
-    setIsOpen(false); // Reset to collapsed state
-  }, [props.client, props.F_status, props.fieldmap_id_primary]);
+  // Use custom hooks to manage complex logic
+  const { formData, handleChange } = useFormData(props);
+  const { isOffScreen, isOpen, setIsOffScreen, resetToCollapsed, toggleOpen } = useMobileSheetAnimation({
+    fieldmapId: props.fieldmap_id_primary
+  });
 
-  // Handle entry/exit animations
+  // Handle clicking outside to close the sheet
+  useClickOutside(sheetRef, () => setIsOffScreen(true));
+
+  // Reset animation state when new feature is selected
+  // This is called from the animation hook, but we need to trigger it here
+  // when form data changes
   useEffect(() => {
-    if (props.fieldmap_id_primary !== undefined) {
-      setIsOffScreen(false); // Slide up from bottom
-    } else {
-      setIsOffScreen(true); // Hide completely
-    }
-  }, [props]);
+    resetToCollapsed();
+  }, [props.client, props.F_status, props.fieldmap_id_primary, resetToCollapsed]);
 
-  // Handle clicking outside to close
-  const exit = (event: MouseEvent) => {
-    if (sheetRef.current && !sheetRef.current.contains(event.target as Node)) {
-      setIsOffScreen(true);
-    }
-  };
-
-  // Form data update handler - passed to all sections
-  const handleChange = (key: string, value: string | boolean | number) => {
-    setFormData({ ...formData, [key]: value });
-    console.log(formData);
-  };
-
-  // Add click listener (TODO: should be moved to useEffect for proper cleanup)
-  document.addEventListener("click", exit);
-
-  // Process status for display
+  // Process status for display using constants
   let statusString = props.F_status.split("_")[0];
   const status = props.F_status ? statusString as badgeVariantsType : "default";
   if (statusString === "nodata") {
-    statusString = "no data";
+    statusString = STATUS_CONFIG.DISPLAY_NAMES.nodata;
   }
 
-  // Determine delivery status text
-  let deliveryStatus = props.partdeliv_yn === "no" ? "complete" : "incomplete";
+  // Determine delivery status text using constants
+  let deliveryStatus = props.partdeliv_yn === "no" 
+    ? STATUS_CONFIG.DELIVERY_STATUS.COMPLETE 
+    : STATUS_CONFIG.DELIVERY_STATUS.INCOMPLETE;
 
   return (
     <div>
       <div 
         ref={sheetRef} 
         className={clsx(
-          "shadow-md-reverse rounded-t-xl w-full transition-all duration-400 overflow-hidden bottom-0 absolute z-10",
+          `shadow-md-reverse rounded-t-xl w-full transition-all ${MOBILE_SHEET.ANIMATION_DURATION} overflow-hidden bottom-0 absolute z-10`,
           {
-            "h-0": isOffScreen && !isOpen || isOffScreen && isOpen,
-            "h-[108px]": !isOffScreen && !isOpen,
-            "h-9/10": !isOffScreen && isOpen
+            [MOBILE_SHEET.HEIGHTS.HIDDEN]: isOffScreen && !isOpen || isOffScreen && isOpen,
+            [MOBILE_SHEET.HEIGHTS.COLLAPSED]: !isOffScreen && !isOpen,
+            [MOBILE_SHEET.HEIGHTS.EXPANDED]: !isOffScreen && isOpen
           }
         )}
       >
@@ -128,7 +85,7 @@ export default function MobileSheet({ props }: { props: MobileSheetProps }) {
               </small>
             </div>
           </div>
-          <div onClick={() => setIsOpen(!isOpen)}>
+          <div onClick={toggleOpen}>
             <ChevronDown className={clsx({ "rotate-180": !isOpen })} />
           </div>
         </div>
@@ -167,7 +124,7 @@ export default function MobileSheet({ props }: { props: MobileSheetProps }) {
             <AccordionItem value="item-4">
               <AccordionTrigger>Inspection Data</AccordionTrigger>
               <AccordionContent>
-                <InspectionSection setIsOpen={setIsOpen} isOpen={isOpen} />
+                <InspectionSection toggleOpen={toggleOpen} />
               </AccordionContent>
             </AccordionItem>
           </Accordion>

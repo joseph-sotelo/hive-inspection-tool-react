@@ -3,6 +3,7 @@
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import MapView from "@arcgis/core/views/MapView";
 import { MobileSheetProps } from "../types";
+import { MAP_CONFIG, FIELD_NAMES, LAYER_EXPRESSIONS } from "@/constants";
 
 // Handle feature selection and layer visibility
 export const handleFeatureSelection = (
@@ -17,8 +18,8 @@ export const handleFeatureSelection = (
 ) => {
   // Show details for selected feature and hide everything else
   orchardLayer.visible = false;
-  hiveDropsLayer.definitionExpression = `F_record_id = '${feature.attributes.F_record_id}'`;
-  perimitersLayer.definitionExpression = `client = '${feature.attributes.client}'`;
+  hiveDropsLayer.definitionExpression = `${FIELD_NAMES.F_RECORD_ID} = '${feature.attributes[FIELD_NAMES.F_RECORD_ID]}'`;
+  perimitersLayer.definitionExpression = `${FIELD_NAMES.CLIENT} = '${feature.attributes[FIELD_NAMES.CLIENT]}'`;
   hiveDropsLayer.visible = true;
   perimitersLayer.visible = true;
   hiveDropsLayer.refresh();
@@ -27,31 +28,26 @@ export const handleFeatureSelection = (
   // Zoom to selected feature with padding for mobile sheet
   view.goTo({
     target: feature.geometry,
-    zoom: 15,
-    padding: {
-      top: 25,
-      bottom: 200, // Space for mobile sheet
-      left: 50,
-      right: 50
-    }
+    zoom: MAP_CONFIG.FEATURE_ZOOM,
+    padding: MAP_CONFIG.ZOOM_PADDING
   });
   
   // Create mobile sheet props from feature attributes
   const mobileSheetContent: MobileSheetProps = {
-    client: feature.attributes.client,
-    F_status: feature.attributes.F_status,
-    fieldmap_id_primary: feature.attributes.fieldmap_id_primary,
-    partdeliv_yn: feature.attributes.partdeliv_yn,
-    hives_contracted: feature.attributes.hives_contracted,
-    beekeeper: feature.attributes.beekeeper,
-    bee_broker: feature.attributes.bee_broker,
-    average: feature.attributes.average,
-    minimum: feature.attributes.minimum,
-    grower: feature.attributes.grower,
-    fieldmap_id_auxiliary: feature.attributes.fieldmap_id_auxiliary,
-    crossroads: feature.attributes.crossroads,
-    team_leader: feature.attributes.team_leader,
-    assistants: feature.attributes.assistants,
+    client: feature.attributes[FIELD_NAMES.CLIENT],
+    F_status: feature.attributes[FIELD_NAMES.F_STATUS],
+    fieldmap_id_primary: feature.attributes[FIELD_NAMES.FIELDMAP_ID_PRIMARY],
+    partdeliv_yn: feature.attributes[FIELD_NAMES.PARTDELIV_YN],
+    hives_contracted: feature.attributes[FIELD_NAMES.HIVES_CONTRACTED],
+    beekeeper: feature.attributes[FIELD_NAMES.BEEKEEPER],
+    bee_broker: feature.attributes[FIELD_NAMES.BEE_BROKER],
+    average: feature.attributes[FIELD_NAMES.AVERAGE],
+    minimum: feature.attributes[FIELD_NAMES.MINIMUM],
+    grower: feature.attributes[FIELD_NAMES.GROWER],
+    fieldmap_id_auxiliary: feature.attributes[FIELD_NAMES.FIELDMAP_ID_AUXILIARY],
+    crossroads: feature.attributes[FIELD_NAMES.CROSSROADS],
+    team_leader: feature.attributes[FIELD_NAMES.TEAM_LEADER],
+    assistants: feature.attributes[FIELD_NAMES.ASSISTANTS],
     onMarkComplete: updateFeature
   };
 
@@ -70,7 +66,7 @@ export const handleDeselection = (
   // Return map to showing all orchards
   orchardLayer.visible = true;
   hiveDropsLayer.visible = false;
-  hiveDropsLayer.definitionExpression = "1=0";
+  hiveDropsLayer.definitionExpression = LAYER_EXPRESSIONS.HIDE_ALL;
   perimitersLayer.visible = false;
-  perimitersLayer.definitionExpression = "1=0";
+  perimitersLayer.definitionExpression = LAYER_EXPRESSIONS.HIDE_ALL;
 };

@@ -3,6 +3,7 @@
 import Graphic from "@arcgis/core/Graphic";
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import { FormData } from "../types";
+import { FIELD_NAMES } from "@/constants";
 
 // Handle feature updates to ArcGIS server
 export const createFeatureUpdater = (orchardLayer: FeatureLayer, featureObjectIdRef: { current: number }) => {
@@ -10,20 +11,20 @@ export const createFeatureUpdater = (orchardLayer: FeatureLayer, featureObjectId
     // Package form data for ArcGIS applyEdits
     const updates = new Graphic({
       attributes: {
-        ObjectId: featureObjectIdRef.current,
-        fieldmap_id_primary: formData.fieldmap_id_primary,
-        partdeliv_yn: formData.partdeliv_yn,
-        hives_contracted: formData.hives_contracted,
-        beekeeper: formData.beekeeper,
-        bee_broker: formData.bee_broker,
-        average: formData.average,
-        minimum: formData.minimum,
-        client: formData.client,
-        grower: formData.grower,
-        fieldmap_id_auxiliary: formData.fieldmap_id_auxiliary,
-        crossroads: formData.crossroads,
-        team_leader: formData.team_leader,
-        assistants: formData.assistants
+        [FIELD_NAMES.OBJECT_ID]: featureObjectIdRef.current,
+        [FIELD_NAMES.FIELDMAP_ID_PRIMARY]: formData.fieldmap_id_primary,
+        [FIELD_NAMES.PARTDELIV_YN]: formData.partdeliv_yn,
+        [FIELD_NAMES.HIVES_CONTRACTED]: formData.hives_contracted,
+        [FIELD_NAMES.BEEKEEPER]: formData.beekeeper,
+        [FIELD_NAMES.BEE_BROKER]: formData.bee_broker,
+        [FIELD_NAMES.AVERAGE]: formData.average,
+        [FIELD_NAMES.MINIMUM]: formData.minimum,
+        [FIELD_NAMES.CLIENT]: formData.client,
+        [FIELD_NAMES.GROWER]: formData.grower,
+        [FIELD_NAMES.FIELDMAP_ID_AUXILIARY]: formData.fieldmap_id_auxiliary,
+        [FIELD_NAMES.CROSSROADS]: formData.crossroads,
+        [FIELD_NAMES.TEAM_LEADER]: formData.team_leader,
+        [FIELD_NAMES.ASSISTANTS]: formData.assistants
       }
     });
 

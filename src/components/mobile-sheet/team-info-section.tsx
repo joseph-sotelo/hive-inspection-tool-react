@@ -8,7 +8,7 @@ import { comboBoxOptions } from "@/lib/utils";
 interface TeamInfoSectionProps {
   formData: {
     team_leader: string;
-    assistants: string;
+    assistants: string | string[]; // Can be string or array
   };
   handleChange: (key: string, value: string | boolean | number) => void;
 }
@@ -28,13 +28,12 @@ export default function TeamInfoSection({ formData, handleChange }: TeamInfoSect
           />
         </div>
 
-        {/* Assistants selector - Note: this appears to have a bug in original code */}
-        {/* TODO: Fix assistants combobox to use correct data and field */}
+        {/* Assistants selector - Fixed to use correct field */}
         <div className="grid w-full max-w-sm items-center gap-1.5">
           <Label>Assistants</Label>
           <Combobox 
             props={comboBoxOptions("team_leader")} 
-            defaultValue={formData.team_leader} 
+            defaultValue={Array.isArray(formData.assistants) ? formData.assistants[0] || "" : formData.assistants} 
             onChange={(value) => handleChange("assistants", value)}
           />
         </div>

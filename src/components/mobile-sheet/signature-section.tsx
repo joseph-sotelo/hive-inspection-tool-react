@@ -1,6 +1,7 @@
 // Signature canvas section - separated for potential reuse
 // This component could be used elsewhere in the app if needed
 import SignatureCanvas from 'react-signature-canvas';
+import { SIGNATURE_CANVAS } from '@/constants';
 
 export default function SignatureSection() {
   return (
@@ -11,13 +12,13 @@ export default function SignatureSection() {
         className="bg-white inset-shadow-md rounded-2xl border-1 border-border p-2 flex items-center justify-center"
       >
         <SignatureCanvas 
-          penColor="black" 
+          penColor={SIGNATURE_CANVAS.PEN_COLOR}
           canvasProps={{
-            width: 270, 
-            height: 200, 
+            width: SIGNATURE_CANVAS.WIDTH, 
+            height: SIGNATURE_CANVAS.HEIGHT, 
             className: 'sigCanvas'
           }} 
-          backgroundColor="rgba(255, 255, 255, 1)"
+          backgroundColor={SIGNATURE_CANVAS.BACKGROUND_COLOR}
         />
       </div>
     </div>
