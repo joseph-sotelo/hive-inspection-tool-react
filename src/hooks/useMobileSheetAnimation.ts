@@ -19,11 +19,6 @@ export const useMobileSheetAnimation = ({ fieldmapId }: UseMobileSheetAnimationP
     }
   }, [fieldmapId]);
 
-  // Reset to collapsed state when a new feature is selected
-  const resetToCollapsed = () => {
-    setIsOpen(false);
-  };
-
   const toggleOpen = () => {
     setIsOpen(prev => !prev);
   };
@@ -32,7 +27,6 @@ export const useMobileSheetAnimation = ({ fieldmapId }: UseMobileSheetAnimationP
     isOffScreen,
     isOpen,
     setIsOffScreen,
-    resetToCollapsed,
     toggleOpen
   };
 };

@@ -1,6 +1,6 @@
 // Refactored mobile sheet using custom hooks for better maintainability
 // Custom hooks extract reusable logic and make components easier to test
-import { useRef, useEffect } from "react";
+import { useRef } from "react";
 import clsx from "clsx";
 
 // UI imports
@@ -30,19 +30,12 @@ export default function MobileSheet({ props }: { props: MobileSheetProps }) {
 
   // Use custom hooks to manage complex logic
   const { formData, handleChange } = useFormData(props);
-  const { isOffScreen, isOpen, setIsOffScreen, resetToCollapsed, toggleOpen } = useMobileSheetAnimation({
+  const { isOffScreen, isOpen, setIsOffScreen, toggleOpen } = useMobileSheetAnimation({
     fieldmapId: props.fieldmap_id_primary
   });
 
   // Handle clicking outside to close the sheet
   useClickOutside(sheetRef, () => setIsOffScreen(true));
-
-  // Reset animation state when new feature is selected
-  // This is called from the animation hook, but we need to trigger it here
-  // when form data changes
-  useEffect(() => {
-    resetToCollapsed();
-  }, [props.client, props.F_status, props.fieldmap_id_primary, resetToCollapsed]);
 
   // Process status for display using constants
   let statusString = props.F_status.split("_")[0];
