@@ -1,4 +1,6 @@
 // returns the percentage of hives that need to be graded for a given hive drop based on the standard deveiation of graded hives so far
+
+// constants
 import { STATS } from "@/constants";
 
 type GetSamplePercentageProps = {
@@ -24,14 +26,11 @@ export const getSamplePercentage = ({ populationSize, totalHiveGrades }: GetSamp
         return Math.sqrt(variance);
     };
 
-
     const grades = totalHiveGrades.flat();
     const standardDeviation = calculateStandardDeviation(grades);
     const confidenceInterval = STATS.CONFIDENCE_INTERVAL;
     const marginOfError = STATS.MARGIN_OF_ERROR;
     const sampleSize = Math.pow((confidenceInterval * standardDeviation) / marginOfError, 2);
-    console.log(sampleSize);
-    const samplePercentage = Math.min(sampleSize / populationSize, 1);
-    console.log(samplePercentage);
+    const samplePercentage = Math.min(sampleSize / populationSize, 1);    
     return samplePercentage;
 };

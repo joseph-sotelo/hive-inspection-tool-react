@@ -5,6 +5,5 @@ type ArrayPushProps = {
 }
 
 export const useArrayPush = ({array, value}: ArrayPushProps) => {
-   array.push(value);
-   return array;
+   return [...array, value];
 }

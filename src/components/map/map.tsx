@@ -27,12 +27,23 @@ config.apiKey = ENV.VITE_ARCGIS_LAYER_API_KEY;
 
 export default function Map() { 
 
-  const { setHivesCounted, setHivesGraded, setAverage, hivesCounted, hivesGraded, average } = useInspectionData();
+  const { 
+    totalHivesContracted, 
+    setTotalHivesContracted, 
+    setHivesCounted, 
+    setHivesGraded, 
+    setAverage, 
+    hivesCounted, 
+    hivesGraded, 
+    average, 
+    setOrchardHiveGrades, 
+    orchardHiveGrades,
+    setNotes
+  } = useInspectionData();
 
   // State for mobile sheet
   const [mobileSheetProps, setMobileSheetProps] = useState<MobileSheetProps | null>(null);
-  const [isMobileSheetOpen, setIsMobileSheetOpen] = useState(false);
-  const [totalHivesContracted, setTotalHivesContracted] = useState(0);
+  const [isMobileSheetOpen, setIsMobileSheetOpen] = useState(false);  
   
   // Use ref for feature ID to avoid stale closure issues
   const featureObjectIdRef = useRef<number>(0);
@@ -92,9 +103,8 @@ export default function Map() {
           setHivesCounted,
           setHivesGraded,
           setAverage,          
-          hivesCounted,
-          hivesGraded,
-          average
+          setOrchardHiveGrades,
+          setNotes
         );
 
         setTotalHivesContracted(feature.graphic.attributes[ORCHARD_FIELD_NAMES.HIVES_CONTRACTED]);

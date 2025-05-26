@@ -1,43 +1,75 @@
 import React from "react";
 
 interface ContextType {
+  // data pertaining to entire orchard
   isShown: boolean;
   setIsShown: (arg: boolean) => void;
-  hiveGrades: number[][],
-  setHiveGrades: (arg: number[][]) => void,
+  totalHivesContracted: number;
+  setTotalHivesContracted: (arg: number) => void;
+  orchardHiveGrades: number[][],
+  setOrchardHiveGrades: (arg: number[][]) => void,  
+  // data pertaining to an individual hive drop within that orchard
+  hiveDropHiveGrades: number[],
+  setHiveDropHiveGrades: (arg: number[]) => void,
   hivesCounted: number[],
   setHivesCounted: (arg: number[]) => void,
   hivesGraded: number[],
   setHivesGraded: (arg: number[]) => void,
   average: number[],
   setAverage: (arg: number[]) => void,
+  notes: string[],
+  setNotes: (arg: string[]) => void
 }
 
 export const InspectionDataContext = React.createContext<ContextType>({
   isShown: false,
   setIsShown: () => {},
-  hiveGrades: [],
-  setHiveGrades: () => {},
+  totalHivesContracted: 0,
+  setTotalHivesContracted: () => {},
+  orchardHiveGrades: [],
+  setOrchardHiveGrades: () => {},
+  hiveDropHiveGrades: [],
+  setHiveDropHiveGrades: () => {},
   hivesCounted: [],
   setHivesCounted: () => {},
   hivesGraded: [],
   setHivesGraded: () => {},
   average: [],
   setAverage: () => {},
+  notes: [],
+  setNotes: () => {}
 });
 
 interface Props {
   children: React.ReactNode;
 }
 const InspectionDataProvider = ({ children }: Props) => {
+  const [totalHivesContracted, setTotalHivesContracted] = React.useState<number>(0);
   const [isShown, setIsShown] = React.useState<boolean>(false);
-  const [hiveGrades, setHiveGrades] = React.useState<number[][]>([]);
+  const [orchardHiveGrades, setOrchardHiveGrades] = React.useState<number[][]>([]);
+  const [hiveDropHiveGrades, setHiveDropHiveGrades] = React.useState<number[]>([]);
   const [hivesCounted, setHivesCounted] = React.useState<number[]>([]);
   const [hivesGraded, setHivesGraded] = React.useState<number[]>([]);
   const [average, setAverage] = React.useState<number[]>([]);
-
+  const [notes, setNotes] = React.useState<string[]>([]);
   return (
-    <InspectionDataContext.Provider value={{ isShown, setIsShown, hiveGrades, setHiveGrades, hivesCounted, setHivesCounted, hivesGraded, setHivesGraded, average, setAverage }}>
+    <InspectionDataContext.Provider value={{ 
+        isShown,        
+        setIsShown,
+        totalHivesContracted,
+        setTotalHivesContracted,
+        orchardHiveGrades,
+        setOrchardHiveGrades,
+        hiveDropHiveGrades,
+        setHiveDropHiveGrades, 
+        hivesCounted, 
+        setHivesCounted, 
+        hivesGraded, 
+        setHivesGraded, 
+        average, 
+        setAverage, 
+        notes, 
+        setNotes }}>
       {children}
     </InspectionDataContext.Provider>
   );

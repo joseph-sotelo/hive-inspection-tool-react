@@ -48,5 +48,32 @@ export const HIVEDROP_FIELD_NAMES = {
   F_RECORD_ID: "F_record_id",
   HIVES_COUNTED: "hives_counted",
   HIVES_GRADED: "hives_graded",
-  AVERAGE: "avg_"
+  AVERAGE: "avg_",
+  GRADES: [
+    "grade1",
+    "grade2",
+    "grade3",
+    "grade4",
+    "grade5",
+    "grade6",
+    "grade7",
+    "grade8",
+    "grade9",
+    "grade10",
+    "grade11",
+    "grade12",
+    "grade13",
+    "grade14",
+    "grade15",
+    "grade16",
+    "grade17",
+    "grade18",
+    "grade19",
+    "grade20",
+    "grade21",
+    "grade22",
+    "grade23",
+    "grade24"
+  ],
+  NOTES: "notes"
 }

@@ -24,33 +24,38 @@ interface InspectionControlsProps {
 
 export default function InspectionControls({ totalHivesContracted }: InspectionControlsProps) {
 
-    // toggles the inspection cotrols visible or invisible
-    const { isShown,  } = useInspectionData();
+    // context to be updated
+    const { 
+        isShown, 
+        orchardHiveGrades, 
+        setOrchardHiveGrades, 
+        hiveDropHiveGrades, 
+        setHiveDropHiveGrades, 
+        hivesCounted, 
+        setHivesCounted, 
+        notes, 
+        setNotes 
+    } = useInspectionData();
     // the minimum percentage of hives that need to be graded
-    const [samplePercentage, setSamplePercentage] = useState<number>(0);
-    // the number of hives counted within the focused hivedrop
-    const [hivesCounted, setHivesCounted] = useState<number>(0);
-    // the grades for the entire orchard. Used for overview progress bar
-    const [totalHiveGrades, setTotalHiveGrades] = useState<number[][]>([]);
-    // the grades within the focused hive drop
-    const [hiveGrades, setHiveGrades] = useState<number[]>([]);
+    const [samplePercentage, setSamplePercentage] = useState<number>(0);    
     // toggles the dialog open or closed
     const [isOpen, setIsOpen] = useState(false);
     // the index of the current hive drop. Used for updating the totalHiveGrades array
     const [currentHiveDropIndex, setCurrentHiveDropIndex] = useState<number>(0);
     // updates the sample percentage whenever the user adds a new hive
+
     useEffect(() => {
-        if (totalHiveGrades.length > 0) {
+        if (orchardHiveGrades.length > 0) {            
             const percentage = getSamplePercentage({ 
                 populationSize: totalHivesContracted, 
-                totalHiveGrades 
+                totalHiveGrades: orchardHiveGrades
             });
-            setSamplePercentage(percentage);
+            setSamplePercentage(percentage);            
         }
-    }, [totalHiveGrades, totalHivesContracted]);
+    }, [orchardHiveGrades, totalHivesContracted]);
     // ensures the dialog starts off empty 
     const resetDialog = () => {
-        setHiveGrades([]);
+        setHiveDropHiveGrades([]);
     };
 
     return (
@@ -73,21 +78,28 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
                         </DialogTitle>
                         <Progress 
                             className="border-1 border-foreground-flexible-light"
-                            value={(hiveGrades.length / (hivesCounted * samplePercentage)) * 100}
+                            value={(hiveDropHiveGrades.length / (hivesCounted[currentHiveDropIndex] * samplePercentage)) * 100}
                         />
                     </DialogHeader>                
                     <Button variant="customSecondary"> Re-capture Location </Button>
                         <div className="grid w-full max-w-sm items-center gap-1.5">
                             <Label htmlFor="count">Hives counted</Label>
-                            <Input type="number" id="count" placeholder="number" onChange={(event) => {
-                                setHivesCounted(Number(event.target.value));                                                                
-                            }}/>
+                            <Input 
+                                type="number" 
+                                id="count" 
+                                value={hivesCounted[currentHiveDropIndex]}
+                                placeholder="number" 
+                                onChange={(event) => {
+                                    const newHivesCounted = [...hivesCounted];
+                                    newHivesCounted[currentHiveDropIndex] = Number(event.target.value);
+                                    setHivesCounted(newHivesCounted);
+                                }}/>
                             <p className="text-sm text-muted-foreground">How many hives are there in this hive-drop?</p>
                         </div>
                         <Separator />
-                        <h4>Hives graded: {hiveGrades.length}</h4>
+                        <h4>Hives graded: {hiveDropHiveGrades.length}</h4>
                         <div className="max-h-[300px] overflow-y-scroll">
-                            {hiveGrades.map((value, index) => (
+                            {orchardHiveGrades[currentHiveDropIndex]?.map((value, index) => (
                                 <div key={index} className="flex gap-2">
                                     <p>Hive {index}</p>
                                     <Slider 
@@ -96,28 +108,32 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
                                     step={1}
                                     color="brand-light"
                                     onValueChange={(newValue) => {
-                                        const newHiveGrades = [...hiveGrades];
-                                        newHiveGrades[index] = newValue[0];
-                                        setHiveGrades(newHiveGrades);
+                                        const newHiveDropHiveGrades = [...hiveDropHiveGrades];
+                                        newHiveDropHiveGrades[index] = newValue[0];
+                                        setHiveDropHiveGrades(newHiveDropHiveGrades);
                                         
-                                        const newTotalHiveGrades = [...totalHiveGrades];
-                                        newTotalHiveGrades[currentHiveDropIndex] = newHiveGrades;
-                                        setTotalHiveGrades(newTotalHiveGrades);
+                                        const newOrchardHiveGrades = [...orchardHiveGrades];
+                                        newOrchardHiveGrades[currentHiveDropIndex] = newHiveDropHiveGrades;
+                                        setOrchardHiveGrades(newOrchardHiveGrades);
                                     }}
                                     />                                
                                 </div>
                             ))}                        
                             <Button variant="text" size="text" onClick={() => {
-                                setHiveGrades([...hiveGrades, 12])
+                                setHiveDropHiveGrades([...hiveDropHiveGrades, 12])
                             }}>Add hive +</Button>
                         </div>                    
                         <Separator />
                         <Label htmlFor="notes">Notes</Label>
-                        <Textarea id="notes" placeholder="Notes"/>
+                        <Textarea id="notes" placeholder="Notes" value={notes[currentHiveDropIndex]} onChange={(event) => {
+                            const newNotes = [...notes];
+                            newNotes[currentHiveDropIndex] = event.target.value;
+                            setNotes(newNotes);
+                        }}/>
                         <Button variant="customSecondary" size="action">Add Photos</Button>
                         <DialogFooter>
                             <Button variant="action" size="action" onClick={() => {
-                                setTotalHiveGrades([...totalHiveGrades, hiveGrades])
+                                setOrchardHiveGrades([...orchardHiveGrades, hiveDropHiveGrades])
                                 setCurrentHiveDropIndex(currentHiveDropIndex + 1);      
                                 setIsOpen(false);
                                 resetDialog();
@@ -128,7 +144,7 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
             <Accordion type="single" collapsible defaultValue="progress">
                 <AccordionItem value="progress">
                     <AccordionTrigger>
-                        <Progress className="border-1 border-foreground-flexible-light" value={totalHiveGrades.flat().length/(totalHivesContracted*samplePercentage)*100}/> 
+                        <Progress className="border-1 border-foreground-flexible-light" value={orchardHiveGrades.flat().length/(totalHivesContracted*samplePercentage)*100}/> 
                     </AccordionTrigger>
                     <AccordionContent>
                         <h4>Statistics</h4>

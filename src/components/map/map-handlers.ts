@@ -3,9 +3,6 @@ import MapView from "@arcgis/core/views/MapView";
 import { MobileSheetProps } from "../types";
 import { MAP_CONFIG, ORCHARD_FIELD_NAMES, LAYER_EXPRESSIONS, HIVEDROP_FIELD_NAMES } from "@/constants";
 
-// hooks
-import { useArrayPush } from "@/hooks";
-
 // Handle feature selection and layer visibility
 export const handleFeatureSelection = (
   feature: __esri.Graphic,
@@ -19,9 +16,8 @@ export const handleFeatureSelection = (
   setHivesCounted: (hivesCounted: number[]) => void,
   setHivesGraded: (hivesGraded: number[]) => void,
   setAverage: (average: number[]) => void,  
-  hivesCounted: number[],
-  hivesGraded: number[],
-  average: number[]
+  setOrchardHiveGrades: (orchardHiveGrades: number[][]) => void,
+  setNotes: (notes: string[]) => void
 ) => {
   // Show details for selected feature and hide everything else
   orchardLayer.visible = false;
@@ -63,22 +59,48 @@ export const handleFeatureSelection = (
 
   // gets attributes from each visible hivedrop
   const loopThroughHiveDrops = async () => {
+    // defines the query
     const query = hiveDropsLayer.createQuery();
     query.where = `${HIVEDROP_FIELD_NAMES.F_RECORD_ID} = '${feature.attributes[ORCHARD_FIELD_NAMES.F_RECORD_ID]}'`;
     query.returnGeometry = false;
-    query.outFields = [HIVEDROP_FIELD_NAMES.HIVES_COUNTED, HIVEDROP_FIELD_NAMES.HIVES_GRADED, HIVEDROP_FIELD_NAMES.AVERAGE];
+    query.outFields = [
+      HIVEDROP_FIELD_NAMES.HIVES_COUNTED, 
+      HIVEDROP_FIELD_NAMES.HIVES_GRADED, 
+      HIVEDROP_FIELD_NAMES.AVERAGE, 
+      ...HIVEDROP_FIELD_NAMES.GRADES, 
+      HIVEDROP_FIELD_NAMES.NOTES];
 
-    try {    
+    try { 
+      // performs query   
       const results = await hiveDropsLayer.queryFeatures(query);
+      // initializes arrays that will be used to update the context
+      const newHivesCounted: number[] = [];
+      const newHivesGraded: number[] = [];
+      const newAverage: number[] = [];
+      const newOrchardHiveGrades: number[][] = [];
+      const newNotes: string[] = [];
+      // loops through each visible hivedrop and updates the arrays
       results.features.forEach((feature) => {
-        setHivesCounted(useArrayPush({ array: hivesCounted, value: feature.attributes[HIVEDROP_FIELD_NAMES.HIVES_COUNTED] }));
-        setHivesGraded(useArrayPush({ array: hivesGraded, value: feature.attributes[HIVEDROP_FIELD_NAMES.HIVES_GRADED] }));
-        setAverage(useArrayPush({ array: average, value: feature.attributes[HIVEDROP_FIELD_NAMES.AVERAGE] }));
-
-        console.log("hivesCounted: ", hivesCounted);
-        console.log("hivesGraded: ", hivesGraded);
-        console.log("average: ", average);
+        newHivesCounted.push(feature.attributes[HIVEDROP_FIELD_NAMES.HIVES_COUNTED]);
+        newHivesGraded.push(feature.attributes[HIVEDROP_FIELD_NAMES.HIVES_GRADED]);
+        newAverage.push(feature.attributes[HIVEDROP_FIELD_NAMES.AVERAGE]);
+        newNotes.push(feature.attributes[HIVEDROP_FIELD_NAMES.NOTES]);
+        // this one is special because it is a 2d array
+        let grades: number[] = [];
+        for (const grade of HIVEDROP_FIELD_NAMES.GRADES) {
+          const value = feature.attributes[grade];
+          if (value === null) break;
+          grades.push(value);
+        }
+        newOrchardHiveGrades.push(grades);        
       });
+      // updates the context
+      setHivesCounted(newHivesCounted);
+      setHivesGraded(newHivesGraded);
+      setAverage(newAverage);
+      setOrchardHiveGrades(newOrchardHiveGrades);      
+      setNotes(newNotes);
+      
     } catch (error) {
       console.error("Error querying hive drops:", error);
     }
