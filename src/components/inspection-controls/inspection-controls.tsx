@@ -24,17 +24,21 @@ interface InspectionControlsProps {
 
 export default function InspectionControls({ totalHivesContracted }: InspectionControlsProps) {
 
+    // toggles the inspection cotrols visible or invisible
+    const { isShown,  } = useInspectionData();
+    // the minimum percentage of hives that need to be graded
     const [samplePercentage, setSamplePercentage] = useState<number>(0);
-
+    // the number of hives counted within the focused hivedrop
     const [hivesCounted, setHivesCounted] = useState<number>(0);
+    // the grades for the entire orchard. Used for overview progress bar
     const [totalHiveGrades, setTotalHiveGrades] = useState<number[][]>([]);
-
-    const { isShown } = useInspectionData();
+    // the grades within the focused hive drop
     const [hiveGrades, setHiveGrades] = useState<number[]>([]);
+    // toggles the dialog open or closed
     const [isOpen, setIsOpen] = useState(false);
+    // the index of the current hive drop. Used for updating the totalHiveGrades array
     const [currentHiveDropIndex, setCurrentHiveDropIndex] = useState<number>(0);
-
-
+    // updates the sample percentage whenever the user adds a new hive
     useEffect(() => {
         if (totalHiveGrades.length > 0) {
             const percentage = getSamplePercentage({ 
@@ -44,7 +48,7 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
             setSamplePercentage(percentage);
         }
     }, [totalHiveGrades, totalHivesContracted]);
-
+    // ensures the dialog starts off empty 
     const resetDialog = () => {
         setHiveGrades([]);
     };
