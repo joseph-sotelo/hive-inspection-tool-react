@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { getSamplePercentage } from "./getSamplePercentage";
 
 // UI
 import { Button } from "@/components/ui/button";
@@ -22,13 +23,8 @@ interface InspectionControlsProps {
 }
 
 export default function InspectionControls({ totalHivesContracted }: InspectionControlsProps) {
-    const populationSize = totalHivesContracted;
 
-    const [standardDeviation, setStandardDeviation] = useState<number>(0);
-    const confidenceInterval = 1.960;
-    const marginOfError = 2
-    const sampleSize = Math.pow(confidenceInterval * standardDeviation / marginOfError, 2)    
-    const samplePercentage = sampleSize / populationSize
+    const [samplePercentage, setSamplePercentage] = useState<number>(0);
 
     const [hivesCounted, setHivesCounted] = useState<number>(0);
     const [totalHiveGrades, setTotalHiveGrades] = useState<number[][]>([]);
@@ -38,32 +34,16 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
     const [isOpen, setIsOpen] = useState(false);
     const [currentHiveDropIndex, setCurrentHiveDropIndex] = useState<number>(0);
 
+
     useEffect(() => {
         if (totalHiveGrades.length > 0) {
-            calculateStandardDeviation();
+            const percentage = getSamplePercentage({ 
+                populationSize: totalHivesContracted, 
+                totalHiveGrades 
+            });
+            setSamplePercentage(percentage);
         }
-    }, [totalHiveGrades]);
-
-    const calculateStandardDeviation = () => {
-        console.log("here");
-        const grades = totalHiveGrades.flat();
-        if (grades.length === 0) return;
-
-        // calculate mean
-        const sum = grades.reduce((sum, grade) => sum + grade, 0);
-        const mean = sum / grades.length;
-
-        // calculate deviations
-        const deviations = grades.reduce((sum, grade) => sum + Math.pow(grade - mean, 2), 0);
-
-        // calculate variance
-        const variance = deviations / grades.length;
-
-        // calculate standard deviation
-        const standardDeviation = Math.sqrt(variance);
-
-        setStandardDeviation(standardDeviation);
-    };
+    }, [totalHiveGrades, totalHivesContracted]);
 
     const resetDialog = () => {
         setHiveGrades([]);
@@ -96,8 +76,7 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
                         <div className="grid w-full max-w-sm items-center gap-1.5">
                             <Label htmlFor="count">Hives counted</Label>
                             <Input type="number" id="count" placeholder="number" onChange={(event) => {
-                                setHivesCounted(Number(event.target.value));    
-                                console.log(standardDeviation)                                                            
+                                setHivesCounted(Number(event.target.value));                                                                
                             }}/>
                             <p className="text-sm text-muted-foreground">How many hives are there in this hive-drop?</p>
                         </div>
@@ -126,7 +105,6 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
                             ))}                        
                             <Button variant="text" size="text" onClick={() => {
                                 setHiveGrades([...hiveGrades, 12])
-                                console.log(standardDeviation)         
                             }}>Add hive +</Button>
                         </div>                    
                         <Separator />
@@ -136,8 +114,7 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
                         <DialogFooter>
                             <Button variant="action" size="action" onClick={() => {
                                 setTotalHiveGrades([...totalHiveGrades, hiveGrades])
-                                setCurrentHiveDropIndex(currentHiveDropIndex + 1);
-                                console.log(standardDeviation)         
+                                setCurrentHiveDropIndex(currentHiveDropIndex + 1);      
                                 setIsOpen(false);
                                 resetDialog();
                             }}>Finish</Button>
@@ -147,7 +124,7 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
             <Accordion type="single" collapsible defaultValue="progress">
                 <AccordionItem value="progress">
                     <AccordionTrigger>
-                        <Progress className="border-1 border-foreground-flexible-light" value={totalHiveGrades.flat().length/sampleSize*100}/> 
+                        <Progress className="border-1 border-foreground-flexible-light" value={totalHiveGrades.flat().length/(totalHivesContracted*samplePercentage)*100}/> 
                     </AccordionTrigger>
                     <AccordionContent>
                         <h4>Statistics</h4>

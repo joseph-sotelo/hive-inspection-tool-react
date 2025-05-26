@@ -1,0 +1,4 @@
+export const STATS = {
+    CONFIDENCE_INTERVAL: 2.576,
+    MARGIN_OF_ERROR: 0.5
+}
