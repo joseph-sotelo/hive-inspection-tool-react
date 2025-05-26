@@ -7,25 +7,32 @@ import MapView from "@arcgis/core/views/MapView";
 import Track from "@arcgis/core/widgets/Track";
 import "@arcgis/core/assets/esri/themes/light/main.css";
 
-// Local imports
+// UI imports
 import { MobileSheet } from "../mobile-sheet";
 import InspectionControls from "../inspection-controls/inspection-controls";
 import { MobileSheetProps } from "../types";
 
-// Map utilities (separated for better organization)
+// Map utilities
 import { createOrchardsLayer, createHiveDropsLayer, createPerimitersLayer } from "./layer-config";
 import { handleFeatureSelection, handleDeselection } from "./map-handlers";
 import { createFeatureUpdater } from "./feature-updater";
-import { MAP_CONFIG, FIELD_NAMES } from "@/constants";
+import { MAP_CONFIG, ORCHARD_FIELD_NAMES } from "@/constants";
 import { ENV } from "@/utils/env-validation";
+
+// context
+import { useInspectionData } from "@/context/inspectionData/useInspectionData";
 
 // Environment setup with validation
 config.apiKey = ENV.VITE_ARCGIS_LAYER_API_KEY;
 
-export default function Map() {
+export default function Map() { 
+
+  const { setHivesCounted, setHivesGraded, setAverage, hivesCounted, hivesGraded, average } = useInspectionData();
+
   // State for mobile sheet
   const [mobileSheetProps, setMobileSheetProps] = useState<MobileSheetProps | null>(null);
   const [isMobileSheetOpen, setIsMobileSheetOpen] = useState(false);
+  const [totalHivesContracted, setTotalHivesContracted] = useState(0);
   
   // Use ref for feature ID to avoid stale closure issues
   const featureObjectIdRef = useRef<number>(0);
@@ -69,9 +76,9 @@ export default function Map() {
       );
 
       // Handle feature selection or deselection
-      if (feature?.graphic.attributes[FIELD_NAMES.FIELDMAP_ID_PRIMARY] != undefined) {
+      if (feature?.graphic.attributes[ORCHARD_FIELD_NAMES.FIELDMAP_ID_PRIMARY] != undefined) {
         // Store feature ID for updates
-        featureObjectIdRef.current = feature.graphic.attributes[FIELD_NAMES.OBJECT_ID];
+        featureObjectIdRef.current = feature.graphic.attributes[ORCHARD_FIELD_NAMES.OBJECT_ID];
         
         handleFeatureSelection(
           feature.graphic,
@@ -81,8 +88,16 @@ export default function Map() {
           view,
           setMobileSheetProps,
           setIsMobileSheetOpen,
-          updateFeature
+          updateFeature,
+          setHivesCounted,
+          setHivesGraded,
+          setAverage,          
+          hivesCounted,
+          hivesGraded,
+          average
         );
+
+        setTotalHivesContracted(feature.graphic.attributes[ORCHARD_FIELD_NAMES.HIVES_CONTRACTED]);
       } else {
         handleDeselection(
           orchardLayer,
@@ -112,7 +127,7 @@ export default function Map() {
       )}
       
       {/* Always render inspection controls */}
-      <InspectionControls />
+      <InspectionControls totalHivesContracted={totalHivesContracted} />
       
       {/* Map container */}
       <div id="viewDiv" className="w-full h-screen" />

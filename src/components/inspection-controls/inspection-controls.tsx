@@ -17,9 +17,12 @@ import clsx from "clsx";
 // context
 import { useInspectionData } from "@/context/inspectionData"
 
-export default function InspectionControls() {
+interface InspectionControlsProps {
+    totalHivesContracted: number;
+}
 
-    const populationSize = 200;
+export default function InspectionControls({ totalHivesContracted }: InspectionControlsProps) {
+    const populationSize = totalHivesContracted;
 
     const [standardDeviation, setStandardDeviation] = useState<number>(0);
     const confidenceInterval = 1.960;

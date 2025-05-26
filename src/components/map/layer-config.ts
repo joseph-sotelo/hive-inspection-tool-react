@@ -2,7 +2,7 @@
 // By separating layer configs, we make the code easier to test and modify
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import { symbolAlert, symbolFail, symbolLow, symbolPass, symbolHiveDrop } from "@/assets/symbols";
-import { FIELD_NAMES, LAYER_EXPRESSIONS } from "@/constants";
+import { ORCHARD_FIELD_NAMES, LAYER_EXPRESSIONS, HIVEDROP_FIELD_NAMES } from "@/constants";
 
 // Validated environment variables - ensures all required config is present
 import { ENV } from "@/utils/env-validation";
@@ -12,28 +12,28 @@ export const createOrchardsLayer = () => {
   const layer = new FeatureLayer({
     url: ENV.VITE_ARCGIS_ORCHARDS_LAYER_API_URL,
     outFields: [
-      FIELD_NAMES.F_STATUS,
-      FIELD_NAMES.FIELDMAP_ID_PRIMARY,
-      FIELD_NAMES.CLIENT,
-      FIELD_NAMES.PARTDELIV_YN,
-      FIELD_NAMES.HIVES_CONTRACTED,
-      FIELD_NAMES.BEEKEEPER,
-      FIELD_NAMES.BEE_BROKER,
-      FIELD_NAMES.AVERAGE,
-      FIELD_NAMES.MINIMUM,
-      FIELD_NAMES.GROWER,
-      FIELD_NAMES.FIELDMAP_ID_AUXILIARY,
-      FIELD_NAMES.CROSSROADS,
-      FIELD_NAMES.TEAM_LEADER,
-      FIELD_NAMES.ASSISTANTS,
-      FIELD_NAMES.F_RECORD_ID
+      ORCHARD_FIELD_NAMES.F_STATUS,
+      ORCHARD_FIELD_NAMES.FIELDMAP_ID_PRIMARY,
+      ORCHARD_FIELD_NAMES.CLIENT,
+      ORCHARD_FIELD_NAMES.PARTDELIV_YN,
+      ORCHARD_FIELD_NAMES.HIVES_CONTRACTED,
+      ORCHARD_FIELD_NAMES.BEEKEEPER,
+      ORCHARD_FIELD_NAMES.BEE_BROKER,
+      ORCHARD_FIELD_NAMES.AVERAGE,
+      ORCHARD_FIELD_NAMES.MINIMUM,
+      ORCHARD_FIELD_NAMES.GROWER,
+      ORCHARD_FIELD_NAMES.FIELDMAP_ID_AUXILIARY,
+      ORCHARD_FIELD_NAMES.CROSSROADS,
+      ORCHARD_FIELD_NAMES.TEAM_LEADER,
+      ORCHARD_FIELD_NAMES.ASSISTANTS,
+      ORCHARD_FIELD_NAMES.F_RECORD_ID
     ]
   });
 
   // Apply status-based symbology
   layer.renderer = {
     type: "unique-value",
-    field: FIELD_NAMES.F_STATUS,
+    field: ORCHARD_FIELD_NAMES.F_STATUS,
     uniqueValueInfos: [
       { value: "nodata_fulldeliv", symbol: symbolAlert },
       { value: "nodata_partdeliv", symbol: symbolAlert },
@@ -53,7 +53,7 @@ export const createOrchardsLayer = () => {
 export const createHiveDropsLayer = () => {
   const layer = new FeatureLayer({
     url: ENV.VITE_ARCGIS_HIVEDROPS_LAYER_API_URL,
-    outFields: [FIELD_NAMES.F_RECORD_ID],
+    outFields: [HIVEDROP_FIELD_NAMES.F_RECORD_ID, HIVEDROP_FIELD_NAMES.HIVES_COUNTED, HIVEDROP_FIELD_NAMES.HIVES_GRADED, HIVEDROP_FIELD_NAMES.AVERAGE],
     definitionExpression: LAYER_EXPRESSIONS.HIDE_ALL // Hide by default
   });
 
@@ -69,7 +69,7 @@ export const createHiveDropsLayer = () => {
 export const createPerimitersLayer = () => {
   const layer = new FeatureLayer({
     url: ENV.VITE_ARCGIS_PERIMITERS_LAYER_API_URL,
-    outFields: [FIELD_NAMES.CLIENT],
+    outFields: [ORCHARD_FIELD_NAMES.CLIENT],
     definitionExpression: LAYER_EXPRESSIONS.HIDE_ALL // Hide by default
   });
 

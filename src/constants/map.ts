@@ -23,7 +23,7 @@ export const LAYER_EXPRESSIONS = {
 } as const;
 
 // ArcGIS field names - centralizing to prevent typos
-export const FIELD_NAMES = {
+export const ORCHARD_FIELD_NAMES = {
   // Orchard layer fields
   F_STATUS: "F_status",
   FIELDMAP_ID_PRIMARY: "fieldmap_id_primary", 
@@ -42,3 +42,11 @@ export const FIELD_NAMES = {
   F_RECORD_ID: "F_record_id",
   OBJECT_ID: "ObjectId"
 } as const;
+
+export const HIVEDROP_FIELD_NAMES = {
+  OBJECT_ID: "ObjectId",
+  F_RECORD_ID: "F_record_id",
+  HIVES_COUNTED: "hives_counted",
+  HIVES_GRADED: "hives_graded",
+  AVERAGE: "avg_"
+}

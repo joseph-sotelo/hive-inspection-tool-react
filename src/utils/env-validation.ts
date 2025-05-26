@@ -2,6 +2,7 @@
 // This prevents runtime errors and provides clear feedback for missing configuration
 interface RequiredEnvVars {
   VITE_ARCGIS_LAYER_API_KEY: string;
+  VITE_ARCGIS_MOCK_ORCHARDS_LAYER_API_URL: string;
   VITE_ARCGIS_ORCHARDS_LAYER_API_URL: string;
   VITE_ARCGIS_HIVEDROPS_LAYER_API_URL: string;
   VITE_ARCGIS_PERIMITERS_LAYER_API_URL: string;
@@ -11,6 +12,7 @@ interface RequiredEnvVars {
 export const validateEnvironmentVariables = (): RequiredEnvVars => {
   const requiredVars: (keyof RequiredEnvVars)[] = [
     'VITE_ARCGIS_LAYER_API_KEY',
+    'VITE_ARCGIS_MOCK_ORCHARDS_LAYER_API_URL',
     'VITE_ARCGIS_ORCHARDS_LAYER_API_URL',
     'VITE_ARCGIS_HIVEDROPS_LAYER_API_URL',
     'VITE_ARCGIS_PERIMITERS_LAYER_API_URL'
