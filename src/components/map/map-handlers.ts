@@ -16,8 +16,7 @@ export const handleOrchardFeatureSelection = (
   setHivesCounted: (hivesCounted: number[]) => void,
   setHivesGraded: (hivesGraded: number[]) => void,
   setAverage: (average: number[]) => void,  
-  setOrchardHiveGrades: (orchardHiveGrades: number[][]) => void,
-  setNotes: (notes: string[]) => void,  
+  setOrchardHiveGrades: (orchardHiveGrades: number[][]) => void,  
   setRecordId: (recordId: string) => void
 ) => {
   // Show details for selected feature and hide everything else
@@ -80,14 +79,12 @@ export const handleOrchardFeatureSelection = (
       const newHivesCounted: number[] = [];
       const newHivesGraded: number[] = [];
       const newAverage: number[] = [];
-      const newOrchardHiveGrades: number[][] = [];
-      const newNotes: string[] = [];
+      const newOrchardHiveGrades: number[][] = [];      
       // loops through each visible hivedrop and updates the arrays
       results.features.forEach((feature) => {
         newHivesCounted.push(feature.attributes[HIVEDROP_FIELD_NAMES.HIVES_COUNTED]);
         newHivesGraded.push(feature.attributes[HIVEDROP_FIELD_NAMES.HIVES_GRADED]);
-        newAverage.push(feature.attributes[HIVEDROP_FIELD_NAMES.AVERAGE]);
-        newNotes.push(feature.attributes[HIVEDROP_FIELD_NAMES.NOTES]);
+        newAverage.push(feature.attributes[HIVEDROP_FIELD_NAMES.AVERAGE]);        
         // this one is special because it is a 2d array
         let grades: number[] = [];
         for (const grade of HIVEDROP_FIELD_NAMES.GRADES) {
@@ -101,8 +98,7 @@ export const handleOrchardFeatureSelection = (
       setHivesCounted(newHivesCounted);
       setHivesGraded(newHivesGraded);
       setAverage(newAverage);
-      setOrchardHiveGrades(newOrchardHiveGrades);      
-      setNotes(newNotes);
+      setOrchardHiveGrades(newOrchardHiveGrades);            
 
     } catch (error) {
       console.error("Error querying hive drops:", error);

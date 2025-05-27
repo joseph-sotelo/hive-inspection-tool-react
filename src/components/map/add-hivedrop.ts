@@ -8,7 +8,7 @@ export const addHiveDrop = (
   hiveDropIndex: number,
   hivesCounted: number[],
   hiveDropHiveGrades: number[],
-  notes: string[],
+  notes: string,
   recordId: string,
   userLocation: number[]
 ) => {  
@@ -28,7 +28,7 @@ export const addHiveDrop = (
         ...acc,
         [grade]: hiveDropHiveGrades[index]
       }), {}),
-      [HIVEDROP_FIELD_NAMES.NOTES]: notes[hiveDropIndex],
+      [HIVEDROP_FIELD_NAMES.NOTES]: notes,
       [HIVEDROP_FIELD_NAMES.F_RECORD_ID]: recordId,
       "F_latitude": userLocation[1],
       "F_longitude": userLocation[0]

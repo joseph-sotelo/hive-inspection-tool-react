@@ -140,8 +140,7 @@ export default function Map() {
             setHivesCounted,
             setHivesGraded,
             setAverage,          
-            setOrchardHiveGrades,
-            setNotes,
+            setOrchardHiveGrades,            
             setRecordId
           );
 

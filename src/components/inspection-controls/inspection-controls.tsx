@@ -34,7 +34,6 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
         setHiveDropHiveGrades, 
         hivesCounted, 
         setHivesCounted, 
-        notes, 
         setNotes,
         hiveDropIndex,
         setHiveDropIndex,        
@@ -121,10 +120,8 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
                         </div>                    
                         <Separator />
                         <Label htmlFor="notes">Notes</Label>
-                        <Textarea id="notes" placeholder="Notes" value={notes[hiveDropIndex]} onChange={(event) => {
-                            const newNotes = [...notes];
-                            newNotes[hiveDropIndex] = event.target.value;
-                            setNotes(newNotes);
+                        <Textarea id="notes" placeholder="Notes" onChange={(event) => {
+                            setNotes(event.target.value);
                         }}/>
                         <Button variant="customSecondary" size="action">Add Photos</Button>
                         <DialogFooter>

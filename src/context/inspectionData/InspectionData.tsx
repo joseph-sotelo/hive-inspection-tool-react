@@ -27,8 +27,8 @@ interface ContextType {
   setHivesGraded: (arg: number[]) => void,
   average: number[],
   setAverage: (arg: number[]) => void,
-  notes: string[],
-  setNotes: (arg: string[]) => void,
+  notes: string,
+  setNotes: (arg: string) => void,
   // data pertaining to the read only view
   isHiveDropDialogOpen: boolean,    
   setIsHiveDropDialogOpen: (arg: boolean) => void
@@ -59,7 +59,7 @@ export const InspectionDataContext = React.createContext<ContextType>({
   setHivesGraded: () => {},
   average: [],
   setAverage: () => {},
-  notes: [],
+  notes: "",
   setNotes: () => {},
   isHiveDropDialogOpen: false,
   setIsHiveDropDialogOpen: () => {}
@@ -81,7 +81,7 @@ const InspectionDataProvider = ({ children }: Props) => {
   const [hivesCounted, setHivesCounted] = React.useState<number[]>([]);
   const [hivesGraded, setHivesGraded] = React.useState<number[]>([]);
   const [average, setAverage] = React.useState<number[]>([]);
-  const [notes, setNotes] = React.useState<string[]>([]);
+  const [notes, setNotes] = React.useState<string>("");
   const [isHiveDropDialogOpen, setIsHiveDropDialogOpen] = React.useState<boolean>(false);
   return (
     <InspectionDataContext.Provider value={{ 
