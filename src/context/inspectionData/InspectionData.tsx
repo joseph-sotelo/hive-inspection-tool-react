@@ -7,7 +7,9 @@ interface ContextType {
   totalHivesContracted: number;
   setTotalHivesContracted: (arg: number) => void;
   orchardHiveGrades: number[][],
-  setOrchardHiveGrades: (arg: number[][]) => void,  
+  setOrchardHiveGrades: (arg: number[][]) => void,
+  userLocation: number[],
+  setUserLocation: (arg: number[]) => void,
   // data pertaining to an individual hive drop within that orchard
   hiveDropHiveGrades: number[],
   setHiveDropHiveGrades: (arg: number[]) => void,
@@ -31,6 +33,8 @@ export const InspectionDataContext = React.createContext<ContextType>({
   setTotalHivesContracted: () => {},
   orchardHiveGrades: [],
   setOrchardHiveGrades: () => {},
+  userLocation: [],
+  setUserLocation: () => {},
   hiveDropHiveGrades: [],
   setHiveDropHiveGrades: () => {},
   hivesCounted: [],
@@ -52,6 +56,7 @@ const InspectionDataProvider = ({ children }: Props) => {
   const [totalHivesContracted, setTotalHivesContracted] = React.useState<number>(0);
   const [isShown, setIsShown] = React.useState<boolean>(false);
   const [orchardHiveGrades, setOrchardHiveGrades] = React.useState<number[][]>([]);
+  const [userLocation, setUserLocation] = React.useState<number[]>([]);
   const [hiveDropHiveGrades, setHiveDropHiveGrades] = React.useState<number[]>([]);
   const [hivesCounted, setHivesCounted] = React.useState<number[]>([]);
   const [hivesGraded, setHivesGraded] = React.useState<number[]>([]);
@@ -66,6 +71,8 @@ const InspectionDataProvider = ({ children }: Props) => {
         setTotalHivesContracted,
         orchardHiveGrades,
         setOrchardHiveGrades,
+        userLocation,
+        setUserLocation,
         hiveDropHiveGrades,
         setHiveDropHiveGrades, 
         hivesCounted, 

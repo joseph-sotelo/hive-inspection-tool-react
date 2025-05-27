@@ -36,7 +36,8 @@ export default function Map() {
     setAverage, 
     setOrchardHiveGrades,     
     setNotes,    
-    setIsHiveDropDialogOpen
+    setIsHiveDropDialogOpen,
+    setUserLocation
   } = useInspectionData();
 
   // State for mobile sheet
@@ -75,6 +76,28 @@ export default function Map() {
     });
     view.ui.add(track, "top-right");
     track.start();
+
+    // Listen for location updates
+    track.on("track", (event) => {
+      const location = event.position;
+      setUserLocation([location.longitude, location.latitude]);
+    });
+
+    // Immediately fetch initial location before waiting on "track" events
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setUserLocation([longitude, latitude]); // match your format
+        },
+        (error) => {
+          console.error("Error getting initial location:", error);
+        },
+        {
+          enableHighAccuracy: true
+        }
+      );
+    }
 
     // Create feature updater function
     const updateFeature = createFeatureUpdater(orchardLayer, featureObjectIdRef);

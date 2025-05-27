@@ -34,7 +34,8 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
         hivesCounted, 
         setHivesCounted, 
         notes, 
-        setNotes 
+        setNotes,
+        userLocation
     } = useInspectionData();
     // the minimum percentage of hives that need to be graded
     const [samplePercentage, setSamplePercentage] = useState<number>(0);    
@@ -66,7 +67,9 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
             }}>
                 <DialogTrigger>
                     <div id="button-wrapper" className={clsx(isShown ? "block" : "hidden")}>
-                        <Button variant="action" size="action">
+                        <Button variant="action" size="action" onClick={() => {
+                            console.log("userLocation:", userLocation);
+                        }}>
                             Add hive-drop
                         </Button>
                     </div>
