@@ -30,7 +30,7 @@ export default function HiveDropDialog({ props }: { props: HiveDropDialogProps }
                 <DialogContent>
                     <DialogHeader>
                         <DialogTitle>
-                            Hive Drop {props.object_id}
+                            Hive Drop {props.index}
                         </DialogTitle>
                     </DialogHeader>                                    
                         <div className="grid w-full max-w-sm items-center gap-1.5">
@@ -50,7 +50,8 @@ export default function HiveDropDialog({ props }: { props: HiveDropDialogProps }
                             {props.grades.map((value, index) => (
                                 <div key={index} className="flex gap-2">
                                     <p>Hive {index}</p>
-                                    <Slider                                     
+                                    <Slider     
+                                    disabled
                                     defaultValue={[value]}
                                     max={24}
                                     step={1}

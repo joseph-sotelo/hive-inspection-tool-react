@@ -25,4 +25,5 @@ export type HiveDropDialogProps = {
   count: number, 
   grades: number[],
   notes: string,  
+  index: number
 }

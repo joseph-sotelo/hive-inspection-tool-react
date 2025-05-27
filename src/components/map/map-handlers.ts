@@ -109,6 +109,7 @@ export const handleOrchardFeatureSelection = (
   loopThroughHiveDrops();
 };
 
+// handle selection of hivedrop
 export const handleHiveDropFeatureSelection = (
   feature: __esri.Graphic,  
   setHiveDropDialogProps: (props: HiveDropDialogProps) => void,  
@@ -117,18 +118,18 @@ export const handleHiveDropFeatureSelection = (
 
   let grades: number[] = [];
   
-  for (const grade of HIVEDROP_FIELD_NAMES.GRADES) {
+  for (const grade of HIVEDROP_FIELD_NAMES.GRADES) {    
     const value = feature.attributes[grade];
     if (value === null) break;
     grades.push(value);
-  }        
-
+  }          
   const hiveDropDialogProps: HiveDropDialogProps = {
     object_id: feature.attributes[HIVEDROP_FIELD_NAMES.OBJECT_ID],
     record_id: feature.attributes[HIVEDROP_FIELD_NAMES.F_RECORD_ID],
     count: feature.attributes[HIVEDROP_FIELD_NAMES.HIVES_COUNTED],
     grades: grades,
-    notes: feature.attributes[HIVEDROP_FIELD_NAMES.NOTES]
+    notes: feature.attributes[HIVEDROP_FIELD_NAMES.NOTES],
+    index: feature.attributes[HIVEDROP_FIELD_NAMES.INDEX]
   }
   setHiveDropDialogProps(hiveDropDialogProps);
   setIsHiveDropDialogOpen(true);

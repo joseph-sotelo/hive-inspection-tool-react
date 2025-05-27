@@ -75,5 +75,6 @@ export const HIVEDROP_FIELD_NAMES = {
     "grade23",
     "grade24"
   ],
-  NOTES: "notes"
+  NOTES: "notes",
+  INDEX: "F_index"
 }

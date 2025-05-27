@@ -35,8 +35,7 @@ export default function Map() {
     setHivesGraded, 
     setAverage, 
     setOrchardHiveGrades,     
-    setNotes,
-    isHiveDropDialogOpen,
+    setNotes,    
     setIsHiveDropDialogOpen
   } = useInspectionData();
 
@@ -116,7 +115,7 @@ export default function Map() {
           handleHiveDropFeatureSelection(
             feature.graphic,            
             setHiveDropDialogProps,   
-            setIsHiveDropDialogOpen
+            setIsHiveDropDialogOpen,
           );
         }
       } else {
