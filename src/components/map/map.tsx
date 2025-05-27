@@ -10,11 +10,12 @@ import "@arcgis/core/assets/esri/themes/light/main.css";
 // UI imports
 import { MobileSheet } from "../mobile-sheet";
 import InspectionControls from "../inspection-controls/inspection-controls";
-import { MobileSheetProps } from "../types";
+import { MobileSheetProps, HiveDropDialogProps } from "../types";
+import HiveDropDialog from "../hivedrop-dialog/hivedrop-dialog";
 
 // Map utilities
 import { createOrchardsLayer, createHiveDropsLayer, createPerimitersLayer } from "./layer-config";
-import { handleFeatureSelection, handleDeselection } from "./map-handlers";
+import { handleOrchardFeatureSelection, handleDeselection, handleHiveDropFeatureSelection } from "./map-handlers";
 import { createFeatureUpdater } from "./feature-updater";
 import { MAP_CONFIG, ORCHARD_FIELD_NAMES } from "@/constants";
 import { ENV } from "@/utils/env-validation";
@@ -33,17 +34,18 @@ export default function Map() {
     setHivesCounted, 
     setHivesGraded, 
     setAverage, 
-    hivesCounted, 
-    hivesGraded, 
-    average, 
-    setOrchardHiveGrades, 
-    orchardHiveGrades,
-    setNotes
+    setOrchardHiveGrades,     
+    setNotes,
+    isHiveDropDialogOpen,
+    setIsHiveDropDialogOpen
   } = useInspectionData();
 
   // State for mobile sheet
   const [mobileSheetProps, setMobileSheetProps] = useState<MobileSheetProps | null>(null);
   const [isMobileSheetOpen, setIsMobileSheetOpen] = useState(false);  
+
+  // State for hive drop dialog
+  const [hiveDropDialogProps, setHiveDropDialogProps] = useState<HiveDropDialogProps | null>(null);
   
   // Use ref for feature ID to avoid stale closure issues
   const featureObjectIdRef = useRef<number>(0);
@@ -87,27 +89,36 @@ export default function Map() {
       );
 
       // Handle feature selection or deselection
-      if (feature?.graphic.attributes[ORCHARD_FIELD_NAMES.FIELDMAP_ID_PRIMARY] != undefined) {
-        // Store feature ID for updates
-        featureObjectIdRef.current = feature.graphic.attributes[ORCHARD_FIELD_NAMES.OBJECT_ID];
-        
-        handleFeatureSelection(
-          feature.graphic,
-          orchardLayer,
-          hiveDropsLayer,
-          perimitersLayer,
-          view,
-          setMobileSheetProps,
-          setIsMobileSheetOpen,
-          updateFeature,
-          setHivesCounted,
-          setHivesGraded,
-          setAverage,          
-          setOrchardHiveGrades,
-          setNotes
-        );
+      if (feature?.graphic) {
+        if (feature.graphic.layer === orchardLayer && feature.graphic.attributes[ORCHARD_FIELD_NAMES.FIELDMAP_ID_PRIMARY] != undefined) {
+          // Store feature ID for updates
+          featureObjectIdRef.current = feature.graphic.attributes[ORCHARD_FIELD_NAMES.OBJECT_ID];
+          
+          handleOrchardFeatureSelection(
+            feature.graphic,
+            orchardLayer,
+            hiveDropsLayer,
+            perimitersLayer,
+            view,
+            setMobileSheetProps,
+            setIsMobileSheetOpen,
+            updateFeature,
+            setHivesCounted,
+            setHivesGraded,
+            setAverage,          
+            setOrchardHiveGrades,
+            setNotes
+          );
 
-        setTotalHivesContracted(feature.graphic.attributes[ORCHARD_FIELD_NAMES.HIVES_CONTRACTED]);
+          setTotalHivesContracted(feature.graphic.attributes[ORCHARD_FIELD_NAMES.HIVES_CONTRACTED]);
+        } else if (feature.graphic.layer === hiveDropsLayer) {
+          setIsHiveDropDialogOpen(true);
+          handleHiveDropFeatureSelection(
+            feature.graphic,            
+            setHiveDropDialogProps,   
+            setIsHiveDropDialogOpen
+          );
+        }
       } else {
         handleDeselection(
           orchardLayer,
@@ -133,6 +144,14 @@ export default function Map() {
         <MobileSheet 
           props={mobileSheetProps} 
           key={mobileSheetProps.fieldmap_id_primary}
+        />
+      )}
+      
+      {/* Conditionally render hive drop dialog */}
+      {hiveDropDialogProps && (
+        <HiveDropDialog 
+          props={hiveDropDialogProps}           
+          key={hiveDropDialogProps.record_id}          
         />
       )}
       

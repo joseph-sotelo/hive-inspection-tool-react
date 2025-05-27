@@ -18,3 +18,11 @@ export type FormData = {
 export type MobileSheetProps = FormData & {
   onMarkComplete: (formData: FormData) => void
 }
+
+export type HiveDropDialogProps = {
+  object_id: string,
+  record_id: string,
+  count: number, 
+  grades: number[],
+  notes: string,  
+}

@@ -1,10 +1,10 @@
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import MapView from "@arcgis/core/views/MapView";
-import { MobileSheetProps } from "../types";
+import { HiveDropDialogProps, MobileSheetProps } from "../types";
 import { MAP_CONFIG, ORCHARD_FIELD_NAMES, LAYER_EXPRESSIONS, HIVEDROP_FIELD_NAMES } from "@/constants";
 
 // Handle feature selection and layer visibility
-export const handleFeatureSelection = (
+export const handleOrchardFeatureSelection = (
   feature: __esri.Graphic,
   orchardLayer: FeatureLayer,
   hiveDropsLayer: FeatureLayer,
@@ -17,7 +17,7 @@ export const handleFeatureSelection = (
   setHivesGraded: (hivesGraded: number[]) => void,
   setAverage: (average: number[]) => void,  
   setOrchardHiveGrades: (orchardHiveGrades: number[][]) => void,
-  setNotes: (notes: string[]) => void
+  setNotes: (notes: string[]) => void,  
 ) => {
   // Show details for selected feature and hide everything else
   orchardLayer.visible = false;
@@ -100,7 +100,7 @@ export const handleFeatureSelection = (
       setAverage(newAverage);
       setOrchardHiveGrades(newOrchardHiveGrades);      
       setNotes(newNotes);
-      
+
     } catch (error) {
       console.error("Error querying hive drops:", error);
     }
@@ -108,6 +108,31 @@ export const handleFeatureSelection = (
 
   loopThroughHiveDrops();
 };
+
+export const handleHiveDropFeatureSelection = (
+  feature: __esri.Graphic,  
+  setHiveDropDialogProps: (props: HiveDropDialogProps) => void,  
+  setIsHiveDropDialogOpen: (open: boolean) => void
+) => {  
+
+  let grades: number[] = [];
+  
+  for (const grade of HIVEDROP_FIELD_NAMES.GRADES) {
+    const value = feature.attributes[grade];
+    if (value === null) break;
+    grades.push(value);
+  }        
+
+  const hiveDropDialogProps: HiveDropDialogProps = {
+    object_id: feature.attributes[HIVEDROP_FIELD_NAMES.OBJECT_ID],
+    record_id: feature.attributes[HIVEDROP_FIELD_NAMES.F_RECORD_ID],
+    count: feature.attributes[HIVEDROP_FIELD_NAMES.HIVES_COUNTED],
+    grades: grades,
+    notes: feature.attributes[HIVEDROP_FIELD_NAMES.NOTES]
+  }
+  setHiveDropDialogProps(hiveDropDialogProps);
+  setIsHiveDropDialogOpen(true);
+}
 
 // Handle deselection (clicking empty space)
 export const handleDeselection = (
