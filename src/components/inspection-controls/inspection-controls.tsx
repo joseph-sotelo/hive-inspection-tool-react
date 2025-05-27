@@ -17,7 +17,7 @@ import clsx from "clsx";
 
 // context
 import { useInspectionData } from "@/context/inspectionData"
-import { useArray2dReplace, useArrayReplace } from "@/hooks";
+import { useArray2dReplace } from "@/hooks";
 
 interface InspectionControlsProps {
     totalHivesContracted: number;
@@ -56,16 +56,11 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
             setSamplePercentage(percentage);            
         }
     }, [orchardHiveGrades, totalHivesContracted]);
-    // ensures the dialog starts off empty 
-    const resetDialog = () => {
-        setHiveDropHiveGrades([]);
-    };
 
     return (
         <div id="inspection-controls-wrapper" className="absolute w-full z-5 flex gap-2 p-2 items-start">                                              
             <Dialog open={isOpen} onOpenChange={(open) => {
-                setIsOpen(open);
-                if (!open) resetDialog();
+                setIsOpen(open);                
             }}>
                 <DialogTrigger>
                     <div id="button-wrapper" className={clsx(isShown ? "block" : "hidden")}>
@@ -95,6 +90,7 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
                                     const newHivesCounted = [...hivesCounted];
                                     newHivesCounted[hiveDropIndex] = Number(event.target.value);
                                     setHivesCounted(newHivesCounted);
+                                    console.log("hivesCounted:", hivesCounted)
                                 }}/>
                             <p className="text-sm text-muted-foreground">How many hives are there in this hive-drop?</p>
                         </div>
@@ -113,8 +109,7 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
                                         const newGrades = [...hiveDropHiveGrades];
                                         newGrades[index] = newValue[0];
                                         setHiveDropHiveGrades(newGrades);
-
-                                        
+                                        console.log("hiveDropHiveGrades", hiveDropHiveGrades)
                                     }}
                                     />                                
                                 </div>
@@ -122,8 +117,6 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
                             <Button variant="text" size="text" onClick={() => {  
                                 setHiveDropHiveGrades([...hiveDropHiveGrades, 12])                                
                                 setOrchardHiveGrades(useArray2dReplace({array: orchardHiveGrades, index: hiveDropIndex, value: hiveDropHiveGrades}))
-                                console.log("hiveDropHiveGrades", hiveDropHiveGrades)
-                                console.log("orchardHiveGrades", orchardHiveGrades)
                             }}>Add hive +</Button>
                         </div>                    
                         <Separator />
@@ -135,11 +128,10 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
                         }}/>
                         <Button variant="customSecondary" size="action">Add Photos</Button>
                         <DialogFooter>
-                            <Button variant="action" size="action" onClick={() => {                                
-                                setHiveDropIndex(hiveDropIndex + 1);      
+                            <Button variant="action" size="action" onClick={() => {                                                                      
                                 setApplyHiveDrop(applyHiveDrop + 1);
-                                setIsOpen(false);
-                                resetDialog();
+                                setIsOpen(false);                                
+                                setHiveDropIndex(hiveDropIndex + 1);
                             }}>Finish</Button>
                         </DialogFooter>
                 </DialogContent>            

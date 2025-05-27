@@ -46,7 +46,8 @@ export default function Map() {
     hiveDropHiveGrades,
     notes,
     recordId,
-    userLocation
+    userLocation,
+    hivesCounted
   } = useInspectionData();
 
   // State for mobile sheet
@@ -69,7 +70,7 @@ export default function Map() {
 
     // Create map with all layers
     const map = new ArcGISMap({
-      basemap: "arcgis/imagery",
+      basemap: "arcgis/outdoor",
       layers: [perimitersLayer, orchardLayer, hiveDropsLayer]
     });
 
@@ -172,18 +173,24 @@ export default function Map() {
   }, []);
 
   // Create function for adding hive drop features
-  useEffect(() => {
+
+  useEffect(() => {    
     if (applyHiveDrop > 0 && hiveDropsLayerRef.current) {
       addHiveDrop(
         hiveDropsLayerRef.current,
-        hiveDropIndex,        
+        hiveDropIndex,
+        hivesCounted,
         hiveDropHiveGrades,
         notes,
         recordId,
         userLocation
       );
     }
-  }, [applyHiveDrop, hiveDropIndex, hiveDropHiveGrades, notes, recordId, userLocation]);
+  }, [applyHiveDrop]);  
+
+  useEffect(() => {
+    console.log("hiveDropHiveGrades", hiveDropHiveGrades)
+  }, [hiveDropHiveGrades]);
 
   return (
     <div>

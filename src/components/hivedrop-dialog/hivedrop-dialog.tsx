@@ -21,7 +21,7 @@ export default function HiveDropDialog({ props }: { props: HiveDropDialogProps }
     // const resetDialog = () => {
     //     setHiveDropHiveGrades([]);
     // };
-
+    
     return (
         <div id="hivedrop-dialog-wrapper" className="absolute w-full z-5 flex gap-2 p-2 items-start">                                              
             <Dialog open={isHiveDropDialogOpen}>

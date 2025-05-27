@@ -6,12 +6,14 @@ import { HIVEDROP_FIELD_NAMES } from "@/constants";
 export const addHiveDrop = (
   hiveDropLayer: FeatureLayer,
   hiveDropIndex: number,
-  // hiveDropLocations: number[][],
+  hivesCounted: number[],
   hiveDropHiveGrades: number[],
   notes: string[],
   recordId: string,
   userLocation: number[]
 ) => {  
+
+  console.log("hiveDropHiveGrades from add-hivedrop", hiveDropHiveGrades)
  
   const newHiveDrop = new Graphic({
     geometry: {
@@ -21,6 +23,7 @@ export const addHiveDrop = (
     },
     attributes: {
       [HIVEDROP_FIELD_NAMES.OBJECT_ID]: hiveDropIndex,
+      [HIVEDROP_FIELD_NAMES.HIVES_COUNTED]: hivesCounted[hiveDropIndex -1],
       ...HIVEDROP_FIELD_NAMES.GRADES.reduce((acc, grade, index) => ({
         ...acc,
         [grade]: hiveDropHiveGrades[index]
@@ -29,8 +32,8 @@ export const addHiveDrop = (
       [HIVEDROP_FIELD_NAMES.F_RECORD_ID]: recordId,
       "F_latitude": userLocation[1],
       "F_longitude": userLocation[0]
-    }
-  });
+    }    
+  });  
 
   // Apply updates to server
   hiveDropLayer
