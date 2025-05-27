@@ -4,6 +4,8 @@ interface ContextType {
   // data pertaining to entire orchard
   isShown: boolean;
   setIsShown: (arg: boolean) => void;
+  recordId: string,
+  setRecordId: (arg: string) => void,
   totalHivesContracted: number;
   setTotalHivesContracted: (arg: number) => void;
   orchardHiveGrades: number[][],
@@ -11,6 +13,12 @@ interface ContextType {
   userLocation: number[],
   setUserLocation: (arg: number[]) => void,
   // data pertaining to an individual hive drop within that orchard
+  applyHiveDrop: number,
+  setApplyHiveDrop: (arg: number) => void,
+  hiveDropIndex: number,
+  setHiveDropIndex: (arg: number) => void,
+  hiveDropLocations: number[][],
+  setHiveDropLocations: (arg: number[][]) => void,
   hiveDropHiveGrades: number[],
   setHiveDropHiveGrades: (arg: number[]) => void,
   hivesCounted: number[],
@@ -29,12 +37,20 @@ interface ContextType {
 export const InspectionDataContext = React.createContext<ContextType>({
   isShown: false,
   setIsShown: () => {},
+  recordId: "",
+  setRecordId: () => {},
   totalHivesContracted: 0,
   setTotalHivesContracted: () => {},
   orchardHiveGrades: [],
   setOrchardHiveGrades: () => {},
   userLocation: [],
   setUserLocation: () => {},
+  applyHiveDrop: 0,
+  setApplyHiveDrop: () => {},
+  hiveDropIndex: 0,
+  setHiveDropIndex: () => {},
+  hiveDropLocations: [],
+  setHiveDropLocations: () => {},
   hiveDropHiveGrades: [],
   setHiveDropHiveGrades: () => {},
   hivesCounted: [],
@@ -53,10 +69,14 @@ interface Props {
   children: React.ReactNode;
 }
 const InspectionDataProvider = ({ children }: Props) => {
+  const [recordId, setRecordId] = React.useState<string>("");
   const [totalHivesContracted, setTotalHivesContracted] = React.useState<number>(0);
   const [isShown, setIsShown] = React.useState<boolean>(false);
   const [orchardHiveGrades, setOrchardHiveGrades] = React.useState<number[][]>([]);
   const [userLocation, setUserLocation] = React.useState<number[]>([]);
+  const [applyHiveDrop, setApplyHiveDrop] = React.useState<number>(0);
+  const [hiveDropIndex, setHiveDropIndex] = React.useState<number>(0);
+  const [hiveDropLocations, setHiveDropLocations] = React.useState<number[][]>([]);
   const [hiveDropHiveGrades, setHiveDropHiveGrades] = React.useState<number[]>([]);
   const [hivesCounted, setHivesCounted] = React.useState<number[]>([]);
   const [hivesGraded, setHivesGraded] = React.useState<number[]>([]);
@@ -67,12 +87,20 @@ const InspectionDataProvider = ({ children }: Props) => {
     <InspectionDataContext.Provider value={{ 
         isShown,        
         setIsShown,
+        recordId,
+        setRecordId,
         totalHivesContracted,
         setTotalHivesContracted,
         orchardHiveGrades,
         setOrchardHiveGrades,
         userLocation,
         setUserLocation,
+        applyHiveDrop,
+        setApplyHiveDrop,
+        hiveDropIndex,
+        setHiveDropIndex,
+        hiveDropLocations,
+        setHiveDropLocations,
         hiveDropHiveGrades,
         setHiveDropHiveGrades, 
         hivesCounted, 

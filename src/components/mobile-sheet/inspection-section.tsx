@@ -47,7 +47,8 @@ export default function InspectionSection({ toggleOpen }: InspectionSectionProps
           size="action" 
           onClick={() => (
             setIsShown(true),
-            toggleOpen()            
+            toggleOpen(),
+            console.log("location: ", location)     
           )}
         >
         Begin Inspection

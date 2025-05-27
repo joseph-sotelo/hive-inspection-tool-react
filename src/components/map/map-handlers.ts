@@ -18,6 +18,7 @@ export const handleOrchardFeatureSelection = (
   setAverage: (average: number[]) => void,  
   setOrchardHiveGrades: (orchardHiveGrades: number[][]) => void,
   setNotes: (notes: string[]) => void,  
+  setRecordId: (recordId: string) => void
 ) => {
   // Show details for selected feature and hide everything else
   orchardLayer.visible = false;
@@ -53,6 +54,8 @@ export const handleOrchardFeatureSelection = (
     assistants: feature.attributes[ORCHARD_FIELD_NAMES.ASSISTANTS],
     onMarkComplete: updateFeature
   };
+
+  setRecordId(feature.attributes[ORCHARD_FIELD_NAMES.F_RECORD_ID])
 
   setMobileSheetProps(mobileSheetContent);
   setIsMobileSheetOpen(true);  
@@ -106,7 +109,7 @@ export const handleOrchardFeatureSelection = (
     }
   }
 
-  loopThroughHiveDrops();
+  // loopThroughHiveDrops();
 };
 
 // handle selection of hivedrop

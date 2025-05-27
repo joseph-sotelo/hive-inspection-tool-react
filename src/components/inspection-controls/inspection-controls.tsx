@@ -17,6 +17,7 @@ import clsx from "clsx";
 
 // context
 import { useInspectionData } from "@/context/inspectionData"
+import { useArray2dReplace, useArrayReplace } from "@/hooks";
 
 interface InspectionControlsProps {
     totalHivesContracted: number;
@@ -35,14 +36,15 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
         setHivesCounted, 
         notes, 
         setNotes,
-        userLocation
+        hiveDropIndex,
+        setHiveDropIndex,        
+        applyHiveDrop,
+        setApplyHiveDrop
     } = useInspectionData();
     // the minimum percentage of hives that need to be graded
     const [samplePercentage, setSamplePercentage] = useState<number>(0);    
     // toggles the dialog open or closed
-    const [isOpen, setIsOpen] = useState(false);
-    // the index of the current hive drop. Used for updating the totalHiveGrades array
-    const [currentHiveDropIndex, setCurrentHiveDropIndex] = useState<number>(0);
+    const [isOpen, setIsOpen] = useState(false);        
     // updates the sample percentage whenever the user adds a new hive
 
     useEffect(() => {
@@ -67,9 +69,7 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
             }}>
                 <DialogTrigger>
                     <div id="button-wrapper" className={clsx(isShown ? "block" : "hidden")}>
-                        <Button variant="action" size="action" onClick={() => {
-                            console.log("userLocation:", userLocation);
-                        }}>
+                        <Button variant="action" size="action">
                             Add hive-drop
                         </Button>
                     </div>
@@ -81,7 +81,7 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
                         </DialogTitle>
                         <Progress 
                             className="border-1 border-foreground-flexible-light"
-                            value={(hiveDropHiveGrades.length / (hivesCounted[currentHiveDropIndex] * samplePercentage)) * 100}
+                            value={(hiveDropHiveGrades.length / (hivesCounted[hiveDropIndex] * samplePercentage)) * 100}
                         />
                     </DialogHeader>                
                     <Button variant="customSecondary"> Re-capture Location </Button>
@@ -89,12 +89,11 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
                             <Label htmlFor="count">Hives counted</Label>
                             <Input 
                                 type="number" 
-                                id="count" 
-                                value={hivesCounted[currentHiveDropIndex]}
+                                id="count"                                 
                                 placeholder="number" 
                                 onChange={(event) => {
                                     const newHivesCounted = [...hivesCounted];
-                                    newHivesCounted[currentHiveDropIndex] = Number(event.target.value);
+                                    newHivesCounted[hiveDropIndex] = Number(event.target.value);
                                     setHivesCounted(newHivesCounted);
                                 }}/>
                             <p className="text-sm text-muted-foreground">How many hives are there in this hive-drop?</p>
@@ -102,7 +101,7 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
                         <Separator />
                         <h4>Hives graded: {hiveDropHiveGrades.length}</h4>
                         <div className="max-h-[300px] overflow-y-scroll">
-                            {orchardHiveGrades[currentHiveDropIndex]?.map((value, index) => (
+                            {hiveDropHiveGrades.map((value, index) => (
                                 <div key={index} className="flex gap-2">
                                     <p>Hive {index}</p>
                                     <Slider 
@@ -111,33 +110,34 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
                                     step={1}
                                     color="brand-light"
                                     onValueChange={(newValue) => {
-                                        const newHiveDropHiveGrades = [...hiveDropHiveGrades];
-                                        newHiveDropHiveGrades[index] = newValue[0];
-                                        setHiveDropHiveGrades(newHiveDropHiveGrades);
+                                        const newGrades = [...hiveDropHiveGrades];
+                                        newGrades[index] = newValue[0];
+                                        setHiveDropHiveGrades(newGrades);
+
                                         
-                                        const newOrchardHiveGrades = [...orchardHiveGrades];
-                                        newOrchardHiveGrades[currentHiveDropIndex] = newHiveDropHiveGrades;
-                                        setOrchardHiveGrades(newOrchardHiveGrades);
                                     }}
                                     />                                
                                 </div>
                             ))}                        
-                            <Button variant="text" size="text" onClick={() => {
-                                setHiveDropHiveGrades([...hiveDropHiveGrades, 12])
+                            <Button variant="text" size="text" onClick={() => {  
+                                setHiveDropHiveGrades([...hiveDropHiveGrades, 12])                                
+                                setOrchardHiveGrades(useArray2dReplace({array: orchardHiveGrades, index: hiveDropIndex, value: hiveDropHiveGrades}))
+                                console.log("hiveDropHiveGrades", hiveDropHiveGrades)
+                                console.log("orchardHiveGrades", orchardHiveGrades)
                             }}>Add hive +</Button>
                         </div>                    
                         <Separator />
                         <Label htmlFor="notes">Notes</Label>
-                        <Textarea id="notes" placeholder="Notes" value={notes[currentHiveDropIndex]} onChange={(event) => {
+                        <Textarea id="notes" placeholder="Notes" value={notes[hiveDropIndex]} onChange={(event) => {
                             const newNotes = [...notes];
-                            newNotes[currentHiveDropIndex] = event.target.value;
+                            newNotes[hiveDropIndex] = event.target.value;
                             setNotes(newNotes);
                         }}/>
                         <Button variant="customSecondary" size="action">Add Photos</Button>
                         <DialogFooter>
-                            <Button variant="action" size="action" onClick={() => {
-                                setOrchardHiveGrades([...orchardHiveGrades, hiveDropHiveGrades])
-                                setCurrentHiveDropIndex(currentHiveDropIndex + 1);      
+                            <Button variant="action" size="action" onClick={() => {                                
+                                setHiveDropIndex(hiveDropIndex + 1);      
+                                setApplyHiveDrop(applyHiveDrop + 1);
                                 setIsOpen(false);
                                 resetDialog();
                             }}>Finish</Button>

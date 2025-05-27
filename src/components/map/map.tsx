@@ -6,6 +6,7 @@ import ArcGISMap from "@arcgis/core/Map";
 import MapView from "@arcgis/core/views/MapView";
 import Track from "@arcgis/core/widgets/Track";
 import "@arcgis/core/assets/esri/themes/light/main.css";
+import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 
 // UI imports
 import { MobileSheet } from "../mobile-sheet";
@@ -19,6 +20,7 @@ import { handleOrchardFeatureSelection, handleDeselection, handleHiveDropFeature
 import { createFeatureUpdater } from "./feature-updater";
 import { MAP_CONFIG, ORCHARD_FIELD_NAMES } from "@/constants";
 import { ENV } from "@/utils/env-validation";
+import { addHiveDrop } from "./add-hivedrop";
 
 // context
 import { useInspectionData } from "@/context/inspectionData/useInspectionData";
@@ -37,7 +39,14 @@ export default function Map() {
     setOrchardHiveGrades,     
     setNotes,    
     setIsHiveDropDialogOpen,
-    setUserLocation
+    setUserLocation,
+    applyHiveDrop,
+    setRecordId,
+    hiveDropIndex,
+    hiveDropHiveGrades,
+    notes,
+    recordId,
+    userLocation
   } = useInspectionData();
 
   // State for mobile sheet
@@ -49,12 +58,14 @@ export default function Map() {
   
   // Use ref for feature ID to avoid stale closure issues
   const featureObjectIdRef = useRef<number>(0);
+  const hiveDropsLayerRef = useRef<FeatureLayer | null>(null);
 
   useEffect(() => {
     // Create all feature layers using extracted functions
     const orchardLayer = createOrchardsLayer();
     const hiveDropsLayer = createHiveDropsLayer();
     const perimitersLayer = createPerimitersLayer();
+    hiveDropsLayerRef.current = hiveDropsLayer;
 
     // Create map with all layers
     const map = new ArcGISMap({
@@ -99,7 +110,7 @@ export default function Map() {
       );
     }
 
-    // Create feature updater function
+    // Create function for updating orchard features
     const updateFeature = createFeatureUpdater(orchardLayer, featureObjectIdRef);
 
     // Handle map clicks
@@ -129,7 +140,8 @@ export default function Map() {
             setHivesGraded,
             setAverage,          
             setOrchardHiveGrades,
-            setNotes
+            setNotes,
+            setRecordId
           );
 
           setTotalHivesContracted(feature.graphic.attributes[ORCHARD_FIELD_NAMES.HIVES_CONTRACTED]);
@@ -158,6 +170,20 @@ export default function Map() {
       }
     };
   }, []);
+
+  // Create function for adding hive drop features
+  useEffect(() => {
+    if (applyHiveDrop > 0 && hiveDropsLayerRef.current) {
+      addHiveDrop(
+        hiveDropsLayerRef.current,
+        hiveDropIndex,        
+        hiveDropHiveGrades,
+        notes,
+        recordId,
+        userLocation
+      );
+    }
+  }, [applyHiveDrop, hiveDropIndex, hiveDropHiveGrades, notes, recordId, userLocation]);
 
   return (
     <div>
