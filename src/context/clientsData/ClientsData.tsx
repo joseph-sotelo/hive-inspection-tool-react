@@ -1,7 +1,7 @@
 import React from "react";
 
 interface ContextType {
-
+  // data pertaining to all clients
 }
 
 export const ClientsDataContext = React.createContext<ContextType>({
