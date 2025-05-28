@@ -17,7 +17,7 @@ config.request.useIdentity = false;
 config.apiKey = import.meta.env.VITE_ARCGIS_BASEMAP_API_KEY as string;
 const URL = import.meta.env.VITE_ARCGIS_ORCHARDS_LAYER_GEOJSON_URL;
 
-export const getvalues = async (outField: string) => {
+export const getValues = async (outField: string) => {
 
     const query = {
         outFields: [outField],
@@ -42,7 +42,7 @@ export const comboBoxOptions = (outField: string) => {
       })
 
       useEffect(() => {
-        getvalues(outField).then((values) => {
+        getValues(outField).then((values) => {
             const comboBoxOptions = values.map((value) =>({
                 label: value as string,
                 value: value as string

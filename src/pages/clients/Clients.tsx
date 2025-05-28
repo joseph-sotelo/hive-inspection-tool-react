@@ -1,7 +1,7 @@
+import ClientsListRenderer from '@/components/clients/clients-list-renderer';
+
 export default function Clients() {
     return (
-        <div>
-            <h1>Clients</h1>
-        </div>
+        <ClientsListRenderer />
     );
 }
