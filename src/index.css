@@ -16,7 +16,6 @@ html, body, #root {
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
@@ -24,7 +23,6 @@ html, body, #root {
   --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
@@ -47,12 +45,26 @@ html, body, #root {
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
-  --color-status-low: oklch(0.66 0.1711 24.2);
+
+  /* customized vars */
+  --color-background: var(--background);
+  --color-secondary: var(--secondary);
+  
+  /* custom vars */
+  --color-background-secondary: oklch(0.97 0.0025 165.08);
+  --shadow-md-reverse: 0 -4px 6px -1px rgb(0 0 0 / 0.1), 0 -2px 4px -2px rgb(0 0 0 / 0.1);
+  --color-foreground-flexible: oklch(0 0 0 / 0.7);
+  --color-foreground-flexible-light: oklch(0 0 0 / 0.1);
+  --color-status-fail: oklch(0.73 0.1672 13.59);
+  --color-status-low: oklch(0.79 0.1462 58.55);
+  --color-status-pass: oklch(0.89 0.2093 121.36);
+  --color-brand-light: oklch(0.81 0.1389 169.53);
+  --color-brand-dark: oklch(0.56 0.103 176.56);
+  --inset-shadow-md: inset 0 2px 6px -1px rgb(0 0 0 / 0.1), inset 0 2px 4px -2px rgb(0 0 0 / 0.1)
 }
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
@@ -67,7 +79,6 @@ html, body, #root {
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
   --chart-1: oklch(0.646 0.222 41.116);
@@ -83,6 +94,10 @@ html, body, #root {
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  /* customized vars */
+  --background: oklch(0.99 0.0066 286.28);
+  --border: oklch(0.89 0 0)
 }
 
 .dark {
@@ -133,5 +148,5 @@ html, body, #root {
 h4 {
   font-size: 1.25rem;
   line-height: 1.75rem; 
-  font-weight: 600; 
+  font-weight: 700; 
 }

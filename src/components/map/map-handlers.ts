@@ -1,0 +1,151 @@
+import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
+import MapView from "@arcgis/core/views/MapView";
+import { HiveDropDialogProps, MobileSheetProps } from "../types";
+import { MAP_CONFIG, ORCHARD_FIELD_NAMES, LAYER_EXPRESSIONS, HIVEDROP_FIELD_NAMES } from "@/constants";
+
+// Handle feature selection and layer visibility
+export const handleOrchardFeatureSelection = (
+  feature: __esri.Graphic,
+  orchardLayer: FeatureLayer,
+  hiveDropsLayer: FeatureLayer,
+  perimitersLayer: FeatureLayer,
+  view: MapView,
+  setMobileSheetProps: (props: MobileSheetProps) => void,
+  setIsMobileSheetOpen: (open: boolean) => void,
+  updateFeature: (formData: any) => void,
+  setHivesCounted: (hivesCounted: number[]) => void,
+  setHivesGraded: (hivesGraded: number[]) => void,
+  setAverage: (average: number[]) => void,  
+  setOrchardHiveGrades: (orchardHiveGrades: number[][]) => void,  
+  setRecordId: (recordId: string) => void
+) => {
+  // Show details for selected feature and hide everything else
+  orchardLayer.visible = false;
+  hiveDropsLayer.definitionExpression = `${HIVEDROP_FIELD_NAMES.F_RECORD_ID} = '${feature.attributes[ORCHARD_FIELD_NAMES.F_RECORD_ID]}'`;
+  perimitersLayer.definitionExpression = `${ORCHARD_FIELD_NAMES.CLIENT} = '${feature.attributes[ORCHARD_FIELD_NAMES.CLIENT]}'`;
+  hiveDropsLayer.visible = true;
+  perimitersLayer.visible = true;
+  hiveDropsLayer.refresh();
+  perimitersLayer.refresh();
+  
+  // Zoom to selected feature with padding for mobile sheet
+  view.goTo({
+    target: feature.geometry,
+    zoom: MAP_CONFIG.FEATURE_ZOOM,
+    padding: MAP_CONFIG.ZOOM_PADDING
+  });
+  
+  // Create mobile sheet props from feature attributes
+  const mobileSheetContent: MobileSheetProps = {
+    client: feature.attributes[ORCHARD_FIELD_NAMES.CLIENT],
+    F_status: feature.attributes[ORCHARD_FIELD_NAMES.F_STATUS],
+    fieldmap_id_primary: feature.attributes[ORCHARD_FIELD_NAMES.FIELDMAP_ID_PRIMARY],
+    partdeliv_yn: feature.attributes[ORCHARD_FIELD_NAMES.PARTDELIV_YN],
+    hives_contracted: feature.attributes[ORCHARD_FIELD_NAMES.HIVES_CONTRACTED],
+    beekeeper: feature.attributes[ORCHARD_FIELD_NAMES.BEEKEEPER],
+    bee_broker: feature.attributes[ORCHARD_FIELD_NAMES.BEE_BROKER],
+    average: feature.attributes[ORCHARD_FIELD_NAMES.AVERAGE],
+    minimum: feature.attributes[ORCHARD_FIELD_NAMES.MINIMUM],
+    grower: feature.attributes[ORCHARD_FIELD_NAMES.GROWER],
+    fieldmap_id_auxiliary: feature.attributes[ORCHARD_FIELD_NAMES.FIELDMAP_ID_AUXILIARY],
+    crossroads: feature.attributes[ORCHARD_FIELD_NAMES.CROSSROADS],
+    team_leader: feature.attributes[ORCHARD_FIELD_NAMES.TEAM_LEADER],
+    assistants: feature.attributes[ORCHARD_FIELD_NAMES.ASSISTANTS],
+    onMarkComplete: updateFeature
+  };
+
+  setRecordId(feature.attributes[ORCHARD_FIELD_NAMES.F_RECORD_ID])
+
+  setMobileSheetProps(mobileSheetContent);
+  setIsMobileSheetOpen(true);  
+
+  // gets attributes from each visible hivedrop
+  const loopThroughHiveDrops = async () => {
+    // defines the query
+    const query = hiveDropsLayer.createQuery();
+    query.where = `${HIVEDROP_FIELD_NAMES.F_RECORD_ID} = '${feature.attributes[ORCHARD_FIELD_NAMES.F_RECORD_ID]}'`;
+    query.returnGeometry = false;
+    query.outFields = [
+      HIVEDROP_FIELD_NAMES.HIVES_COUNTED, 
+      HIVEDROP_FIELD_NAMES.HIVES_GRADED, 
+      HIVEDROP_FIELD_NAMES.AVERAGE, 
+      ...HIVEDROP_FIELD_NAMES.GRADES, 
+      HIVEDROP_FIELD_NAMES.NOTES];
+
+    try { 
+      // performs query   
+      const results = await hiveDropsLayer.queryFeatures(query);
+      // initializes arrays that will be used to update the context
+      const newHivesCounted: number[] = [];
+      const newHivesGraded: number[] = [];
+      const newAverage: number[] = [];
+      const newOrchardHiveGrades: number[][] = [];      
+      // loops through each visible hivedrop and updates the arrays
+      results.features.forEach((feature) => {
+        newHivesCounted.push(feature.attributes[HIVEDROP_FIELD_NAMES.HIVES_COUNTED]);
+        newHivesGraded.push(feature.attributes[HIVEDROP_FIELD_NAMES.HIVES_GRADED]);
+        newAverage.push(feature.attributes[HIVEDROP_FIELD_NAMES.AVERAGE]);        
+        // this one is special because it is a 2d array
+        let grades: number[] = [];
+        for (const grade of HIVEDROP_FIELD_NAMES.GRADES) {
+          const value = feature.attributes[grade];
+          if (value === null) break;
+          grades.push(value);
+        }
+        newOrchardHiveGrades.push(grades);        
+      });
+      // updates the context
+      setHivesCounted(newHivesCounted);
+      setHivesGraded(newHivesGraded);
+      setAverage(newAverage);
+      setOrchardHiveGrades(newOrchardHiveGrades);            
+
+    } catch (error) {
+      console.error("Error querying hive drops:", error);
+    }
+  }
+
+  // loopThroughHiveDrops();
+};
+
+// handle selection of hivedrop
+export const handleHiveDropFeatureSelection = (
+  feature: __esri.Graphic,  
+  setHiveDropDialogProps: (props: HiveDropDialogProps) => void,  
+  setIsHiveDropDialogOpen: (open: boolean) => void
+) => {  
+
+  let grades: number[] = [];
+  
+  for (const grade of HIVEDROP_FIELD_NAMES.GRADES) {    
+    const value = feature.attributes[grade];
+    if (value === null) break;
+    grades.push(value);
+  }          
+  const hiveDropDialogProps: HiveDropDialogProps = {
+    object_id: feature.attributes[HIVEDROP_FIELD_NAMES.OBJECT_ID],
+    record_id: feature.attributes[HIVEDROP_FIELD_NAMES.F_RECORD_ID],
+    count: feature.attributes[HIVEDROP_FIELD_NAMES.HIVES_COUNTED],
+    grades: grades,
+    notes: feature.attributes[HIVEDROP_FIELD_NAMES.NOTES],
+    index: feature.attributes[HIVEDROP_FIELD_NAMES.INDEX]
+  }
+  setHiveDropDialogProps(hiveDropDialogProps);
+  setIsHiveDropDialogOpen(true);
+}
+
+// Handle deselection (clicking empty space)
+export const handleDeselection = (
+  orchardLayer: FeatureLayer,
+  hiveDropsLayer: FeatureLayer,
+  perimitersLayer: FeatureLayer,
+  setIsMobileSheetOpen: (open: boolean) => void
+) => {
+  setIsMobileSheetOpen(false);
+  // Return map to showing all orchards
+  orchardLayer.visible = true;
+  hiveDropsLayer.visible = false;
+  hiveDropsLayer.definitionExpression = LAYER_EXPRESSIONS.HIDE_ALL;
+  perimitersLayer.visible = false;
+  perimitersLayer.definitionExpression = LAYER_EXPRESSIONS.HIDE_ALL;
+};

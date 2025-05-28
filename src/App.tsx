@@ -1,11 +1,13 @@
 import './App.css';
-import "@arcgis/core/assets/esri/themes/dark/main.css";
-import Map from './components/map';
+import { Map } from './components/map';
+import InspectionDataProvider from './context/inspectionData/InspectionData';
 
 function App() {
 
   return (
-    <Map />
+    <InspectionDataProvider>
+      <Map />
+    </InspectionDataProvider>
   );
 }
 
