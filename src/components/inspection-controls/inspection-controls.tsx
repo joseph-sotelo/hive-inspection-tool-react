@@ -57,12 +57,12 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
     }, [orchardHiveGrades, totalHivesContracted]);
 
     return (
-        <div id="inspection-controls-wrapper" className="absolute w-full z-5 flex gap-2 p-2 items-start">                                              
+        <div id="inspection-controls-wrapper" className={clsx("absolute w-full z-5 flex gap-2 p-2 items-start", isShown ? "block" : "hidden")}>                                              
             <Dialog open={isOpen} onOpenChange={(open) => {
                 setIsOpen(open);                
             }}>
                 <DialogTrigger>
-                    <div id="button-wrapper" className={clsx(isShown ? "block" : "hidden")}>
+                    <div id="button-wrapper">
                         <Button variant="action" size="action">
                             Add hive-drop
                         </Button>
