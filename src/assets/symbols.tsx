@@ -25,3 +25,10 @@ export const symbolPass = {
     width: "40px",
     height: "50px"
 }
+
+export const symbolHiveDrop = {
+    type: "picture-marker" as const,
+    url: "/symbolHiveDrop.svg",
+    width: "40px",
+    height: "50px"
+}

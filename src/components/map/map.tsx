@@ -1,0 +1,219 @@
+import { useEffect, useState, useRef } from "react";
+
+// ArcGIS imports
+import config from "@arcgis/core/config";
+import ArcGISMap from "@arcgis/core/Map";
+import MapView from "@arcgis/core/views/MapView";
+import Track from "@arcgis/core/widgets/Track";
+import "@arcgis/core/assets/esri/themes/light/main.css";
+import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
+
+// UI imports
+import { MobileSheet } from "../mobile-sheet";
+import InspectionControls from "../inspection-controls/inspection-controls";
+import { MobileSheetProps, HiveDropDialogProps } from "../types";
+import HiveDropDialog from "../hivedrop-dialog/hivedrop-dialog";
+
+// Map utilities
+import { createOrchardsLayer, createHiveDropsLayer, createPerimitersLayer } from "./layer-config";
+import { handleOrchardFeatureSelection, handleDeselection, handleHiveDropFeatureSelection } from "./map-handlers";
+import { createFeatureUpdater } from "./feature-updater";
+import { MAP_CONFIG, ORCHARD_FIELD_NAMES } from "@/constants";
+import { ENV } from "@/utils/env-validation";
+import { addHiveDrop } from "./add-hivedrop";
+
+// context
+import { useInspectionData } from "@/context/inspectionData/useInspectionData";
+
+// Environment setup with validation
+config.apiKey = ENV.VITE_ARCGIS_LAYER_API_KEY;
+
+export default function Map() { 
+
+  const { 
+    totalHivesContracted, 
+    setTotalHivesContracted, 
+    setHivesCounted, 
+    setHivesGraded, 
+    setAverage, 
+    setOrchardHiveGrades,     
+    setNotes,    
+    setIsHiveDropDialogOpen,
+    setUserLocation,
+    applyHiveDrop,
+    setRecordId,
+    hiveDropIndex,
+    hiveDropHiveGrades,
+    notes,
+    recordId,
+    userLocation,
+    hivesCounted
+  } = useInspectionData();
+
+  // State for mobile sheet
+  const [mobileSheetProps, setMobileSheetProps] = useState<MobileSheetProps | null>(null);
+  const [isMobileSheetOpen, setIsMobileSheetOpen] = useState(false);  
+
+  // State for hive drop dialog
+  const [hiveDropDialogProps, setHiveDropDialogProps] = useState<HiveDropDialogProps | null>(null);
+  
+  // Use ref for feature ID to avoid stale closure issues
+  const featureObjectIdRef = useRef<number>(0);
+  const hiveDropsLayerRef = useRef<FeatureLayer | null>(null);
+
+  useEffect(() => {
+    // Create all feature layers using extracted functions
+    const orchardLayer = createOrchardsLayer();
+    const hiveDropsLayer = createHiveDropsLayer();
+    const perimitersLayer = createPerimitersLayer();
+    hiveDropsLayerRef.current = hiveDropsLayer;
+
+    // Create map with all layers
+    const map = new ArcGISMap({
+      basemap: "arcgis/outdoor",
+      layers: [perimitersLayer, orchardLayer, hiveDropsLayer]
+    });
+
+    // Create map view
+    const view = new MapView({
+      container: "viewDiv",
+      map: map,
+      center: MAP_CONFIG.DEFAULT_CENTER,
+      zoom: MAP_CONFIG.DEFAULT_ZOOM,
+    });
+
+    // Add GPS tracking widget
+    const track = new Track({
+      view: view
+    });
+    view.ui.add(track, "top-right");
+    track.start();
+
+    // Listen for location updates
+    track.on("track", (event) => {
+      const location = event.position;
+      setUserLocation([location.longitude, location.latitude]);
+    });
+
+    // Immediately fetch initial location before waiting on "track" events
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setUserLocation([longitude, latitude]); // match your format
+        },
+        (error) => {
+          console.error("Error getting initial location:", error);
+        },
+        {
+          enableHighAccuracy: true
+        }
+      );
+    }
+
+    // Create function for updating orchard features
+    const updateFeature = createFeatureUpdater(orchardLayer, featureObjectIdRef);
+
+    // Handle map clicks
+    view.on("click", async (event) => {
+      // Test for feature hits
+      const response = await view.hitTest(event);
+      const feature = response.results.find((result): result is __esri.MapViewGraphicHit => 
+        result.type === "graphic"
+      );
+
+      // Handle feature selection or deselection
+      if (feature?.graphic) {
+        if (feature.graphic.layer === orchardLayer && feature.graphic.attributes[ORCHARD_FIELD_NAMES.FIELDMAP_ID_PRIMARY] != undefined) {
+          // Store feature ID for updates
+          featureObjectIdRef.current = feature.graphic.attributes[ORCHARD_FIELD_NAMES.OBJECT_ID];
+          
+          handleOrchardFeatureSelection(
+            feature.graphic,
+            orchardLayer,
+            hiveDropsLayer,
+            perimitersLayer,
+            view,
+            setMobileSheetProps,
+            setIsMobileSheetOpen,
+            updateFeature,
+            setHivesCounted,
+            setHivesGraded,
+            setAverage,          
+            setOrchardHiveGrades,            
+            setRecordId
+          );
+
+          setTotalHivesContracted(feature.graphic.attributes[ORCHARD_FIELD_NAMES.HIVES_CONTRACTED]);
+        } else if (feature.graphic.layer === hiveDropsLayer) {
+          setIsHiveDropDialogOpen(true);
+          handleHiveDropFeatureSelection(
+            feature.graphic,            
+            setHiveDropDialogProps,   
+            setIsHiveDropDialogOpen,
+          );
+        }
+      } else {
+        handleDeselection(
+          orchardLayer,
+          hiveDropsLayer,
+          perimitersLayer,
+          setIsMobileSheetOpen
+        );
+      }
+    });
+
+    // Cleanup on unmount
+    return () => {
+      if (view) {
+        view.destroy();
+      }
+    };
+  }, []);
+
+  // Create function for adding hive drop features
+
+  useEffect(() => {    
+    if (applyHiveDrop > 0 && hiveDropsLayerRef.current) {
+      addHiveDrop(
+        hiveDropsLayerRef.current,
+        hiveDropIndex,
+        hivesCounted,
+        hiveDropHiveGrades,
+        notes,
+        recordId,
+        userLocation
+      );
+    }
+  }, [applyHiveDrop]);  
+
+  useEffect(() => {
+    console.log("hiveDropHiveGrades", hiveDropHiveGrades)
+  }, [hiveDropHiveGrades]);
+
+  return (
+    <div>
+      {/* Conditionally render mobile sheet */}
+      {isMobileSheetOpen && mobileSheetProps && (
+        <MobileSheet 
+          props={mobileSheetProps} 
+          key={mobileSheetProps.fieldmap_id_primary}
+        />
+      )}
+      
+      {/* Conditionally render hive drop dialog */}
+      {hiveDropDialogProps && (
+        <HiveDropDialog 
+          props={hiveDropDialogProps}           
+          key={hiveDropDialogProps.record_id}          
+        />
+      )}
+      
+      {/* Always render inspection controls */}
+      <InspectionControls totalHivesContracted={totalHivesContracted} />
+      
+      {/* Map container */}
+      <div id="viewDiv" className="w-full h-screen" />
+    </div>
+  );
+}
