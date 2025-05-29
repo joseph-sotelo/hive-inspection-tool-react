@@ -52,14 +52,17 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
     const [hivesCountedLocal, setHivesCountedLocal] = useState<number[]>([]);
     
     useEffect(() => {                
-        if (orchardHiveGrades.length > 0) {                         
+        const totalGradedHives = orchardHiveGrades.flat().length;
+        if (totalGradedHives > 1) {                         
             const percentage = getSamplePercentage({ 
                 populationSize: totalHivesContracted, 
                 totalHiveGrades: orchardHiveGrades
             });
             setSamplePercentage(percentage);                   
+        } else {
+            setSamplePercentage(0.1);
         }
-    }, [orchardHiveGrades]);
+    }, [orchardHiveGrades, totalHivesContracted]);
 
     return (
         <div id="inspection-controls-wrapper" className={clsx("absolute right-0 w-full md:w-[calc(100vw-440px)] z-5 flex gap-2 p-2 items-stretch pointer-events-none", isShown ? "block" : "hidden")}>             
@@ -128,6 +131,8 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
                                         const newOrchardHiveGrades = [...orchardHiveGrades];
                                         newOrchardHiveGrades[hiveDropIndex] = hiveDropHiveGrades;
                                         setOrchardHiveGrades(newOrchardHiveGrades);  
+                                        console.log("value: ", Math.min(hiveDropHiveGrades.length, hivesCountedLocal[hiveDropIndex]*samplePercentage));
+                                        console.log("max: ", hivesCountedLocal[hiveDropIndex]*samplePercentage)                                    
                                     }}
                                     />                                
                                 </div>
