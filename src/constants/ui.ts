@@ -2,7 +2,7 @@
 // Centralizing UI values prevents inconsistencies and makes theming easier
 export const MOBILE_SHEET = {
   // Height values for different states
-  HEIGHTS: {
+  POSITIONS: {
     HIDDEN: "h-0",
     COLLAPSED: "h-[108px]", 
     EXPANDED: "h-9/10"
@@ -33,3 +33,8 @@ export const SIGNATURE_CANVAS = {
   PEN_COLOR: "black",
   BACKGROUND_COLOR: "rgba(255, 255, 255, 1)"
 } as const;
+
+export const CORNERS = {
+  PARENT: "rounded-lg",
+  CHILD: "rounded-md"
+}

@@ -1,5 +1,4 @@
 // Custom hook for click outside detection
-// This is a common pattern that can be reused throughout the app
 import { useEffect, RefObject } from "react";
 
 export const useClickOutside = (

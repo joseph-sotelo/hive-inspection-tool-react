@@ -52,18 +52,18 @@ export default function MobileSheet({ props }: { props: MobileSheetProps }) {
       <div 
         ref={sheetRef} 
         className={clsx(
-          `shadow-md-reverse rounded-t-xl w-full transition-all ${MOBILE_SHEET.ANIMATION_DURATION} overflow-hidden bottom-0 absolute z-10`,
+          `shadow-md-reverse rounded-t-xl md:rounded-none w-full transition-all ${MOBILE_SHEET.ANIMATION_DURATION} overflow-hidden bottom-0 absolute z-10 md:w-[440px] md:h-full`,
           {
-            [MOBILE_SHEET.HEIGHTS.HIDDEN]: isOffScreen && !isOpen || isOffScreen && isOpen,
-            [MOBILE_SHEET.HEIGHTS.COLLAPSED]: !isOffScreen && !isOpen,
-            [MOBILE_SHEET.HEIGHTS.EXPANDED]: !isOffScreen && isOpen
+            [`${MOBILE_SHEET.POSITIONS.HIDDEN} md:h-full`]: isOffScreen && !isOpen || isOffScreen && isOpen,
+            [`${MOBILE_SHEET.POSITIONS.COLLAPSED} md:h-full`]: !isOffScreen && !isOpen,
+            [`${MOBILE_SHEET.POSITIONS.EXPANDED} md:h-full`]: !isOffScreen && isOpen
           }
         )}
       >
         {/* Header/Peek section */}
         <div 
           id="peek" 
-          className="p-6 flex justify-between border-1 rounded-t-xl bg-background"
+          className="p-6 flex justify-between border-1 rounded-t-xl md:rounded-none bg-background"
         >
           <div className="flex flex-col gap-2">
             <h4>
@@ -77,7 +77,7 @@ export default function MobileSheet({ props }: { props: MobileSheetProps }) {
             </div>
           </div>
           <div onClick={toggleOpen}>
-            <ChevronDown className={clsx({ "rotate-180": !isOpen })} />
+            <ChevronDown className={clsx("md:hidden", { "rotate-180": !isOpen })} />
           </div>
         </div>
 

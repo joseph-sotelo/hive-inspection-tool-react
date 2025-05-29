@@ -10,7 +10,8 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Progress } from "../ui/progress";
 import { Textarea } from "../ui/textarea";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion";
+import { Accordion, AccordionItem, AccordionTrigger } from "../ui/accordion";
+import { CORNERS } from "@/constants";
 
 // styling
 import clsx from "clsx";
@@ -57,13 +58,22 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
     }, [orchardHiveGrades, totalHivesContracted]);
 
     return (
-        <div id="inspection-controls-wrapper" className={clsx("absolute w-full z-5 flex gap-2 p-2 items-start", isShown ? "block" : "hidden")}>                                              
+        <div id="inspection-controls-wrapper" className={clsx("absolute right-0 w-full md:w-[calc(100vw-440px)] z-5 flex gap-2 p-2 items-stretch pointer-events-none", isShown ? "block" : "hidden")}>             
+            <div className="pointer-events-auto w-full shadow-lg">
+                <Accordion type="single" collapsible defaultValue="progress">
+                    <AccordionItem value="progress">
+                        <AccordionTrigger>
+                            <Progress className={clsx("border-1 border-foreground-flexible-light", CORNERS.CHILD)} value={orchardHiveGrades.flat().length/(totalHivesContracted*samplePercentage)*100}/> 
+                        </AccordionTrigger>
+                    </AccordionItem>
+                </Accordion>                                    
+            </div>            
             <Dialog open={isOpen} onOpenChange={(open) => {
                 setIsOpen(open);                
             }}>
                 <DialogTrigger>
-                    <div id="button-wrapper">
-                        <Button variant="action" size="action">
+                    <div id="button-wrapper" className="h-full pointer-events-auto">
+                        <Button variant="map" size="map">
                             Add hive-drop
                         </Button>
                     </div>
@@ -133,16 +143,6 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
                         </DialogFooter>
                 </DialogContent>            
             </Dialog>
-            <Accordion type="single" collapsible defaultValue="progress">
-                <AccordionItem value="progress">
-                    <AccordionTrigger>
-                        <Progress className="border-1 border-foreground-flexible-light" value={orchardHiveGrades.flat().length/(totalHivesContracted*samplePercentage)*100}/> 
-                    </AccordionTrigger>
-                    <AccordionContent>
-                        <h4>Statistics</h4>
-                    </AccordionContent>
-                </AccordionItem>
-            </Accordion>   
         </div>
     )
 }

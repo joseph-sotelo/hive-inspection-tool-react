@@ -61,6 +61,10 @@ export const handleOrchardFeatureSelection = (
 
   // gets attributes from each visible hivedrop
   const loopThroughHiveDrops = async () => {
+
+    setHivesCounted([]);
+    setHivesGraded([]);
+    setAverage([]);     
     // defines the query
     const query = hiveDropsLayer.createQuery();
     query.where = `${HIVEDROP_FIELD_NAMES.F_RECORD_ID} = '${feature.attributes[ORCHARD_FIELD_NAMES.F_RECORD_ID]}'`;
@@ -69,8 +73,8 @@ export const handleOrchardFeatureSelection = (
       HIVEDROP_FIELD_NAMES.HIVES_COUNTED, 
       HIVEDROP_FIELD_NAMES.HIVES_GRADED, 
       HIVEDROP_FIELD_NAMES.AVERAGE, 
-      ...HIVEDROP_FIELD_NAMES.GRADES, 
-      HIVEDROP_FIELD_NAMES.NOTES];
+      ...HIVEDROP_FIELD_NAMES.GRADES      
+    ];
 
     try { 
       // performs query   
@@ -78,34 +82,24 @@ export const handleOrchardFeatureSelection = (
       // initializes arrays that will be used to update the context
       const newHivesCounted: number[] = [];
       const newHivesGraded: number[] = [];
-      const newAverage: number[] = [];
-      const newOrchardHiveGrades: number[][] = [];      
+      const newAverage: number[] = [];        
       // loops through each visible hivedrop and updates the arrays
       results.features.forEach((feature) => {
         newHivesCounted.push(feature.attributes[HIVEDROP_FIELD_NAMES.HIVES_COUNTED]);
         newHivesGraded.push(feature.attributes[HIVEDROP_FIELD_NAMES.HIVES_GRADED]);
-        newAverage.push(feature.attributes[HIVEDROP_FIELD_NAMES.AVERAGE]);        
-        // this one is special because it is a 2d array
-        let grades: number[] = [];
-        for (const grade of HIVEDROP_FIELD_NAMES.GRADES) {
-          const value = feature.attributes[grade];
-          if (value === null) break;
-          grades.push(value);
-        }
-        newOrchardHiveGrades.push(grades);        
+        newAverage.push(feature.attributes[HIVEDROP_FIELD_NAMES.AVERAGE]);                                     
       });
       // updates the context
       setHivesCounted(newHivesCounted);
       setHivesGraded(newHivesGraded);
-      setAverage(newAverage);
-      setOrchardHiveGrades(newOrchardHiveGrades);            
+      setAverage(newAverage);                
 
     } catch (error) {
       console.error("Error querying hive drops:", error);
     }
   }
 
-  // loopThroughHiveDrops();
+  loopThroughHiveDrops();
 };
 
 // handle selection of hivedrop

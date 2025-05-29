@@ -10,7 +10,7 @@ import { ENV } from "@/utils/env-validation";
 // Create orchards layer with proper field mapping
 export const createOrchardsLayer = () => {
   const layer = new FeatureLayer({
-    url: ENV.VITE_ARCGIS_MOCK_ORCHARDS_LAYER_API_URL,
+    url: ENV.VITE_ARCGIS_ORCHARDS_LAYER_API_URL,
     outFields: [
       ORCHARD_FIELD_NAMES.F_STATUS,
       ORCHARD_FIELD_NAMES.FIELDMAP_ID_PRIMARY,

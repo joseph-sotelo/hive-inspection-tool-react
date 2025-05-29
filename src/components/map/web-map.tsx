@@ -69,7 +69,7 @@ export default function Map() {
 
     // Create map with all layers
     const map = new ArcGISMap({
-      basemap: "arcgis/outdoor",
+      basemap: "arcgis/imagery",
       layers: [perimitersLayer, orchardLayer, hiveDropsLayer]
     });
 
@@ -116,9 +116,12 @@ export default function Map() {
     // Handle map clicks
     view.on("click", async (event) => {
       // Test for feature hits
-      const response = await view.hitTest(event);
+      const response = await view.hitTest(event);      
+      
+      // Find a valid feature (must be from orchardLayer or hiveDropsLayer)
       const feature = response.results.find((result): result is __esri.MapViewGraphicHit => 
-        result.type === "graphic"
+        result.type === "graphic" && 
+        (result.graphic.layer === orchardLayer || result.graphic.layer === hiveDropsLayer)
       );
 
       // Handle feature selection or deselection
@@ -185,10 +188,6 @@ export default function Map() {
       );
     }
   }, [applyHiveDrop]);  
-
-  useEffect(() => {
-    console.log("hiveDropHiveGrades", hiveDropHiveGrades)
-  }, [hiveDropHiveGrades]);
 
   return (
     <div>
