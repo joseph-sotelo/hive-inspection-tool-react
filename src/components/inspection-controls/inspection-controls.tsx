@@ -18,6 +18,7 @@ import clsx from "clsx";
 
 // context
 import { useInspectionData } from "@/context/inspectionData"
+import { getHiveDropAverage } from "./getHiveDropAverage";
 
 interface InspectionControlsProps {
     totalHivesContracted: number;
@@ -34,6 +35,10 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
         setHiveDropHiveGrades, 
         hivesCounted, 
         setHivesCounted, 
+        hivesGraded,
+        setHivesGraded,        
+        average,
+        setAverage,
         setNotes,
         hiveDropIndex,
         setHiveDropIndex,        
@@ -123,9 +128,6 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
                                         const newOrchardHiveGrades = [...orchardHiveGrades];
                                         newOrchardHiveGrades[hiveDropIndex] = hiveDropHiveGrades;
                                         setOrchardHiveGrades(newOrchardHiveGrades);  
-                                        console.log("orchardHiveGrades: ", orchardHiveGrades.flat().length)
-                                        console.log("totalHivesContracted: ", totalHivesContracted)
-                                        console.log("hivesCounted: ", hivesCounted[hiveDropIndex])
                                     }}
                                     />                                
                                 </div>
@@ -144,10 +146,14 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
                         }}/>
                         <Button variant="customSecondary" size="action">Add Photos</Button>
                         <DialogFooter>
-                            <Button variant="action" size="action" onClick={() => {                                                                      
+                            <Button variant="action" size="action" onClick={() => {                                                                                                      
+                                setIsOpen(false);                                                                   
+                                const newHivesGraded = [...hivesGraded, hiveDropHiveGrades.length];                                
+                                setHivesGraded(newHivesGraded);
+                                setAverage([...average, getHiveDropAverage(hiveDropHiveGrades)]);
                                 setApplyHiveDrop(applyHiveDrop + 1);
-                                setIsOpen(false);                                
                                 setHiveDropIndex(hiveDropIndex + 1);
+                                setHiveDropHiveGrades([]);                                
                             }}>Finish</Button>
                         </DialogFooter>
                 </DialogContent>            

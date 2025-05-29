@@ -14,10 +14,10 @@ export const getSamplePercentage = ({ populationSize, totalHiveGrades }: GetSamp
 
         // calculate mean
         const sum = grades.reduce((sum, grade) => sum + grade, 0);
-        const mean = sum / grades.length;
+        const average = sum / grades.length;
 
         // calculate deviations
-        const deviations = grades.reduce((sum, grade) => sum + Math.pow(grade - mean, 2), 0);
+        const deviations = grades.reduce((sum, grade) => sum + Math.pow(grade - average, 2), 0);
 
         // calculate variance
         const variance = deviations / (grades.length - 1);
