@@ -21,7 +21,7 @@ import SignatureSection from "./signature-section";
 import { MobileSheetProps } from "../types";
 
 // Constants
-import { MOBILE_SHEET, STATUS_CONFIG } from "@/constants";
+import { SHEET, STATUS_CONFIG } from "@/constants";
 
 export default function MobileSheet({ props }: { props: MobileSheetProps }) {
   const sheetRef = useRef<HTMLDivElement>(null);
@@ -52,11 +52,11 @@ export default function MobileSheet({ props }: { props: MobileSheetProps }) {
       <div 
         ref={sheetRef} 
         className={clsx(
-          `shadow-md-reverse rounded-t-xl md:rounded-none w-full transition-all ${MOBILE_SHEET.ANIMATION_DURATION} overflow-hidden bottom-0 absolute z-10 md:w-[440px] md:h-full`,
+          `shadow-md-reverse md:rounded-r-xl w-full transition-all ${SHEET.ANIMATION_DURATION} overflow-hidden bottom-0 absolute z-10 md:w-[440px] md:h-full`,
           {
-            [`${MOBILE_SHEET.POSITIONS.HIDDEN} md:h-full`]: isOffScreen && !isOpen || isOffScreen && isOpen,
-            [`${MOBILE_SHEET.POSITIONS.COLLAPSED} md:h-full`]: !isOffScreen && !isOpen,
-            [`${MOBILE_SHEET.POSITIONS.EXPANDED} md:h-full`]: !isOffScreen && isOpen
+            [`${SHEET.POSITIONS.HIDDEN} md:h-full`]: isOffScreen && !isOpen || isOffScreen && isOpen,
+            [`${SHEET.POSITIONS.COLLAPSED} md:h-full`]: !isOffScreen && !isOpen,
+            [`${SHEET.POSITIONS.EXPANDED} md:h-full`]: !isOffScreen && isOpen
           }
         )}
       >

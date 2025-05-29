@@ -1,13 +1,13 @@
 // UI-related constants for consistency across components
 // Centralizing UI values prevents inconsistencies and makes theming easier
-export const MOBILE_SHEET = {
+export const SHEET = {
   // Height values for different states
   POSITIONS: {
     HIDDEN: "h-0",
     COLLAPSED: "h-[108px]", 
-    EXPANDED: "h-9/10"
+    EXPANDED: "h-9/10",    
   },
-  
+  SIDEBAR_WIDTH: "w-[440px]",
   // Animation duration
   ANIMATION_DURATION: "duration-400"
 } as const;

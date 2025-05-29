@@ -18,7 +18,6 @@ import clsx from "clsx";
 
 // context
 import { useInspectionData } from "@/context/inspectionData"
-import { useArray2dReplace } from "@/hooks";
 
 interface InspectionControlsProps {
     totalHivesContracted: number;
@@ -47,15 +46,15 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
     const [isOpen, setIsOpen] = useState(false);        
     // updates the sample percentage whenever the user adds a new hive
 
-    useEffect(() => {
-        if (orchardHiveGrades.length > 0) {            
+    useEffect(() => {                
+        if (orchardHiveGrades.length > 0) {                         
             const percentage = getSamplePercentage({ 
                 populationSize: totalHivesContracted, 
                 totalHiveGrades: orchardHiveGrades
             });
-            setSamplePercentage(percentage);            
+            setSamplePercentage(percentage);                   
         }
-    }, [orchardHiveGrades, totalHivesContracted]);
+    }, [orchardHiveGrades]);
 
     return (
         <div id="inspection-controls-wrapper" className={clsx("absolute right-0 w-full md:w-[calc(100vw-440px)] z-5 flex gap-2 p-2 items-stretch pointer-events-none", isShown ? "block" : "hidden")}>             
@@ -63,7 +62,10 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
                 <Accordion type="single" collapsible defaultValue="progress">
                     <AccordionItem value="progress">
                         <AccordionTrigger>
-                            <Progress className={clsx("border-1 border-foreground-flexible-light", CORNERS.CHILD)} value={orchardHiveGrades.flat().length/(totalHivesContracted*samplePercentage)*100}/> 
+                            <Progress 
+                                className={clsx("border-1 border-foreground-flexible-light", CORNERS.CHILD)} 
+                                value={Math.min(orchardHiveGrades.flat().length, totalHivesContracted*samplePercentage)} 
+                                max={totalHivesContracted*samplePercentage} /> 
                         </AccordionTrigger>
                     </AccordionItem>
                 </Accordion>                                    
@@ -85,7 +87,8 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
                         </DialogTitle>
                         <Progress 
                             className="border-1 border-foreground-flexible-light"
-                            value={(hiveDropHiveGrades.length / (hivesCounted[hiveDropIndex] * samplePercentage)) * 100}
+                            value={Math.min(hiveDropHiveGrades.length, hivesCounted[hiveDropIndex]*samplePercentage)}
+                            max={hivesCounted[hiveDropIndex]*samplePercentage}
                         />
                     </DialogHeader>                
                     <Button variant="customSecondary"> Re-capture Location </Button>
@@ -98,8 +101,7 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
                                 onChange={(event) => {
                                     const newHivesCounted = [...hivesCounted];
                                     newHivesCounted[hiveDropIndex] = Number(event.target.value);
-                                    setHivesCounted(newHivesCounted);
-                                    console.log("hivesCounted:", hivesCounted)
+                                    setHivesCounted(newHivesCounted);                                                                   
                                 }}/>
                             <p className="text-sm text-muted-foreground">How many hives are there in this hive-drop?</p>
                         </div>
@@ -115,17 +117,24 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
                                     step={1}
                                     color="brand-light"
                                     onValueChange={(newValue) => {
-                                        const newGrades = [...hiveDropHiveGrades];
-                                        newGrades[index] = newValue[0];
-                                        setHiveDropHiveGrades(newGrades);
-                                        console.log("hiveDropHiveGrades", hiveDropHiveGrades)
+                                        const newHiveDropHiveGrades = [...hiveDropHiveGrades];
+                                        newHiveDropHiveGrades[index] = newValue[0];
+                                        setHiveDropHiveGrades(newHiveDropHiveGrades);    
+                                        const newOrchardHiveGrades = [...orchardHiveGrades];
+                                        newOrchardHiveGrades[hiveDropIndex] = hiveDropHiveGrades;
+                                        setOrchardHiveGrades(newOrchardHiveGrades);  
+                                        console.log("orchardHiveGrades: ", orchardHiveGrades.flat().length)
+                                        console.log("totalHivesContracted: ", totalHivesContracted)
+                                        console.log("hivesCounted: ", hivesCounted[hiveDropIndex])
                                     }}
                                     />                                
                                 </div>
                             ))}                        
                             <Button variant="text" size="text" onClick={() => {  
                                 setHiveDropHiveGrades([...hiveDropHiveGrades, 12])                                
-                                setOrchardHiveGrades(useArray2dReplace({array: orchardHiveGrades, index: hiveDropIndex, value: hiveDropHiveGrades}))
+                                const newOrchardHiveGrades = [...orchardHiveGrades];
+                                newOrchardHiveGrades[hiveDropIndex] = hiveDropHiveGrades;
+                                setOrchardHiveGrades(newOrchardHiveGrades);                                
                             }}>Add hive +</Button>
                         </div>                    
                         <Separator />

@@ -15,9 +15,9 @@ export const handleOrchardFeatureSelection = (
   updateFeature: (formData: any) => void,
   setHivesCounted: (hivesCounted: number[]) => void,
   setHivesGraded: (hivesGraded: number[]) => void,
-  setAverage: (average: number[]) => void,  
-  setOrchardHiveGrades: (orchardHiveGrades: number[][]) => void,  
-  setRecordId: (recordId: string) => void
+  setAverage: (average: number[]) => void,    
+  setRecordId: (recordId: string) => void,
+  setTotalHivesContracted: (totalHivesContracted: number) => void
 ) => {
   // Show details for selected feature and hide everything else
   orchardLayer.visible = false;
@@ -57,6 +57,7 @@ export const handleOrchardFeatureSelection = (
   setRecordId(feature.attributes[ORCHARD_FIELD_NAMES.F_RECORD_ID])
 
   setMobileSheetProps(mobileSheetContent);
+  setTotalHivesContracted(feature.attributes[ORCHARD_FIELD_NAMES.HIVES_CONTRACTED]);
   setIsMobileSheetOpen(true);  
 
   // gets attributes from each visible hivedrop

@@ -36,7 +36,6 @@ export default function Map() {
     setHivesCounted, 
     setHivesGraded, 
     setAverage, 
-    setOrchardHiveGrades,         
     setIsHiveDropDialogOpen,
     setUserLocation,
     applyHiveDrop,
@@ -142,8 +141,8 @@ export default function Map() {
             setHivesCounted,
             setHivesGraded,
             setAverage,          
-            setOrchardHiveGrades,            
-            setRecordId
+            setRecordId,
+            setTotalHivesContracted
           );
 
           setTotalHivesContracted(feature.graphic.attributes[ORCHARD_FIELD_NAMES.HIVES_CONTRACTED]);

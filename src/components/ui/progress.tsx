@@ -6,8 +6,9 @@ import { cn } from "@/lib/utils"
 function Progress({
   className,
   value,
+  max = 100,
   ...props
-}: React.ComponentProps<typeof ProgressPrimitive.Root>) {
+}: React.ComponentProps<typeof ProgressPrimitive.Root> & { max?: number }) {
   return (
     <ProgressPrimitive.Root
       data-slot="progress"
@@ -20,7 +21,7 @@ function Progress({
       <ProgressPrimitive.Indicator
         data-slot="progress-indicator"
         className="bg-brand-light h-full w-full flex-1 transition-all"
-        style={{ transform: `translateX(-${100 - (value || 0)}%)` }}
+        style={{ transform: `translateX(-${100 - ((value || 0) / (max || 100)) * 100}%)` }}
       />
     </ProgressPrimitive.Root>
   )

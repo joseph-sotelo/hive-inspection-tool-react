@@ -41,6 +41,7 @@ export const useFormData = (props: MobileSheetProps) => {
       assistants: props.assistants === null ? [] : props.assistants
     });
   }, [props.client, props.F_status, props.fieldmap_id_primary]);
+  // add props.hives_contracted to the dependency array if issues arise
 
   // Form data update handler
   const handleChange = (key: string, value: string | boolean | number) => {

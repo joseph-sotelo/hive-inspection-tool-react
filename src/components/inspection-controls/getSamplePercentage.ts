@@ -31,6 +31,6 @@ export const getSamplePercentage = ({ populationSize, totalHiveGrades }: GetSamp
     const confidenceInterval = STATS.CONFIDENCE_INTERVAL;
     const marginOfError = STATS.MARGIN_OF_ERROR;
     const sampleSize = Math.pow((confidenceInterval * standardDeviation) / marginOfError, 2);
-    const samplePercentage = Math.min(sampleSize / populationSize, 1);    
+    const samplePercentage = Math.min(Math.max(sampleSize / populationSize, 0.02), 0.4);       
     return samplePercentage;
 };

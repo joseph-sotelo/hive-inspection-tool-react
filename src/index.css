@@ -97,7 +97,8 @@ html, body, #root {
 
   /* customized vars */
   --background: oklch(0.99 0.0066 286.28);
-  --border: oklch(0.89 0 0)
+  --border: oklch(0.89 0 0);
+  --sidebar-width: 440px;
 }
 
 .dark {
