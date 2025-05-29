@@ -32,8 +32,7 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
         orchardHiveGrades, 
         setOrchardHiveGrades, 
         hiveDropHiveGrades, 
-        setHiveDropHiveGrades, 
-        hivesCounted, 
+        setHiveDropHiveGrades,         
         setHivesCounted, 
         hivesGraded,
         setHivesGraded,        
@@ -49,8 +48,9 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
     const [samplePercentage, setSamplePercentage] = useState<number>(0);    
     // toggles the dialog open or closed
     const [isOpen, setIsOpen] = useState(false);        
-    // updates the sample percentage whenever the user adds a new hive
-
+    // stores hivesCounted within the component until user hits "finish" -- then it updates context
+    const [hivesCountedLocal, setHivesCountedLocal] = useState<number[]>([]);
+    
     useEffect(() => {                
         if (orchardHiveGrades.length > 0) {                         
             const percentage = getSamplePercentage({ 
@@ -91,9 +91,9 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
                             New Hive-Drop
                         </DialogTitle>
                         <Progress 
-                            className="border-1 border-foreground-flexible-light"
-                            value={Math.min(hiveDropHiveGrades.length, hivesCounted[hiveDropIndex]*samplePercentage)}
-                            max={hivesCounted[hiveDropIndex]*samplePercentage}
+                            className="border-1 border-foreground-flexible-light"  
+                            value={Math.min(hiveDropHiveGrades.length, hivesCountedLocal[hiveDropIndex]*samplePercentage)}
+                            max={hivesCountedLocal[hiveDropIndex]*samplePercentage}
                         />
                     </DialogHeader>                
                     <Button variant="customSecondary"> Re-capture Location </Button>
@@ -104,9 +104,9 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
                                 id="count"                                 
                                 placeholder="number" 
                                 onChange={(event) => {
-                                    const newHivesCounted = [...hivesCounted];
-                                    newHivesCounted[hiveDropIndex] = Number(event.target.value);
-                                    setHivesCounted(newHivesCounted);                                                                   
+                                    const newHivesCountedLocal = [...hivesCountedLocal];
+                                    newHivesCountedLocal[hiveDropIndex] = Number(event.target.value);
+                                    setHivesCountedLocal(newHivesCountedLocal);                                                                   
                                 }}/>
                             <p className="text-sm text-muted-foreground">How many hives are there in this hive-drop?</p>
                         </div>
@@ -148,9 +148,10 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
                         <DialogFooter>
                             <Button variant="action" size="action" onClick={() => {                                                                                                      
                                 setIsOpen(false);                                                                   
+                                setHivesCounted(hivesCountedLocal);
                                 const newHivesGraded = [...hivesGraded, hiveDropHiveGrades.length];                                
-                                setHivesGraded(newHivesGraded);
-                                setAverage([...average, getHiveDropAverage(hiveDropHiveGrades)]);
+                                setHivesGraded(newHivesGraded);                                
+                                setAverage([...average, getHiveDropAverage(hiveDropHiveGrades)]);                                                                                    
                                 setApplyHiveDrop(applyHiveDrop + 1);
                                 setHiveDropIndex(hiveDropIndex + 1);
                                 setHiveDropHiveGrades([]);                                

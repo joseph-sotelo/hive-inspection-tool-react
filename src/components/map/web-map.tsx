@@ -45,7 +45,9 @@ export default function Map() {
     notes,
     recordId,
     userLocation,
-    hivesCounted
+    hivesCounted,
+    average,
+    hivesGraded
   } = useInspectionData();
 
   // State for mobile sheet
@@ -183,7 +185,9 @@ export default function Map() {
         hiveDropHiveGrades,
         notes,
         recordId,
-        userLocation
+        userLocation,
+        average,
+        hivesGraded
       );
     }
   }, [applyHiveDrop]);  
