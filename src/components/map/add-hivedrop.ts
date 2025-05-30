@@ -10,10 +10,10 @@ export const addHiveDrop = (
   hiveDropHiveGrades: number[],
   notes: string,
   recordId: string,
-  userLocation: number[]
-) => {  
-
-  console.log("hiveDropHiveGrades from add-hivedrop", hiveDropHiveGrades)
+  userLocation: number[],
+  average: number[],
+  hivesGraded: number[]
+) => {    
  
   const newHiveDrop = new Graphic({
     geometry: {
@@ -23,7 +23,9 @@ export const addHiveDrop = (
     },
     attributes: {
       [HIVEDROP_FIELD_NAMES.OBJECT_ID]: hiveDropIndex,
-      [HIVEDROP_FIELD_NAMES.HIVES_COUNTED]: hivesCounted[hiveDropIndex -1],
+      [HIVEDROP_FIELD_NAMES.HIVES_COUNTED]: hivesCounted[hiveDropIndex - 1], 
+      [HIVEDROP_FIELD_NAMES.AVERAGE]: average[hiveDropIndex - 1],
+      [HIVEDROP_FIELD_NAMES.HIVES_GRADED]: hivesGraded[hiveDropIndex - 1],
       ...HIVEDROP_FIELD_NAMES.GRADES.reduce((acc, grade, index) => ({
         ...acc,
         [grade]: hiveDropHiveGrades[index]

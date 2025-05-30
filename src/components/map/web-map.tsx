@@ -45,7 +45,10 @@ export default function Map() {
     notes,
     recordId,
     userLocation,
-    hivesCounted
+    hivesCounted,
+    average,
+    hivesGraded,
+    setIsShown
   } = useInspectionData();
 
   // State for mobile sheet
@@ -68,8 +71,8 @@ export default function Map() {
 
     // Create map with all layers
     const map = new ArcGISMap({
-      basemap: "arcgis/imagery",
-      layers: [perimitersLayer, orchardLayer, hiveDropsLayer]
+      layers: [perimitersLayer, orchardLayer, hiveDropsLayer],
+      basemap: "arcgis/imagery"      
     });
 
     // Create map view
@@ -80,12 +83,15 @@ export default function Map() {
       zoom: MAP_CONFIG.DEFAULT_ZOOM,
     });
 
+    view.ui.move("zoom", "bottom-right");
+
     // Add GPS tracking widget
     const track = new Track({
       view: view
     });
-    view.ui.add(track, "top-right");
-    track.start();
+    view.ui.add(track, "bottom-right");
+
+    track.start();    
 
     // Listen for location updates
     track.on("track", (event) => {
@@ -159,7 +165,8 @@ export default function Map() {
           orchardLayer,
           hiveDropsLayer,
           perimitersLayer,
-          setIsMobileSheetOpen
+          setIsMobileSheetOpen,
+          setIsShown
         );
       }
     });
@@ -173,7 +180,6 @@ export default function Map() {
   }, []);
 
   // Create function for adding hive drop features
-
   useEffect(() => {    
     if (applyHiveDrop > 0 && hiveDropsLayerRef.current) {
       addHiveDrop(
@@ -183,7 +189,9 @@ export default function Map() {
         hiveDropHiveGrades,
         notes,
         recordId,
-        userLocation
+        userLocation,
+        average,
+        hivesGraded
       );
     }
   }, [applyHiveDrop]);  

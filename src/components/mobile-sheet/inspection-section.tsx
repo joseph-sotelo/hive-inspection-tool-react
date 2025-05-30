@@ -22,7 +22,7 @@ interface InspectionSectionProps {
 export default function InspectionSection({ toggleOpen }: InspectionSectionProps) {
 
   // data from context used to fill out the hivedrops list
-  const { setIsShown, hivesCounted, hivesGraded, average } = useInspectionData();
+  const { setIsShown, hivesCounted, hivesGraded, average, isShown } = useInspectionData();
 
   // used to display the average as a badge with the correct variant
   const getBadgeVariant = (average: number): "pass" | "fail" | "low" | "outline" => {
@@ -43,15 +43,16 @@ export default function InspectionSection({ toggleOpen }: InspectionSectionProps
         </Label>
         <Button 
           id="begin-inspection" 
-          variant="action" 
+          variant={isShown ? "customSecondary" : "action"} 
           size="action" 
           onClick={() => (
-            setIsShown(true),
+            setIsShown(!isShown),
             toggleOpen()
           )}
         >
-        Begin Inspection
+          {isShown ? "End Inspection" : "New Inspection"}
         </Button>
+        {hivesCounted.length > 0 && (
         <Table>
           <TableHeader>
             <TableRow>              
@@ -59,7 +60,7 @@ export default function InspectionSection({ toggleOpen }: InspectionSectionProps
               <TableHead>Hives Graded</TableHead>
               <TableHead>Average</TableHead>
             </TableRow>
-          </TableHeader>
+          </TableHeader>            
           <TableBody>            
               {hivesCounted.map((count, index) => {
                 return (
@@ -75,9 +76,10 @@ export default function InspectionSection({ toggleOpen }: InspectionSectionProps
                     </TableCell>
                   </TableRow>
                 )
-              })}            
+              })}    
           </TableBody>
-        </Table>
+        </Table>              
+        )}                  
       </div>
     </>
   );

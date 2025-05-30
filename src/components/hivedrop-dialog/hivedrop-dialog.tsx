@@ -17,10 +17,6 @@ export default function HiveDropDialog({ props }: { props: HiveDropDialogProps }
  
     // toggles the dialog open or closed
     const { isHiveDropDialogOpen, setIsHiveDropDialogOpen } = useInspectionData();
-    // ensures the dialog starts off empty 
-    // const resetDialog = () => {
-    //     setHiveDropHiveGrades([]);
-    // };
     
     return (
         <div id="hivedrop-dialog-wrapper" className="absolute w-full z-5 flex gap-2 p-2 items-start">                                              
@@ -44,10 +40,10 @@ export default function HiveDropDialog({ props }: { props: HiveDropDialogProps }
                         </div>
                         <Separator />
                         <h4>Hives graded: {props.grades.length}</h4>
-                        <div className="max-h-[300px] overflow-y-scroll">
+                        <div className="max-h-[300px] overflow-y-scroll flex flex-col gap-6 border-1 border-border rounded-md p-5">
                             {props.grades.map((value, index) => (
-                                <div key={index} className="flex gap-2">
-                                    <p>Hive {index}</p>
+                                <div key={index} className="flex gap-6">
+                                    <p className="text-nowrap">Hive {index + 1}</p>
                                     <Slider     
                                     disabled
                                     defaultValue={[value]}
@@ -55,14 +51,18 @@ export default function HiveDropDialog({ props }: { props: HiveDropDialogProps }
                                     step={1}
                                     color="brand-light"
                                     />                                
+                                    <div className="text-nowrap text-lg font-bold text-brand-dark">{value}</div>
                                 </div>
                             ))}                        
-                        </div>                    
-                        <Separator />
-                        <Label htmlFor="notes">Notes</Label>
-                        <Textarea disabled id="notes" placeholder="Notes" value={props.notes}/>                        
+                        </div>                                            
+                        {props.notes && (
+                            <>                                
+                                <Label htmlFor="notes">Notes</Label>
+                                <Textarea disabled id="notes" placeholder="Notes" value={props.notes}/>                        
+                            </>
+                        )}
                         <DialogFooter>
-                            <Button variant="secondary" size="action" onClick={() => setIsHiveDropDialogOpen(false)}>Close</Button>
+                            <Button variant="customSecondary" size="action" onClick={() => setIsHiveDropDialogOpen(false)}>Close</Button>
                         </DialogFooter>
                 </DialogContent>            
             </Dialog>

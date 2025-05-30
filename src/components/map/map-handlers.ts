@@ -134,9 +134,11 @@ export const handleDeselection = (
   orchardLayer: FeatureLayer,
   hiveDropsLayer: FeatureLayer,
   perimitersLayer: FeatureLayer,
-  setIsMobileSheetOpen: (open: boolean) => void
+  setIsMobileSheetOpen: (open: boolean) => void,
+  setIsShown: (shown: boolean) => void
 ) => {
   setIsMobileSheetOpen(false);
+  setIsShown(false);
   // Return map to showing all orchards
   orchardLayer.visible = true;
   hiveDropsLayer.visible = false;
