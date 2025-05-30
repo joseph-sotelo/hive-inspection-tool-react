@@ -8,7 +8,7 @@ import { useContext } from "react";
 import { ClientsDataContext } from "@/context/clientsData/ClientsData";
 
 export default function Clients({ types }: {types: string[] }) {
-    const { setName, statuses, setStatuses, hiveCounts, setHiveCounts, orchardGrades, setOrchardGrades } = useContext(ClientsDataContext);
+    const { setName, setStatuses, setHiveCounts, setOrchardGrades } = useContext(ClientsDataContext);
 
     return (
         <ul className="flex flex-col gap-3">
@@ -20,11 +20,8 @@ export default function Clients({ types }: {types: string[] }) {
                     onClick={() => getClientData(
                         value,
                         setName,
-                        statuses,
                         setStatuses,
-                        hiveCounts,
-                        setHiveCounts,
-                        orchardGrades,
+                        setHiveCounts,                        
                         setOrchardGrades
                     )}
                     >

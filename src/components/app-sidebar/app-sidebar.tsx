@@ -36,30 +36,33 @@ const items = [
 
   export function AppSidebar() {
     return (
-      <Sidebar collapsible="icon" className="overflow-hidden *:data-[sidebar=sidebar]:flex-row w-[440px]">
-        <Sidebar collapsible="none" className="w-[calc(var(--sidebar-width-icon)+1px)]! border-r">
-            <SidebarContent>
+      <Sidebar collapsible="none" className="w-[440px]" variant="inset">
+        <SidebarContent className="flex flex-row">
+          {/* Icon Navigation Section */}
+          <div className="w-[calc(var(--sidebar-width-icon)+1px)] border-r bg-sidebar flex flex-col">
             <SidebarGroup>                
-                <SidebarGroupContent>
+              <SidebarGroupContent>
                 <SidebarMenu>
-                    {items.map((item) => (
+                  {items.map((item) => (
                     <SidebarMenuItem key={item.title}>
-                        <SidebarMenuButton asChild>
+                      <SidebarMenuButton asChild>
                         <Link to={item.url}>
-                            <item.icon />
-                            <span>{item.title}</span>
+                          <item.icon />
+                          <span className="sr-only">{item.title}</span>
                         </Link>
-                        </SidebarMenuButton>
+                      </SidebarMenuButton>
                     </SidebarMenuItem>
-                    ))}
+                  ))}
                 </SidebarMenu>
-                </SidebarGroupContent>
+              </SidebarGroupContent>
             </SidebarGroup>
-            </SidebarContent>
-        </Sidebar>
-        <Sidebar collapsible="none" className="hidden flex-1 md:flex">
+          </div>
+          
+          {/* Content Section */}
+          <div className="hidden md:flex flex-1">
             <ClientsSidebar />
-        </Sidebar>
+          </div>
+        </SidebarContent>
       </Sidebar>
     )
   }

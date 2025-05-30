@@ -8,12 +8,9 @@ const URL = import.meta.env.VITE_ARCGIS_ORCHARDS_LAYER_GEOJSON_URL;
 
 export const getClientData = async (
     clientName: string,
-    setName: (name: string) => void,
-    statuses: string[],
+    setName: (name: string) => void,    
     setStatuses: (statuses: string[]) => void,
-    hiveCounts: number[],
-    setHiveCounts: (hiveCounts: number[]) => void,
-    orchardGrades: string[],
+    setHiveCounts: (hiveCounts: number[]) => void,    
     setOrchardGrades: (orchardGrades: string[]) => void
 ) => {
     setName(clientName);
@@ -45,8 +42,8 @@ export const getClientData = async (
     console.log("Query results:", results.features);
     console.log("Processed data:", { clientName, newStatuses, newHiveCounts, newOrchardGrades });
 
-    // Update state with the new arrays
-    setStatuses([...statuses, ...newStatuses]);
-    setHiveCounts([...hiveCounts, ...newHiveCounts]);
-    setOrchardGrades([...orchardGrades, ...newOrchardGrades]);
+    // Replace state with the new arrays (not append)
+    setStatuses(newStatuses);
+    setHiveCounts(newHiveCounts);
+    setOrchardGrades(newOrchardGrades);
 };
