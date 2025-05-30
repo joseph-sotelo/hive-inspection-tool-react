@@ -3,16 +3,31 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { Link } from "react-router-dom";
+import { getClientData } from "./getClientData";
+import { useContext } from "react";
+import { ClientsDataContext } from "@/context/clientsData/ClientsData";
 
 export default function Clients({ types }: {types: string[] }) {
+    const { setName, statuses, setStatuses, hiveCounts, setHiveCounts, orchardGrades, setOrchardGrades } = useContext(ClientsDataContext);
+
     return (
         <ul className="flex flex-col gap-3">
             {types.map((value, index) => (
-                <div>
+                <div key={`${value}-${index}`}>
                 <Separator className="mb-3"/>
-                <li key = {`${value}-${index}`}
-                >
-                    <Link to={`/map/${value}`}>
+                <li>
+                    <Link to={`/clients/${value}`}
+                    onClick={() => getClientData(
+                        value,
+                        setName,
+                        statuses,
+                        setStatuses,
+                        hiveCounts,
+                        setHiveCounts,
+                        orchardGrades,
+                        setOrchardGrades
+                    )}
+                    >
                         <div className="flex gap-2 items-center">
                             <Avatar>                                
                                 <AvatarFallback>

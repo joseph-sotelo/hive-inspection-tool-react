@@ -14,7 +14,7 @@ export function cn(...inputs: ClassValue[]) {
 
 // below function is used for getting all of the values for a given field
 config.request.useIdentity = false;
-config.apiKey = import.meta.env.VITE_ARCGIS_BASEMAP_API_KEY as string;
+config.apiKey = import.meta.env.VITE_ARCGIS_LAYER_API_KEY as string;
 const URL = import.meta.env.VITE_ARCGIS_ORCHARDS_LAYER_GEOJSON_URL;
 
 export const getValues = async (outField: string) => {
