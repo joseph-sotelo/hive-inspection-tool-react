@@ -25,7 +25,7 @@ const buttonVariants = cva(
         action:
           "bg-brand-light border-1 border-foreground-flexible-light text-foreground-flexible font-bold tracking-wide shadow-lg shadow-brand-light/60 hover:bg-brand-light/60",
         customSecondary:
-          "text-foreground-flexible font-semibold tracking-wide bg-foreground-flexible/10 hover:bg-foreground-flexible/30",
+          "border-1 border-foreground-flexible-light text-foreground-flexible font-semibold tracking-wide bg-foreground-flexible/10 hover:bg-foreground-flexible/30",
         text:
           "hover:text-accent-foreground dark:hover:bg-accent/50 items-start",
         map:
@@ -35,10 +35,11 @@ const buttonVariants = cva(
         default: "h-9 px-4 py-2 has-[>svg]:px-3 text-sm rounded-md",
         sm: "h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5 text-sm",
         lg: "h-10 rounded-md px-6 has-[>svg]:px-4 text-sm",
-        action: "rounded-md py-3 px-6 text-sm",
+        action: "rounded-md py-3 px-6 text-sm w-full",
         icon: "size-9 text-sm rounded-md",
         text: "pl-0 text-sm rounded-md",
-        map: `h-full text-lg rounded-xl px-6 ${CORNERS.CHILD}`
+        map: `h-full text-lg rounded-xl px-6 ${CORNERS.CHILD}`,
+        left: "h-9 px-0 py-2 has-[>svg]:px-0 text-sm rounded-md"        
       },
     },
     defaultVariants: {

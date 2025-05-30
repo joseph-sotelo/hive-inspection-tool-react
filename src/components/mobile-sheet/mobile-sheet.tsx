@@ -23,7 +23,13 @@ import { MobileSheetProps } from "../types";
 // Constants
 import { SHEET, STATUS_CONFIG } from "@/constants";
 
+// Context
+import { useInspectionData } from "@/context/inspectionData"
+
 export default function MobileSheet({ props }: { props: MobileSheetProps }) {
+
+  const { setIsShown } = useInspectionData();
+
   const sheetRef = useRef<HTMLDivElement>(null);
 
   // Use custom hooks to manage complex logic
@@ -84,7 +90,7 @@ export default function MobileSheet({ props }: { props: MobileSheetProps }) {
         {/* Main content body */}
         <div 
           id="body" 
-          className="px-2 pt-6 flex flex-col gap-6 items-center h-full overflow-scroll bg-background-secondary border-x-1 border-border"
+          className="p-2 flex flex-col gap-6 items-center h-full overflow-scroll bg-background-secondary border-x-1 border-border"
         >
           <Accordion type="single" collapsible defaultValue="item-4">
             {/* Hive Contract Information */}
@@ -126,9 +132,11 @@ export default function MobileSheet({ props }: { props: MobileSheetProps }) {
           {/* Submit button */}
           <Button 
             variant="customSecondary" 
-            size="action" 
-            onClick={() => props.onMarkComplete(formData)}
-          >
+            size="lg" 
+            onClick={() => {
+              props.onMarkComplete(formData);
+              setIsShown(false);
+            }}>
             Mark Complete
           </Button>
         </div>
