@@ -36,7 +36,7 @@ html, body, #root {
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
+  --color-sidebar: var(--background);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
   --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
@@ -49,7 +49,7 @@ html, body, #root {
   --color-background: var(--background);
   --color-secondary: var(--secondary);
   --color-foreground: oklch(0.3212 0.0109 168.01);
-  
+
   /* custom vars */
   --color-background-secondary: oklch(0.97 0.0025 165.08);
   --shadow-md-reverse: 0 -4px 6px -1px rgb(0 0 0 / 0.1), 0 -2px 4px -2px rgb(0 0 0 / 0.1);

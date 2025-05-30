@@ -1,25 +1,29 @@
 // this function came from a tutorial and will eventually need to be updated
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Separator } from "@/components/ui/separator";
 import { Link } from "react-router-dom";
 
 export default function Clients({ types }: {types: string[] }) {
     return (
-        <ul >
+        <ul className="flex flex-col gap-3">
             {types.map((value, index) => (
+                <div>
+                <Separator className="mb-3"/>
                 <li key = {`${value}-${index}`}
                 >
                     <Link to={`/map/${value}`}>
-                        <div className="flex">
+                        <div className="flex gap-2 items-center">
                             <Avatar>                                
                                 <AvatarFallback>
                                     {value.split(' ').map(word => word[0]).join('').toUpperCase()}
                                 </AvatarFallback>
                             </Avatar>
-                            <h4>{value}</h4>                            
+                            <div className="text-base">{value}</div>                            
                         </div>                        
                     </Link>
                 </li>
+                </div>
             ))}
         </ul>
     );

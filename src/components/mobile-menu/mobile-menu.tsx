@@ -7,7 +7,7 @@ export const MobileMenu = () => {
     const navigate = useNavigate();
 
     return (
-        <div className="absolute">
+        <div className="absolute z-5">
             <Sheet>
                 <SheetTrigger>
                     <Button variant="outline" className="mt-4 ml-4 ">

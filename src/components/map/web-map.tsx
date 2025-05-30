@@ -218,7 +218,17 @@ export default function Map() {
       <InspectionControls totalHivesContracted={totalHivesContracted} />
       
       {/* Map container */}
-      <div id="viewDiv" className="w-full h-screen" />
+      <div id="viewDivWrapper" className="w-full h-screen overflow-hidden">
+        <div 
+          id="viewDiv" 
+          className="w-full h-full relative" 
+          style={{ 
+            width: '102%', 
+            height: '102%', 
+            margin: '-1%',            
+          }} 
+        />
+      </div>      
     </div>
   );
 }
