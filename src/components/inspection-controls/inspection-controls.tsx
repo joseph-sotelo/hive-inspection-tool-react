@@ -50,10 +50,12 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
     const [isOpen, setIsOpen] = useState(false);        
     // stores hivesCounted within the component until user hits "finish" -- then it updates context
     const [hivesCountedLocal, setHivesCountedLocal] = useState<number[]>([]);
+    // track when to clear form data
+    const [shouldClearForm, setShouldClearForm] = useState(false);
     
     useEffect(() => {                
         const totalGradedHives = orchardHiveGrades.flat().length;
-        if (totalGradedHives > 1) {                         
+        if (totalGradedHives > 2) {                         
             const percentage = getSamplePercentage({ 
                 populationSize: totalHivesContracted, 
                 totalHiveGrades: orchardHiveGrades
@@ -63,6 +65,14 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
             setSamplePercentage(0.1);
         }
     }, [orchardHiveGrades, totalHivesContracted]);
+
+    // Clear form data after save is complete
+    useEffect(() => {
+        if (shouldClearForm) {
+            setHiveDropHiveGrades([]);
+            setShouldClearForm(false);
+        }
+    }, [shouldClearForm]);
 
     return (
         <div id="inspection-controls-wrapper" className={clsx("absolute right-0 w-full md:w-[calc(100vw-440px)] z-5 flex gap-2 p-2 items-stretch pointer-events-none", isShown ? "block" : "hidden")}>             
@@ -152,14 +162,18 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
                         <Button variant="customSecondary" size="action">Add Photos</Button>
                         <DialogFooter>
                             <Button variant="action" size="action" onClick={() => {                                                                                                      
-                                setIsOpen(false);                                                                   
+                                // First update all the context data
                                 setHivesCounted(hivesCountedLocal);
                                 const newHivesGraded = [...hivesGraded, hiveDropHiveGrades.length];                                
                                 setHivesGraded(newHivesGraded);                                
                                 setAverage([...average, getHiveDropAverage(hiveDropHiveGrades)]);                                                                                    
+                                // Then trigger the save operation
                                 setApplyHiveDrop(applyHiveDrop + 1);
+                                // Update UI state
                                 setHiveDropIndex(hiveDropIndex + 1);
-                                setHiveDropHiveGrades([]);                                
+                                setIsOpen(false);
+                                // Signal that form should be cleared after save
+                                setShouldClearForm(true);
                             }}>Finish</Button>
                         </DialogFooter>
                 </DialogContent>            

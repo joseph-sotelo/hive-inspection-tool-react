@@ -175,7 +175,6 @@ export default function Map() {
   }, []);
 
   // Create function for adding hive drop features
-
   useEffect(() => {    
     if (applyHiveDrop > 0 && hiveDropsLayerRef.current) {
       addHiveDrop(
@@ -190,7 +189,7 @@ export default function Map() {
         hivesGraded
       );
     }
-  }, [applyHiveDrop]);  
+  }, [applyHiveDrop]);
 
   return (
     <div>
