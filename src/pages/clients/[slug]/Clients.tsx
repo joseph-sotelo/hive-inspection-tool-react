@@ -8,6 +8,7 @@ import ContactChip from '@/components/clients/contact-chip';
 import { Pencil } from 'lucide-react';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
 import StatusBadge from '@/components/ui/status-badge';
+import { Button } from '@/components/ui/button';
 
 function ClientDetailContent() {
     const { slug } = useParams<{ slug: string }>();
@@ -39,7 +40,7 @@ function ClientDetailContent() {
                     <ContactChip contactType="email" value="custom@client.com" />
                 </div>
                 <Separator />
-                <div id="orchards">
+                <div id="orchards" className="flex flex-col gap-4">
                     <h4>Orchards</h4>    
                     <div className="max-h-[300px] overflow-y-scroll border-1 border-border rounded-md p-5">
                         <Table>
@@ -65,6 +66,7 @@ function ClientDetailContent() {
                             </TableBody>
                         </Table>
                     </div>
+                    <Button variant="customSecondary" className="w-2/10">Add Orchard</Button>
                 </div>
             </div>
             <div id="map" >                
