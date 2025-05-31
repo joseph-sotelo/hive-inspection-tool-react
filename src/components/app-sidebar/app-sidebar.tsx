@@ -4,15 +4,12 @@ import ClientsSidebar from "../clients/clients-sidebar"
 
 import { 
     Sidebar, 
-    SidebarContent,
-    SidebarFooter,
+    SidebarContent,    
     SidebarGroup,
     SidebarGroupContent,
-    SidebarGroupLabel,
     SidebarMenu,
     SidebarMenuButton,
-    SidebarMenuItem,
-    SidebarTrigger,
+    SidebarMenuItem    
 } from "@/components/ui/sidebar"
 
 // Menu items.

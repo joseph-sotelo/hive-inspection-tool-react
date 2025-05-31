@@ -5,7 +5,7 @@ import clsx from "clsx";
 import { ChevronDown } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { Badge, badgeVariantsType } from "@/components/ui/badge";
+import StatusBadge from "@/components/ui/status-badge";
 
 // Custom hooks - extracted logic for reusability and testability
 import { useMobileSheetAnimation, useFormData, useClickOutside } from "@/hooks";
@@ -41,13 +41,6 @@ export default function MobileSheet({ props }: { props: MobileSheetProps }) {
   // Handle clicking outside to close the sheet
   useClickOutside(sheetRef, () => setIsOffScreen(true));
 
-  // Process status for display using constants
-  let statusString = props.F_status.split("_")[0];
-  const status = props.F_status ? statusString as badgeVariantsType : "default";
-  if (statusString === "nodata") {
-    statusString = STATUS_CONFIG.DISPLAY_NAMES.nodata;
-  }
-
   // Determine delivery status text using constants
   let deliveryStatus = props.partdeliv_yn === "no" 
     ? STATUS_CONFIG.DELIVERY_STATUS.COMPLETE 
@@ -76,7 +69,7 @@ export default function MobileSheet({ props }: { props: MobileSheetProps }) {
               {props.client} | {props.fieldmap_id_primary}
             </h4>
             <div>
-              <Badge variant={status}>Status: {statusString}</Badge> 
+              <StatusBadge status={props.F_status} />
               <small className="text-sm text-foreground-flexible ml-2">
                 Delivery {deliveryStatus}: {props.hives_contracted} hives
               </small>
