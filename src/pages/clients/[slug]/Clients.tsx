@@ -27,7 +27,7 @@ function ClientDetailContent() {
 
     return (
         <div className="p-6 flex flex-col 2xl:flex-row">            
-            <div id="info" >
+            <div id="info" className="w-full">
                 <div id="header" className="flex flex-row justify-between w-full">
                     <h1 className="text-2xl font-bold mb-4">{name || slug}</h1>
                     <Pencil />
@@ -40,29 +40,31 @@ function ClientDetailContent() {
                 </div>
                 <Separator />
                 <div id="orchards">
-                    <h4>Orchards</h4>
-                    <Table>
-                        <TableHeader>
-                            <TableRow>              
-                                <TableHead>Status</TableHead>
-                                <TableHead>Hive Count</TableHead>
-                                <TableHead>Grade Average</TableHead>
-                            </TableRow>
-                        </TableHeader>            
-                        <TableBody>            
-                            {statuses.map((status, index) => {
-                                return (
-                                    <TableRow key={index}>
-                                        <TableCell>
-                                            <StatusBadge status={status} />
-                                        </TableCell>
-                                        <TableCell>{hiveCounts[index]}</TableCell>
-                                        <TableCell>{orchardGrades[index]}</TableCell>
-                                    </TableRow>
-                                )
-                            })}
-                        </TableBody>
-                    </Table>
+                    <h4>Orchards</h4>    
+                    <div className="max-h-[300px] overflow-y-scroll border-1 border-border rounded-md p-5">
+                        <Table>
+                            <TableHeader>
+                                <TableRow>              
+                                    <TableHead>Status</TableHead>
+                                    <TableHead>Hive Count</TableHead>
+                                    <TableHead>Grade Average</TableHead>
+                                </TableRow>
+                            </TableHeader>            
+                            <TableBody>            
+                                {statuses.map((status, index) => {
+                                    return (
+                                        <TableRow key={index}>
+                                            <TableCell>
+                                                <StatusBadge status={status} />
+                                            </TableCell>
+                                            <TableCell>{hiveCounts[index]}</TableCell>
+                                            <TableCell>{orchardGrades[index]}</TableCell>
+                                        </TableRow>
+                                    )
+                                })}
+                            </TableBody>
+                        </Table>
+                    </div>
                 </div>
             </div>
             <div id="map" >                
@@ -78,32 +80,3 @@ export default function ClientDetail() {
         </ClientsDataProvider>
     );
 }
-
-{/* <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-<div className="bg-white p-4 rounded-lg shadow">
-    <h3 className="font-semibold mb-2">Statuses</h3>
-    <ul>
-        {statuses.map((status: string, index: number) => (
-            <li key={index}>{status}</li>
-        ))}
-    </ul>
-</div>
-
-<div className="bg-white p-4 rounded-lg shadow">
-    <h3 className="font-semibold mb-2">Hive Counts</h3>
-    <ul>
-        {hiveCounts.map((count: number, index: number) => (
-            <li key={index}>{count}</li>
-        ))}
-    </ul>
-</div>
-
-<div className="bg-white p-4 rounded-lg shadow">
-    <h3 className="font-semibold mb-2">Orchard Grades</h3>
-    <ul>
-        {orchardGrades.map((grade: string, index: number) => (
-            <li key={index}>{grade}</li>
-        ))}
-    </ul>
-</div>
-</div> */}
