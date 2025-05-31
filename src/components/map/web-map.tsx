@@ -9,9 +9,9 @@ import "@arcgis/core/assets/esri/themes/light/main.css";
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 
 // UI imports
-import { MobileSheet } from "../mobile-sheet";
+import { OrchardDetailsMobile, OrchardDetailsDesktop } from "../orchard-details";
 import InspectionControls from "../inspection-controls/inspection-controls";
-import { MobileSheetProps, HiveDropDialogProps } from "../types";
+import { OrchardDetailsProps, HiveDropDialogProps } from "../types";
 import HiveDropDialog from "../hivedrop-dialog/hivedrop-dialog";
 
 // Map utilities
@@ -21,6 +21,9 @@ import { createFeatureUpdater } from "./feature-updater";
 import { MAP_CONFIG, ORCHARD_FIELD_NAMES } from "@/constants";
 import { ENV } from "@/utils/env-validation";
 import { addHiveDrop } from "./add-hivedrop";
+
+// Custom hooks
+import { useMediaQuery } from "@/hooks";
 
 // context
 import { useInspectionData } from "@/context/inspectionData/useInspectionData";
@@ -51,8 +54,11 @@ export default function Map() {
     setIsShown
   } = useInspectionData();
 
+  // Responsive breakpoint detection - Tailwind's 'md' is 768px
+  const isDesktop = useMediaQuery('(min-width: 768px)');
+
   // State for mobile sheet
-  const [mobileSheetProps, setMobileSheetProps] = useState<MobileSheetProps | null>(null);
+  const [orchardDetailsProps, setOrchardDetailsProps] = useState<OrchardDetailsProps | null>(null);
   const [isMobileSheetOpen, setIsMobileSheetOpen] = useState(false);  
 
   // State for hive drop dialog
@@ -141,7 +147,7 @@ export default function Map() {
             hiveDropsLayer,
             perimitersLayer,
             view,
-            setMobileSheetProps,
+            setOrchardDetailsProps,
             setIsMobileSheetOpen,
             updateFeature,
             setHivesCounted,
@@ -198,12 +204,21 @@ export default function Map() {
 
   return (
     <div>
-      {/* Conditionally render mobile sheet */}
-      {isMobileSheetOpen && mobileSheetProps && (
-        <MobileSheet 
-          props={mobileSheetProps} 
-          key={mobileSheetProps.fieldmap_id_primary}
-        />
+      {/* Conditionally render mobile vs desktop based on screen size */}
+      {isMobileSheetOpen && orchardDetailsProps && (
+        <>
+          {isDesktop ? (
+            <OrchardDetailsDesktop
+              props={orchardDetailsProps} 
+              key={orchardDetailsProps.fieldmap_id_primary}
+            />
+          ) : (
+            <OrchardDetailsMobile 
+              props={orchardDetailsProps} 
+              key={orchardDetailsProps.fieldmap_id_primary}
+            />
+          )}
+        </>
       )}
       
       {/* Conditionally render hive drop dialog */}

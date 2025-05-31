@@ -15,7 +15,7 @@ export type FormData = {
   assistants: string[]
 }
 
-export type MobileSheetProps = FormData & {
+export type OrchardDetailsProps = FormData & {
   onMarkComplete: (formData: FormData) => void
 }
 

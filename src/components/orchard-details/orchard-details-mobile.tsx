@@ -18,7 +18,7 @@ import InspectionSection from "./inspection-section";
 import SignatureSection from "./signature-section";
 
 // Types
-import { MobileSheetProps } from "../types";
+import { OrchardDetailsProps } from "../types";
 
 // Constants
 import { SHEET, STATUS_CONFIG } from "@/constants";
@@ -26,7 +26,7 @@ import { SHEET, STATUS_CONFIG } from "@/constants";
 // Context
 import { useInspectionData } from "@/context/inspectionData"
 
-export default function MobileSheet({ props }: { props: MobileSheetProps }) {
+export default function OrchardDetailsMobile({ props }: { props: OrchardDetailsProps }) {
 
   const { setIsShown } = useInspectionData();
 
@@ -51,18 +51,18 @@ export default function MobileSheet({ props }: { props: MobileSheetProps }) {
       <div 
         ref={sheetRef} 
         className={clsx(
-          `shadow-md-reverse md:rounded-r-xl w-full transition-all ${SHEET.ANIMATION_DURATION} overflow-hidden bottom-0 absolute z-10 md:w-[440px] md:h-full`,
+          `shadow-md-reverse w-full transition-all ${SHEET.ANIMATION_DURATION} overflow-hidden bottom-0 absolute z-10`,
           {
-            [`${SHEET.POSITIONS.HIDDEN} md:h-full`]: isOffScreen && !isOpen || isOffScreen && isOpen,
-            [`${SHEET.POSITIONS.COLLAPSED} md:h-full`]: !isOffScreen && !isOpen,
-            [`${SHEET.POSITIONS.EXPANDED} md:h-full`]: !isOffScreen && isOpen
+            [SHEET.POSITIONS.HIDDEN]: isOffScreen && !isOpen || isOffScreen && isOpen,
+            [SHEET.POSITIONS.COLLAPSED]: !isOffScreen && !isOpen,
+            [SHEET.POSITIONS.EXPANDED]: !isOffScreen && isOpen
           }
         )}
       >
         {/* Header/Peek section */}
         <div 
           id="peek" 
-          className="p-6 flex justify-between border-1 rounded-t-xl md:rounded-none bg-background"
+          className="p-6 flex justify-between border-1 rounded-t-xl bg-background"
         >
           <div className="flex flex-col gap-2">
             <h4>
@@ -76,7 +76,7 @@ export default function MobileSheet({ props }: { props: MobileSheetProps }) {
             </div>
           </div>
           <div onClick={toggleOpen}>
-            <ChevronDown className={clsx("md:hidden", { "rotate-180": !isOpen })} />
+          <ChevronDown className={clsx({ "rotate-180": !isOpen })} />
           </div>
         </div>
 

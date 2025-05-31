@@ -4,3 +4,4 @@ export { useClickOutside } from './useClickOutside';
 export { useArrayReplace } from './useArrayReplace';
 export { useArrayPush } from './useArrayPush';
 export { useArray2dReplace } from './useArray2dReplace';
+export { useMediaQuery } from './useMediaQuery';

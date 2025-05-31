@@ -33,10 +33,11 @@ const items = [
 
   export function AppSidebar() {
     return (
-      <Sidebar collapsible="none" className="w-[440px]" variant="inset">
-        <SidebarContent className="flex flex-row">
-          {/* Icon Navigation Section */}
-          <div className="w-[calc(var(--sidebar-width-icon)+1px)] border-r bg-sidebar flex flex-col">
+      <Sidebar
+        collapsible="none"
+        className="w-[calc(var(--sidebar-width-icon)+1px)]! border-r"
+      >
+        <SidebarContent>                    
             <SidebarGroup>                
               <SidebarGroupContent>
                 <SidebarMenu>
@@ -53,12 +54,6 @@ const items = [
                 </SidebarMenu>
               </SidebarGroupContent>
             </SidebarGroup>
-          </div>
-          
-          {/* Content Section */}
-          <div className="hidden md:flex flex-1">
-            <ClientsSidebar />
-          </div>
         </SidebarContent>
       </Sidebar>
     )
