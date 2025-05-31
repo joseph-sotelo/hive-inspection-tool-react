@@ -27,6 +27,7 @@ import { useMediaQuery } from "@/hooks";
 
 // context
 import { useInspectionData } from "@/context/inspectionData/useInspectionData";
+import MapSidebar from "./map-sidebar";
 
 // Environment setup with validation
 config.apiKey = ENV.VITE_ARCGIS_LAYER_API_KEY;
@@ -204,6 +205,7 @@ export default function Map() {
 
   return (
     <div>
+      <MapSidebar />
       {/* Conditionally render mobile vs desktop based on screen size */}
       {isMobileSheetOpen && orchardDetailsProps && (
         <>
