@@ -18,7 +18,7 @@ import HiveDropDialog from "../hivedrop-dialog/hivedrop-dialog";
 import { createOrchardsLayer, createHiveDropsLayer, createPerimitersLayer } from "./layer-config";
 import { handleOrchardFeatureSelection, handleDeselection, handleHiveDropFeatureSelection } from "./map-handlers";
 import { createFeatureUpdater } from "./feature-updater";
-import { MAP_CONFIG, ORCHARD_FIELD_NAMES } from "@/constants";
+import { LAYER_EXPRESSIONS, MAP_CONFIG, ORCHARD_FIELD_NAMES } from "@/constants";
 import { ENV } from "@/utils/env-validation";
 import { addHiveDrop } from "./add-hivedrop";
 
@@ -71,7 +71,7 @@ export default function Map() {
 
   useEffect(() => {
     // Create all feature layers using extracted functions
-    const orchardLayer = createOrchardsLayer();
+    const orchardLayer = createOrchardsLayer(LAYER_EXPRESSIONS.SHOW_ALL);
     const hiveDropsLayer = createHiveDropsLayer();
     const perimitersLayer = createPerimitersLayer();
     hiveDropsLayerRef.current = hiveDropsLayer;

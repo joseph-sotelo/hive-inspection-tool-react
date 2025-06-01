@@ -20,6 +20,7 @@ export const MAP_CONFIG = {
 // Layer definition expressions
 export const LAYER_EXPRESSIONS = {
   HIDE_ALL: "1=0", // Expression to hide all features
+  SHOW_ALL: "1=1" // Expression to show all features
 } as const;
 
 // ArcGIS field names - centralizing to prevent typos

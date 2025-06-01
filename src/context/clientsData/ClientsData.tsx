@@ -13,7 +13,11 @@ interface ContextType {
   hiveCounts: number[],
   setHiveCounts: (arg: number[]) => void,
   orchardGrades: string[],
-  setOrchardGrades: (arg: string[]) => void
+  setOrchardGrades: (arg: string[]) => void,
+  definitionExpression: string,
+  setDefinitionExpression: (arg: string) => void,
+  fieldmapIdPrimary: string[],
+  setFieldmapIdPrimary: (arg: string[]) => void
 }
 
 export const ClientsDataContext = React.createContext<ContextType>({
@@ -28,7 +32,11 @@ export const ClientsDataContext = React.createContext<ContextType>({
   hiveCounts: [],
   setHiveCounts: () => {},
   orchardGrades: [],
-  setOrchardGrades: () => {}
+  setOrchardGrades: () => {},
+  definitionExpression: "",
+  setDefinitionExpression: () => {},
+  fieldmapIdPrimary: [],
+  setFieldmapIdPrimary: () => {}
 });
 
 interface Props {
@@ -41,6 +49,8 @@ const ClientsDataProvider = ({ children }: Props) => {
   const [statuses, setStatuses] = React.useState<string[]>([]);
   const [hiveCounts, setHiveCounts] = React.useState<number[]>([]);
   const [orchardGrades, setOrchardGrades] = React.useState<string[]>([]);
+  const [definitionExpression, setDefinitionExpression] = React.useState<string>("");
+  const [fieldmapIdPrimary, setFieldmapIdPrimary] = React.useState<string[]>([]);
   return (
     <ClientsDataContext.Provider value={{
       name,
@@ -54,7 +64,11 @@ const ClientsDataProvider = ({ children }: Props) => {
       hiveCounts,
       setHiveCounts,
       orchardGrades,
-      setOrchardGrades
+      setOrchardGrades,
+      definitionExpression,
+      setDefinitionExpression,
+      fieldmapIdPrimary,
+      setFieldmapIdPrimary
     }}>
       {children}
     </ClientsDataContext.Provider>

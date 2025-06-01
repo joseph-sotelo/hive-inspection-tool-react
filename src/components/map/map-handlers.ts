@@ -1,6 +1,6 @@
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import MapView from "@arcgis/core/views/MapView";
-import { HiveDropDialogProps, MobileSheetProps } from "../types";
+import { HiveDropDialogProps, OrchardDetailsProps } from "../types";
 import { MAP_CONFIG, ORCHARD_FIELD_NAMES, LAYER_EXPRESSIONS, HIVEDROP_FIELD_NAMES } from "@/constants";
 
 // Handle feature selection and layer visibility
@@ -10,7 +10,7 @@ export const handleOrchardFeatureSelection = (
   hiveDropsLayer: FeatureLayer,
   perimitersLayer: FeatureLayer,
   view: MapView,
-  setMobileSheetProps: (props: MobileSheetProps) => void,
+  setMobileSheetProps: (props: OrchardDetailsProps) => void,
   setIsMobileSheetOpen: (open: boolean) => void,
   updateFeature: (formData: any) => void,
   setHivesCounted: (hivesCounted: number[]) => void,
@@ -36,7 +36,7 @@ export const handleOrchardFeatureSelection = (
   });
   
   // Create mobile sheet props from feature attributes
-  const mobileSheetContent: MobileSheetProps = {
+  const mobileSheetContent: OrchardDetailsProps = {
     client: feature.attributes[ORCHARD_FIELD_NAMES.CLIENT],
     F_status: feature.attributes[ORCHARD_FIELD_NAMES.F_STATUS],
     fieldmap_id_primary: feature.attributes[ORCHARD_FIELD_NAMES.FIELDMAP_ID_PRIMARY],

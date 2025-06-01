@@ -9,10 +9,11 @@ import { Separator } from '@/components/ui/separator';
 import ClientHeader from './client-header';
 import ContactInfoSection from './contact-info-section';
 import OrchardsSection from './orchards-section';
+import ClientDetailsMap from './client-details-map';
 
 function ClientDetailContent() {
     const { slug } = useParams<{ slug: string }>();
-    const { setName, setStatuses, setHiveCounts, setOrchardGrades, name, statuses, hiveCounts, orchardGrades } = useClientsData();
+    const { setName, setStatuses, setHiveCounts, setOrchardGrades, name, statuses, hiveCounts, orchardGrades, setDefinitionExpression, setFieldmapIdPrimary, fieldmapIdPrimary } = useClientsData();
 
     // Decode the URL-encoded slug to get the actual client name
     const clientName = slug ? decodeURIComponent(slug) : '';
@@ -24,7 +25,9 @@ function ClientDetailContent() {
                 setName,
                 setStatuses,
                 setHiveCounts,
-                setOrchardGrades
+                setOrchardGrades,
+                setDefinitionExpression,
+                setFieldmapIdPrimary
             );
         }
     }, [clientName]);
@@ -41,7 +44,7 @@ function ClientDetailContent() {
     };
 
     return (
-        <div className="p-6 flex flex-col 2xl:flex-row">            
+        <div className="p-6 flex flex-col 2xl:flex-row w-full">            
             <div id="info" className="w-full">
                 <ClientHeader 
                     name={name} 
@@ -59,11 +62,12 @@ function ClientDetailContent() {
                     statuses={statuses}
                     hiveCounts={hiveCounts}
                     orchardGrades={orchardGrades}
+                    fieldmapIdPrimary={fieldmapIdPrimary}
                     onAddOrchard={handleAddOrchard}
                 />
             </div>
-            <div id="map">
-                {/* TODO: Add map component */}                
+            <div id="map" className="w-full">
+                <ClientDetailsMap />
             </div>
         </div>
     );

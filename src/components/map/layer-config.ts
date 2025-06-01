@@ -8,9 +8,9 @@ import { ORCHARD_FIELD_NAMES, LAYER_EXPRESSIONS, HIVEDROP_FIELD_NAMES } from "@/
 import { ENV } from "@/utils/env-validation";
 
 // Create orchards layer with proper field mapping
-export const createOrchardsLayer = () => {
+export const createOrchardsLayer = (definitionExpression: string) => {
   const layer = new FeatureLayer({
-    url: ENV.VITE_ARCGIS_MOCK_ORCHARDS_LAYER_API_URL,
+    url: ENV.VITE_ARCGIS_ORCHARDS_LAYER_API_URL,
     outFields: [
       ORCHARD_FIELD_NAMES.F_STATUS,
       ORCHARD_FIELD_NAMES.FIELDMAP_ID_PRIMARY,
@@ -27,7 +27,8 @@ export const createOrchardsLayer = () => {
       ORCHARD_FIELD_NAMES.TEAM_LEADER,
       ORCHARD_FIELD_NAMES.ASSISTANTS,
       ORCHARD_FIELD_NAMES.F_RECORD_ID
-    ]
+    ],
+    definitionExpression: definitionExpression
   });
 
   // Apply status-based symbology
@@ -97,3 +98,7 @@ export const createPerimitersLayer = () => {
 
   return layer;
 };
+
+export const updateDefinitionExpression = (layer: FeatureLayer, definitionExpression: string) => {
+  layer.definitionExpression = definitionExpression;
+}

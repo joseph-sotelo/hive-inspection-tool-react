@@ -11,15 +11,18 @@ export const getClientData = async (
     setName: (name: string) => void,    
     setStatuses: (statuses: string[]) => void,
     setHiveCounts: (hiveCounts: number[]) => void,    
-    setOrchardGrades: (orchardGrades: string[]) => void
+    setOrchardGrades: (orchardGrades: string[]) => void,    
+    setDefinitionExpression: (definitionExpression: string) => void,
+    setFieldmapIdPrimary: (fieldmapIdPrimary: string[]) => void
 ) => {
     setName(clientName);
-
+    setDefinitionExpression(`client='${clientName}'`);
     const query = {
         outFields: [            
             ORCHARD_FIELD_NAMES.F_STATUS,
             ORCHARD_FIELD_NAMES.HIVES_CONTRACTED,
-            ORCHARD_FIELD_NAMES.AVERAGE
+            ORCHARD_FIELD_NAMES.AVERAGE,
+            ORCHARD_FIELD_NAMES.FIELDMAP_ID_PRIMARY
         ],
         where: `client='${clientName}'`,
         returnDistinctValues: true,
@@ -32,11 +35,13 @@ export const getClientData = async (
     const newStatuses: string[] = [];
     const newHiveCounts: number[] = [];
     const newOrchardGrades: string[] = [];
+    const newFieldmapIdPrimary: string[] = [];
 
     results.features.forEach((feature) => {
         newStatuses.push(feature.attributes[ORCHARD_FIELD_NAMES.F_STATUS]);
         newHiveCounts.push(feature.attributes[ORCHARD_FIELD_NAMES.HIVES_CONTRACTED]);
         newOrchardGrades.push(feature.attributes[ORCHARD_FIELD_NAMES.AVERAGE]);
+        newFieldmapIdPrimary.push(feature.attributes[ORCHARD_FIELD_NAMES.FIELDMAP_ID_PRIMARY]);
     });
 
     console.log("Query results:", results.features);
@@ -46,4 +51,5 @@ export const getClientData = async (
     setStatuses(newStatuses);
     setHiveCounts(newHiveCounts);
     setOrchardGrades(newOrchardGrades);
+    setFieldmapIdPrimary(newFieldmapIdPrimary);
 };
