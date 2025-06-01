@@ -10,8 +10,13 @@ import ClientHeader from './client-header';
 import ContactInfoSection from './contact-info-section';
 import OrchardsSection from './orchards-section';
 import ClientDetailsMap from './client-details-map';
+import { Button } from '@/components/ui/button';
 
-function ClientDetailContent() {
+interface ClientDetailsProps {
+    toggleReportGenerator?: () => void;
+}
+
+function ClientDetailContent({ toggleReportGenerator }: ClientDetailsProps) {
     const { slug } = useParams<{ slug: string }>();
     const { setName, setStatuses, setHiveCounts, setOrchardGrades, name, statuses, hiveCounts, orchardGrades, setDefinitionExpression, setFieldmapIdPrimary, fieldmapIdPrimary } = useClientsData();
 
@@ -65,6 +70,10 @@ function ClientDetailContent() {
                     fieldmapIdPrimary={fieldmapIdPrimary}
                     onAddOrchard={handleAddOrchard}
                 />
+                <Separator />
+                <Button variant="action" size="sm" className="w-full" onClick={toggleReportGenerator}>
+                    Generate Report
+                </Button>
             </div>
             <div id="map" className="w-full">
                 <ClientDetailsMap />
@@ -73,10 +82,10 @@ function ClientDetailContent() {
     );
 }
 
-export default function ClientDetails() {
+export default function ClientDetails({ toggleReportGenerator }: ClientDetailsProps) {
     return (
         <ClientsDataProvider>
-            <ClientDetailContent />
+            <ClientDetailContent toggleReportGenerator={toggleReportGenerator} />
         </ClientsDataProvider>
     );
 }
