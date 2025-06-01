@@ -14,17 +14,20 @@ function ClientDetailContent() {
     const { slug } = useParams<{ slug: string }>();
     const { setName, setStatuses, setHiveCounts, setOrchardGrades, name, statuses, hiveCounts, orchardGrades } = useClientsData();
 
+    // Decode the URL-encoded slug to get the actual client name
+    const clientName = slug ? decodeURIComponent(slug) : '';
+
     useEffect(() => {
-        if (slug) {
+        if (clientName) {
             getClientData(
-                slug,
+                clientName,
                 setName,
                 setStatuses,
                 setHiveCounts,
                 setOrchardGrades
             );
         }
-    }, [slug]);
+    }, [clientName]);
 
     // Handler functions for section components
     const handleEdit = () => {

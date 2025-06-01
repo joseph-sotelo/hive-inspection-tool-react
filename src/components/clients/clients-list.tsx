@@ -16,7 +16,7 @@ export default function Clients({ types }: {types: string[] }) {
                 <div key={`${value}-${index}`}>
                 <Separator className="mb-3"/>
                 <li>
-                    <Link to={`/clients/${value}`}
+                    <Link to={`/clients/${encodeURIComponent(value)}`}
                     onClick={() => getClientData(
                         value,
                         setName,

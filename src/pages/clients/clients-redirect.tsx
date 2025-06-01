@@ -20,7 +20,7 @@ export default function ClientsRedirect() {
     }
 
     if (firstClient) {
-        return <Navigate to={`/clients/${firstClient}`} replace />;
+        return <Navigate to={`/clients/${encodeURIComponent(firstClient)}`} replace />;
     }
 
     return <div>No clients found</div>;
