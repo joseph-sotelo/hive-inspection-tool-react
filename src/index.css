@@ -250,7 +250,7 @@ small {
   font-weight: 500;
 }
 
-.muted p{
+.muted {
   color: var(--muted-foreground);
   font-size: 0.875rem;
 }

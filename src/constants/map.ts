@@ -80,6 +80,10 @@ export const HIVEDROP_FIELD_NAMES = {
   INDEX: "F_index"
 }
 
+export const PERIMITERS_FIELD_NAMES = {
+  MAP_ID: "mapId"
+}
+
 export const PERIMITERS_LAYER_SYMBOL = {  
   FILL_COLOR: [7, 229, 250, 0.3],  
   OUTLINE_COLOR: [7, 229, 250, 1],

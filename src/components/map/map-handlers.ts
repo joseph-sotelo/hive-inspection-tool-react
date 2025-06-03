@@ -1,7 +1,7 @@
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import MapView from "@arcgis/core/views/MapView";
 import { HiveDropDialogProps, OrchardDetailsProps } from "../types";
-import { MAP_CONFIG, ORCHARD_FIELD_NAMES, LAYER_EXPRESSIONS, HIVEDROP_FIELD_NAMES } from "@/constants";
+import { MAP_CONFIG, ORCHARD_FIELD_NAMES, LAYER_EXPRESSIONS, HIVEDROP_FIELD_NAMES, PERIMITERS_FIELD_NAMES } from "@/constants";
 
 // Handle feature selection and layer visibility
 export const handleOrchardFeatureSelection = (
@@ -22,7 +22,7 @@ export const handleOrchardFeatureSelection = (
   // Show details for selected feature and hide everything else
   orchardLayer.visible = false;
   hiveDropsLayer.definitionExpression = `${HIVEDROP_FIELD_NAMES.F_RECORD_ID} = '${feature.attributes[ORCHARD_FIELD_NAMES.F_RECORD_ID]}'`;
-  perimitersLayer.definitionExpression = `${ORCHARD_FIELD_NAMES.CLIENT} = '${feature.attributes[ORCHARD_FIELD_NAMES.CLIENT]}'`;
+  perimitersLayer.definitionExpression = `${PERIMITERS_FIELD_NAMES.MAP_ID} = '${feature.attributes[ORCHARD_FIELD_NAMES.FIELDMAP_ID_PRIMARY]}'`;
   hiveDropsLayer.visible = true;
   perimitersLayer.visible = true;
   hiveDropsLayer.refresh();
