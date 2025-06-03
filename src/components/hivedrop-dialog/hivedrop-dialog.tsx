@@ -51,7 +51,7 @@ export default function HiveDropDialog({ props }: { props: HiveDropDialogProps }
                                     step={1}
                                     color="brand-light"
                                     />                                
-                                    <div className="text-nowrap text-lg font-bold text-brand-dark">{value}</div>
+                                    <div className="text-nowrap text-lg font-bold font-mono text-brand-dark">{value}</div>
                                 </div>
                             ))}                        
                         </div>                                            
