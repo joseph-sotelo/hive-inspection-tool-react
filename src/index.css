@@ -60,7 +60,8 @@ html, body, #root {
   --color-status-pass: oklch(0.89 0.2093 121.36);
   --color-brand-light: oklch(0.81 0.1389 169.53);
   --color-brand-dark: oklch(0.56 0.103 176.56);
-  --inset-shadow-md: inset 0 2px 6px -1px rgb(0 0 0 / 0.1), inset 0 2px 4px -2px rgb(0 0 0 / 0.1)
+  --inset-shadow-md: inset 0 2px 6px -1px rgb(0 0 0 / 0.1), inset 0 2px 4px -2px rgb(0 0 0 / 0.1);  
+  --aspect-letter: 8.5 / 11;
 }
 
 :root {
@@ -99,7 +100,7 @@ html, body, #root {
   --background: oklch(0.99 0.0066 286.28);
   --border: oklch(0.89 0 0);
   --sidebar-width: 440px;
-  --color-foreground-custom: oklch(0.3212 0.0109 168.01);
+  --color-foreground-custom: oklch(0.3212 0.0109 168.01);  
 }
 
 .dark {

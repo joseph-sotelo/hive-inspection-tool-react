@@ -4,7 +4,7 @@ import ClientsListRenderer from "./clients-list-renderer";
 
 export default function ClientsSidebar() {
     return (       
-        <div className="w-[440px]">
+        <div className="">
             <div>
                 <h1>Clients</h1>
             </div>

@@ -2,7 +2,7 @@
 // By separating layer configs, we make the code easier to test and modify
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import { symbolAlert, symbolFail, symbolLow, symbolPass, symbolHiveDrop } from "@/assets/symbols";
-import { ORCHARD_FIELD_NAMES, LAYER_EXPRESSIONS, HIVEDROP_FIELD_NAMES } from "@/constants";
+import { ORCHARD_FIELD_NAMES, LAYER_EXPRESSIONS, HIVEDROP_FIELD_NAMES, PERIMITERS_LAYER_SYMBOL } from "@/constants";
 
 // Validated environment variables - ensures all required config is present
 import { ENV } from "@/utils/env-validation";
@@ -87,11 +87,11 @@ export const createPerimitersLayer = () => {
     type: "simple",
     symbol: {
       type: "simple-fill",
-      color: [211, 247, 5, 0.3],
+      color: PERIMITERS_LAYER_SYMBOL.FILL_COLOR,
       style: "solid",
       outline: {
-        color: [211, 247, 5, 1],
-        width: 3
+        color: PERIMITERS_LAYER_SYMBOL.OUTLINE_COLOR,
+        width: PERIMITERS_LAYER_SYMBOL.OUTLINE_WIDTH
       }
     }
   };

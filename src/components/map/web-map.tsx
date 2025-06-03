@@ -79,7 +79,7 @@ export default function Map() {
     // Create map with all layers
     const map = new ArcGISMap({
       layers: [perimitersLayer, orchardLayer, hiveDropsLayer],
-      basemap: "arcgis/imagery"      
+      basemap: "arcgis/outdoor"      
     });
 
     // Create map view
@@ -205,7 +205,7 @@ export default function Map() {
 
   return (
     <div>
-      <MapSidebar />
+      {/* <MapSidebar /> */}
       {/* Conditionally render mobile vs desktop based on screen size */}
       {isMobileSheetOpen && orchardDetailsProps && (
         <>

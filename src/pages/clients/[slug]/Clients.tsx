@@ -2,6 +2,7 @@ import ClientDetails from '@/components/clients/client-details/client-details';
 import ClientsSidebar from '@/components/clients/clients-sidebar';
 import { ReportGenerator } from '@/components/clients/report-generator/report-generator';
 import { useState } from 'react';
+import ReportSidebar from '@/components/clients/report-generator/report-sidebar';
 
 export default function Clients() {
     const [showReportGenerator, setShowReportGenerator] = useState(false);
@@ -12,11 +13,14 @@ export default function Clients() {
     
     return (        
         <div className="flex">
-            <ClientsSidebar />                    
+            <ClientsSidebar/>                                
             {showReportGenerator ? (
-                <ReportGenerator onBack={toggleReportGenerator} />
-            ) : (
-                <ClientDetails toggleReportGenerator={toggleReportGenerator} />
+                <>
+                    <ReportSidebar />
+                    <ReportGenerator onBack={toggleReportGenerator} />                    
+                </>
+            ) : (                
+                <ClientDetails toggleReportGenerator={toggleReportGenerator} />                
             )}
         </div>
     )

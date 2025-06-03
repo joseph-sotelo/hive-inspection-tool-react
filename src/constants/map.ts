@@ -79,3 +79,13 @@ export const HIVEDROP_FIELD_NAMES = {
   NOTES: "notes",
   INDEX: "F_index"
 }
+
+export const PERIMITERS_LAYER_SYMBOL = {  
+  FILL_COLOR: [7, 229, 250, 0.3],  
+  OUTLINE_COLOR: [7, 229, 250, 1],
+  OUTLINE_WIDTH: 3
+}
+
+// FILL_COLOR: [211, 247, 5, 0.3],  
+// OUTLINE_COLOR: [211, 247, 5, 1],
+// OUTLINE_WIDTH: 3

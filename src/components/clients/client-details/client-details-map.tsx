@@ -28,7 +28,7 @@ export default function ClientDetailsMap() {
 
         const map = new ArcGISMap({
             layers: [orchardLayer],
-            basemap: "arcgis/imagery"      
+            basemap: "arcgis/outdoor"      
           });
       
           // Create map view
