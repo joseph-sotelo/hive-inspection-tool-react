@@ -10,8 +10,23 @@ import {
     SelectValue,
   } from "@/components/ui/select"
   import { Checkbox } from "@/components/ui/checkbox"
+import { useClientsData } from "@/context/clientsData/useClientsData";
+import { useEffect } from "react";
+import { getOrchardData } from "./getOrchardData";
+import { useOrchardReportData } from "@/context/orchardReportData/useOrchardReportData";
 
 export default function ReportSidebar() {
+    const { fieldmapIdPrimary, statuses, hiveCounts, orchardGrades } = useClientsData();
+    const { setStatus, setHiveCount, setAverage, setFieldmapIdPrimary } = useOrchardReportData();
+
+    const orchardProps = {
+        optionsType: "fieldmap_id_primary",
+        options: fieldmapIdPrimary.map((value) => ({
+            value: value,
+            label: value
+        }))
+    };
+
     return (       
         <div className="w-[440px] border-l-1 border-border">
             <div>
@@ -30,17 +45,24 @@ export default function ReportSidebar() {
                         </SelectGroup>
                     </SelectContent>
                 </Select>
-                <Label>Field</Label>
-                <Combobox 
-                    props={{
-                    optionsType: "team leader",
-                    options: [
-                        { value: "john-doe", label: "John Doe" },
-                        { value: "jane-smith", label: "Jane Smith" },
-                        { value: "mike-johnson", label: "Mike Johnson" }
-                    ]
-                    }}
-                />        
+                <Label>Orchard</Label>
+                    <Combobox 
+                        props={orchardProps} 
+                        defaultValue={fieldmapIdPrimary[0]}
+                        onChange={(value) => {
+                            const index = fieldmapIdPrimary.findIndex(item => item === value);
+                            getOrchardData(
+                                setStatus,
+                                setHiveCount,
+                                setAverage,
+                                setFieldmapIdPrimary,
+                                statuses[index],
+                                hiveCounts[index],
+                                orchardGrades[index],
+                                fieldmapIdPrimary[index]
+                            );
+                        }}
+                    />   
                 <div className="flex items-start gap-3">
                     <Checkbox id="toggle" />
                     <Label htmlFor="toggle">Include time of report creation</Label>

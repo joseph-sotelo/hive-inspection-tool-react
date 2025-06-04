@@ -2,6 +2,8 @@ import React from "react";
 
 interface ContextType {
   // data pertaining to a single client
+  index: number,
+  setIndex: (arg: number) => void
   name: string;
   setName: (arg: string) => void,
   phone: string,
@@ -21,6 +23,8 @@ interface ContextType {
 }
 
 export const ClientsDataContext = React.createContext<ContextType>({
+  index: 0,
+  setIndex: () => {},
   name: "",
   setName: () => {},
   phone: "",
@@ -43,6 +47,7 @@ interface Props {
   children: React.ReactNode;
 }
 const ClientsDataProvider = ({ children }: Props) => {
+  const [index, setIndex] = React.useState<number>(0);
   const [name, setName] = React.useState<string>("");
   const [phone, setPhone] = React.useState<string>("");
   const [email, setEmail] = React.useState<string>("");
@@ -53,6 +58,8 @@ const ClientsDataProvider = ({ children }: Props) => {
   const [fieldmapIdPrimary, setFieldmapIdPrimary] = React.useState<string[]>([]);
   return (
     <ClientsDataContext.Provider value={{
+      index,
+      setIndex,
       name,
       setName,
       phone,

@@ -1,16 +1,19 @@
 import ReportMap from "./report-map";
+import { useOrchardReportData } from "@/context/orchardReportData/useOrchardReportData";
 
 export default function ReportPreview() {
+    const { status, average, fieldmapIdPrimary } = useOrchardReportData();
+    
     return (
         <div className="aspect-letter w-[8.5in] border-2 border-border flex flex-col">
             <div id="header" className="grid grid-cols-12 gap-4 m-4 flex-shrink-0">
                 <div className="col-span-3 text-right font">
                     <p>
-                        Status
+                        {status}
                     </p>
                     <p>
-                        Orchard average
-                    </p>
+                        {average}
+                    </p>                    
                     <p>
                         Inspected by
                     </p>
@@ -29,7 +32,7 @@ export default function ReportPreview() {
                 </div>
                 <div className="col-span-9">
                     <div className="text-8xl font-bold">
-                        Orchard Name
+                        {fieldmapIdPrimary}
                     </div>
                     <div className="text-muted-foreground tracking-[0.7rem] font-mono text-lg">
                         <div>

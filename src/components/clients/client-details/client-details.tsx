@@ -1,6 +1,5 @@
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
-import ClientsDataProvider from '@/context/clientsData/ClientsData';
 import { useClientsData } from '@/context/clientsData/useClientsData';
 import { getClientData } from '@/components/clients/getClientData';
 import { Separator } from '@/components/ui/separator';
@@ -84,8 +83,6 @@ function ClientDetailContent({ toggleReportGenerator }: ClientDetailsProps) {
 
 export default function ClientDetails({ toggleReportGenerator }: ClientDetailsProps) {
     return (
-        <ClientsDataProvider>
-            <ClientDetailContent toggleReportGenerator={toggleReportGenerator} />
-        </ClientsDataProvider>
+        <ClientDetailContent toggleReportGenerator={toggleReportGenerator} />
     );
 }

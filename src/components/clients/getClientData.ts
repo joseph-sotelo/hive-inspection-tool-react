@@ -44,12 +44,11 @@ export const getClientData = async (
         newFieldmapIdPrimary.push(feature.attributes[ORCHARD_FIELD_NAMES.FIELDMAP_ID_PRIMARY]);
     });
 
-    console.log("Query results:", results.features);
-    console.log("Processed data:", { clientName, newStatuses, newHiveCounts, newOrchardGrades });
-
     // Replace state with the new arrays (not append)
     setStatuses(newStatuses);
     setHiveCounts(newHiveCounts);
     setOrchardGrades(newOrchardGrades);
     setFieldmapIdPrimary(newFieldmapIdPrimary);
+
+    
 };

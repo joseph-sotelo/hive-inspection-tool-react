@@ -5,7 +5,6 @@ import MapView from "@arcgis/core/views/MapView";
 import "@arcgis/core/assets/esri/themes/light/main.css";
 
 // Map utilities
-import { createPerimitersLayer, createHiveDropsLayer } from "@/components/map/layer-config";
 import { HIVEDROP_FIELD_NAMES, MAP_CONFIG } from "@/constants";
 import { ENV } from "@/utils/env-validation";
 import { useEffect } from "react";
@@ -14,7 +13,6 @@ import { useEffect } from "react";
 config.apiKey = ENV.VITE_ARCGIS_LAYER_API_KEY;
 
 // context
-import { useClientsData } from "@/context/clientsData/useClientsData";
 import { symbolHiveDrop } from "@/assets/symbols";
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import { useOrchardReportData } from "@/context/orchardReportData/useOrchardReportData";
