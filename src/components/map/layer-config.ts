@@ -1,8 +1,8 @@
 // Centralized layer configuration for better maintainability
 // By separating layer configs, we make the code easier to test and modify
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
-import { symbolAlert, symbolFail, symbolLow, symbolPass, symbolHiveDrop } from "@/assets/symbols";
-import { ORCHARD_FIELD_NAMES, LAYER_EXPRESSIONS, HIVEDROP_FIELD_NAMES, PERIMITERS_LAYER_SYMBOL } from "@/constants";
+import { symbolAlert, symbolFail, symbolLow, symbolPass, symbolHivePass, symbolHiveLow, symbolHiveFail, symbolHiveNoData } from "@/assets/symbols";
+import { ORCHARD_FIELD_NAMES, LAYER_EXPRESSIONS, HIVEDROP_FIELD_NAMES, PERIMITERS_LAYER_SYMBOL, PERIMITERS_FIELD_NAMES } from "@/constants";
 
 // Validated environment variables - ensures all required config is present
 import { ENV } from "@/utils/env-validation";
@@ -68,19 +68,41 @@ export const createHiveDropsLayer = () => {
   });
 
   layer.renderer = {
-    type: "simple",
-    symbol: symbolHiveDrop
+    type: "class-breaks",
+    field: HIVEDROP_FIELD_NAMES.AVERAGE,
+    defaultSymbol: symbolHiveNoData,
+    defaultLabel: "No Data",
+    classBreakInfos: [
+      {
+        minValue: 0,
+        maxValue: 4.9,
+        symbol: symbolHiveFail,
+        label: "Low (0-5)"
+      },
+      {
+        minValue: 5,
+        maxValue: 6.9,
+        symbol: symbolHiveLow,
+        label: "Medium (5.01-7)"
+      },
+      {
+        minValue: 7,
+        maxValue: 24,
+        symbol: symbolHivePass,
+        label: "High (7.01-24)"
+      }
+    ]
   };
 
   return layer;
 };
 
 // Create perimeters layer (initially hidden)
-export const createPerimitersLayer = () => {
+export const createPerimitersLayer = (definitionExpression: string) => {
   const layer = new FeatureLayer({
     url: ENV.VITE_ARCGIS_PERIMITERS_LAYER_API_URL,
-    outFields: [ORCHARD_FIELD_NAMES.CLIENT],
-    definitionExpression: LAYER_EXPRESSIONS.HIDE_ALL // Hide by default
+    outFields: [PERIMITERS_FIELD_NAMES.MAP_ID],
+    definitionExpression: definitionExpression
   });
 
   layer.renderer = {

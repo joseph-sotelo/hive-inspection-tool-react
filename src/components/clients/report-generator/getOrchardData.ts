@@ -6,7 +6,7 @@ config.request.useIdentity = false;
 config.apiKey = import.meta.env.VITE_ARCGIS_LAYER_API_KEY as string;
 const URL = import.meta.env.VITE_ARCGIS_ORCHARDS_LAYER_GEOJSON_URL;
 
-export const getOrchardData = async (    
+export const getOrchardData = async (       
     setStatus: (status: string) => void,
     setHiveCount: (hiveCount: number) => void,
     setAverage: (average: string) => void,
@@ -15,6 +15,7 @@ export const getOrchardData = async (
     setInspectionDate: (inspectionDate: string) => void,
     setLatitude: (latitude: number) => void,
     setLongitude: (longitude: number) => void,
+    setRecordId: (recordId: string) => void,
     status: string,
     hiveCount: number,
     orchardGrade: string,
@@ -33,7 +34,8 @@ export const getOrchardData = async (
             ORCHARD_FIELD_NAMES.TEAM_LEADER,
             ORCHARD_FIELD_NAMES.INSPECTION_DATE,
             ORCHARD_FIELD_NAMES.LATITUDE,
-            ORCHARD_FIELD_NAMES.LONGITUDE
+            ORCHARD_FIELD_NAMES.LONGITUDE,
+            ORCHARD_FIELD_NAMES.F_RECORD_ID
         ],
         where: `fieldmap_id_primary='${fieldmapIdPrimary}'`,
         returnDistinctValues: true,
@@ -45,6 +47,7 @@ export const getOrchardData = async (
     setTeamLeader(results.features[0].attributes[ORCHARD_FIELD_NAMES.TEAM_LEADER]);
     setLatitude(results.features[0].attributes[ORCHARD_FIELD_NAMES.LATITUDE]);
     setLongitude(results.features[0].attributes[ORCHARD_FIELD_NAMES.LONGITUDE]);
+    setRecordId(results.features[0].attributes[ORCHARD_FIELD_NAMES.F_RECORD_ID]);
     // Convert timestamp to readable date format
     const date = results.features[0].attributes[ORCHARD_FIELD_NAMES.INSPECTION_DATE];
     const formattedDate = new Date(date).toLocaleDateString();

@@ -17,7 +17,7 @@ import { useOrchardReportData } from "@/context/orchardReportData/useOrchardRepo
 
 export default function ReportSidebar() {
     const { fieldmapIdPrimary, statuses, hiveCounts, orchardGrades } = useClientsData();
-    const { setStatus, setHiveCount, setAverage, setFieldmapIdPrimary, setTeamLeader, setInspectionDate, setLatitude, setLongitude } = useOrchardReportData();
+    const { setStatus, setHiveCount, setAverage, setFieldmapIdPrimary, setTeamLeader, setInspectionDate, setLatitude, setLongitude, setRecordId } = useOrchardReportData();
 
     useEffect(() => {
         getOrchardData(
@@ -29,6 +29,7 @@ export default function ReportSidebar() {
             setInspectionDate,
             setLatitude,
             setLongitude,
+            setRecordId,
             statuses[0],
             hiveCounts[0],
             orchardGrades[0],
@@ -77,6 +78,7 @@ export default function ReportSidebar() {
                                 setInspectionDate,
                                 setLatitude,
                                 setLongitude,
+                                setRecordId,
                                 statuses[index],
                                 hiveCounts[index],
                                 orchardGrades[index],

@@ -73,13 +73,13 @@ export default function Map() {
     // Create all feature layers using extracted functions
     const orchardLayer = createOrchardsLayer(LAYER_EXPRESSIONS.SHOW_ALL);
     const hiveDropsLayer = createHiveDropsLayer();
-    const perimitersLayer = createPerimitersLayer();
+    const perimitersLayer = createPerimitersLayer(LAYER_EXPRESSIONS.HIDE_ALL);
     hiveDropsLayerRef.current = hiveDropsLayer;
 
     // Create map with all layers
     const map = new ArcGISMap({
       layers: [perimitersLayer, orchardLayer, hiveDropsLayer],
-      basemap: "arcgis/outdoor"      
+      basemap: "arcgis/imagery"      
     });
 
     // Create map view
