@@ -33,7 +33,7 @@ export const ORCHARD_FIELD_NAMES = {
   HIVES_CONTRACTED: "hives_contracted",
   BEEKEEPER: "beekeeper",
   BEE_BROKER: "bee_broker",
-  AVERAGE: "average",
+  AVERAGE: "mean_frameshive",
   MINIMUM: "minimum",
   GROWER: "grower",
   FIELDMAP_ID_AUXILIARY: "fieldmap_id_auxiliary",
@@ -41,7 +41,10 @@ export const ORCHARD_FIELD_NAMES = {
   TEAM_LEADER: "team_leader",
   ASSISTANTS: "assistants",
   F_RECORD_ID: "F_record_id",
-  OBJECT_ID: "ObjectId"
+  OBJECT_ID: "ObjectId",
+  INSPECTION_DATE: "inspection_date",
+  LATITUDE: "F_latitude",
+  LONGITUDE: "F_longitude"
 } as const;
 
 export const HIVEDROP_FIELD_NAMES = {
