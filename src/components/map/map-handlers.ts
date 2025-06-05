@@ -1,6 +1,6 @@
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import MapView from "@arcgis/core/views/MapView";
-import { HiveDropDialogProps, OrchardDetailsProps } from "../types";
+import { HiveDropData, HiveDropDialogProps, OrchardDetailsProps } from "../types";
 import { MAP_CONFIG, ORCHARD_FIELD_NAMES, LAYER_EXPRESSIONS, HIVEDROP_FIELD_NAMES, PERIMITERS_FIELD_NAMES } from "@/constants";
 
 // Handle feature selection and layer visibility
@@ -146,3 +146,55 @@ export const handleDeselection = (
   perimitersLayer.visible = false;
   perimitersLayer.definitionExpression = LAYER_EXPRESSIONS.HIDE_ALL;
 };
+
+export const getHiveDropData = async (
+  hiveDropsLayer: FeatureLayer,  
+  setHiveDropData: (arg: HiveDropData[]) => void,
+  definitionExpression: string
+) => {  
+
+  const hiveDropDataArray: HiveDropData[] = [];
+
+  const query = hiveDropsLayer.createQuery();
+  query.where = definitionExpression;
+  query.returnGeometry = false;
+  query.outFields = [
+    HIVEDROP_FIELD_NAMES.OBJECT_ID,    
+    HIVEDROP_FIELD_NAMES.HIVES_COUNTED,
+    HIVEDROP_FIELD_NAMES.AVERAGE,
+    ...HIVEDROP_FIELD_NAMES.GRADES,
+  ];
+
+  try { 
+    // performs query   
+    const results = await hiveDropsLayer.queryFeatures(query);
+
+    results.features.forEach((feature) => {
+      const object_id = feature.attributes[HIVEDROP_FIELD_NAMES.OBJECT_ID];
+      const count = feature.attributes[HIVEDROP_FIELD_NAMES.HIVES_COUNTED];      
+      const average = feature.attributes[HIVEDROP_FIELD_NAMES.AVERAGE];
+
+      let grades: number[] = [];
+  
+      for (const grade of HIVEDROP_FIELD_NAMES.GRADES) {    
+        const value = feature.attributes[grade];
+        if (value === null) break;
+        grades.push(value);
+      }  
+
+      const hiveDropData: HiveDropData = { 
+        object_id: object_id, 
+        count: count, 
+        grades: grades, 
+        average: average 
+      }
+
+      hiveDropDataArray.push(hiveDropData);
+    });      
+
+    setHiveDropData(hiveDropDataArray);
+
+  } catch (error) {
+    console.error("Error querying hive drops:", error);
+  }
+}

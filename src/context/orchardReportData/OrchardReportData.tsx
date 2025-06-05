@@ -1,4 +1,5 @@
 import React from "react";
+import { HiveDropData } from "@/components/types";
 
 interface ContextType {
   recordId: string,
@@ -35,6 +36,8 @@ interface ContextType {
   setMinimum: (arg: number) => void,
   assistants: string,
   setAssistants: (arg: string) => void,
+  hiveDropData: HiveDropData[],
+  setHiveDropData: (arg: HiveDropData[]) => void
 }
 
 export const OrchardReportDataContext = React.createContext<ContextType>({
@@ -72,6 +75,8 @@ export const OrchardReportDataContext = React.createContext<ContextType>({
   setMinimum: () => {},
   assistants: "",
   setAssistants: () => {},
+  hiveDropData: [],
+  setHiveDropData: () => {}
 });
 
 interface Props {
@@ -96,6 +101,7 @@ const OrchardReportDataProvider = ({ children }: Props) => {
   const [avgContracted, setAvgContracted] = React.useState<number>(0);
   const [minimum, setMinimum] = React.useState<number>(0);
   const [assistants, setAssistants] = React.useState<string>("");
+  const [hiveDropData, setHiveDropData] = React.useState<HiveDropData[]>([]);
   return (
     <OrchardReportDataContext.Provider value={{
       recordId,
@@ -131,7 +137,9 @@ const OrchardReportDataProvider = ({ children }: Props) => {
       minimum,
       setMinimum,
       assistants,
-      setAssistants
+      setAssistants,
+      hiveDropData,
+      setHiveDropData
     }}>
       {children}
     </OrchardReportDataContext.Provider>

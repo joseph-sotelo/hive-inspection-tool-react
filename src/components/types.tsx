@@ -27,3 +27,10 @@ export type HiveDropDialogProps = {
   notes: string,  
   index: number
 }
+
+export type HiveDropData = {
+  object_id: string,  
+  count: number, 
+  grades: number[],
+  average: number
+}

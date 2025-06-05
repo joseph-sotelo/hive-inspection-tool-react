@@ -19,7 +19,8 @@ export default function OrchardReportPage() {
         avgContracted,
         minimum,
         teamLeader,
-        assistants
+        assistants,
+        hiveDropData
     } = useOrchardReportData();
 
     // Debug: Log the actual value
@@ -29,7 +30,16 @@ export default function OrchardReportPage() {
         ? STATUS_CONFIG.DELIVERY_STATUS.COMPLETE 
         : STATUS_CONFIG.DELIVERY_STATUS.INCOMPLETE;
 
-    const assistantsArray = JSON.parse(assistants);
+    let assistantsArray = [];
+    try {
+        if (assistants && assistants.trim()) {
+            assistantsArray = JSON.parse(assistants);
+        }
+    } catch (error) {
+        console.error('Error parsing assistants JSON:', error);
+    }
+
+    console.log("hiveDropData", hiveDropData);
     
     return (  
         <div className="w-[8.5in] border-2 border-border p-6">

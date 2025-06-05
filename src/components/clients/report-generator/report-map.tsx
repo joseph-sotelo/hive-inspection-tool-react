@@ -21,10 +21,13 @@ import { createPerimitersLayer } from "@/components/map/layer-config";
 
 // Context
 import { useOrchardReportData } from "@/context/orchardReportData/useOrchardReportData";
+import { getHiveDropData } from "@/components/map/map-handlers";
 
 export default function ReportMap() {
 
-    const { recordId, fieldmapIdPrimary } = useOrchardReportData();
+    const { recordId, fieldmapIdPrimary, setHiveDropData } = useOrchardReportData();
+
+    const definitionExpression = `${HIVEDROP_FIELD_NAMES.F_RECORD_ID} = '${recordId}'`;
 
     useEffect(() => {            
 
@@ -32,7 +35,7 @@ export default function ReportMap() {
             const layer = new FeatureLayer({
               url: ENV.VITE_ARCGIS_HIVEDROPS_LAYER_API_URL,
               outFields: [],
-              definitionExpression: `${HIVEDROP_FIELD_NAMES.F_RECORD_ID} = '${recordId}'`  
+              definitionExpression: definitionExpression  
             });
           
             layer.renderer = {
@@ -67,6 +70,8 @@ export default function ReportMap() {
 
         const perimitersLayer = createPerimitersLayer(`${PERIMITERS_FIELD_NAMES.MAP_ID} = '${fieldmapIdPrimary}'`);
         const hiveDropsLayer = createHiveDropsLayer();
+
+        getHiveDropData(hiveDropsLayer, setHiveDropData, definitionExpression);
 
         const map = new ArcGISMap({
             layers: [perimitersLayer, hiveDropsLayer],
