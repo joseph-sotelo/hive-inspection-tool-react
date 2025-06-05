@@ -188,8 +188,9 @@ export const getHiveDropData = async (
         grades: grades, 
         average: average 
       }
-
-      hiveDropDataArray.push(hiveDropData);
+      if (grades[0] !== null) {
+        hiveDropDataArray.push(hiveDropData);
+      }
     });      
 
     setHiveDropData(hiveDropDataArray);

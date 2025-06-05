@@ -2,6 +2,8 @@ import React from "react";
 import { HiveDropData } from "@/components/types";
 
 interface ContextType {
+  clientName: string,
+  setClientName: (arg: string) => void,
   recordId: string,
   setRecordId: (arg: string) => void,
   fieldmapIdPrimary: string,
@@ -41,6 +43,8 @@ interface ContextType {
 }
 
 export const OrchardReportDataContext = React.createContext<ContextType>({
+  clientName: "",
+  setClientName: () => {},
   recordId: "",
   setRecordId: () => {},
   fieldmapIdPrimary: "",
@@ -84,6 +88,7 @@ interface Props {
 }
 const OrchardReportDataProvider = ({ children }: Props) => {
 
+  const [clientName, setClientName] = React.useState<string>("");
   const [recordId, setRecordId] = React.useState<string>("");
   const [fieldmapIdPrimary, setFieldmapIdPrimary] = React.useState<string>("");
   const [status, setStatus] = React.useState<string>("");
@@ -104,6 +109,8 @@ const OrchardReportDataProvider = ({ children }: Props) => {
   const [hiveDropData, setHiveDropData] = React.useState<HiveDropData[]>([]);
   return (
     <OrchardReportDataContext.Provider value={{
+      clientName,
+      setClientName,
       recordId,
       setRecordId,
       fieldmapIdPrimary,

@@ -3,7 +3,7 @@ import { useOrchardReportData } from "@/context/orchardReportData/useOrchardRepo
 import { useClientsData } from "@/context/clientsData/useClientsData";
 
 // ui
-import ReportMap from "./report-map";
+import ReportMap from "./report-map.tsx";
 import StatusBadge from '@/components/ui/status-badge';
 
 export default function OrchardReportCover() {

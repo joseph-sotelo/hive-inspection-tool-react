@@ -7,6 +7,7 @@ config.apiKey = import.meta.env.VITE_ARCGIS_LAYER_API_KEY as string;
 const URL = import.meta.env.VITE_ARCGIS_ORCHARDS_LAYER_GEOJSON_URL;
 
 export const getOrchardData = async (       
+    setClientName: (clientName: string) => void,
     setStatus: (status: string) => void,
     setHiveCount: (hiveCount: number) => void,
     setAverage: (average: string) => void,
@@ -31,14 +32,15 @@ export const getOrchardData = async (
 ) => {     
 
     // select relevant data from clientsData that was already fetched
-
+    
     setStatus(status);
     setHiveCount(hiveCount);
     setAverage(orchardGrade);
     setFieldmapIdPrimary(fieldmapIdPrimary);    
 
     const query = {
-        outFields: [            
+        outFields: [        
+            ORCHARD_FIELD_NAMES.CLIENT,
             ORCHARD_FIELD_NAMES.TEAM_LEADER,
             ORCHARD_FIELD_NAMES.INSPECTION_DATE,
             ORCHARD_FIELD_NAMES.LATITUDE,
@@ -61,6 +63,7 @@ export const getOrchardData = async (
     
     const results = await executeQueryJSON(URL, query);
 
+    setClientName(results.features[0].attributes[ORCHARD_FIELD_NAMES.CLIENT]);
     setTeamLeader(results.features[0].attributes[ORCHARD_FIELD_NAMES.TEAM_LEADER]);
     setLatitude(results.features[0].attributes[ORCHARD_FIELD_NAMES.LATITUDE]);
     setLongitude(results.features[0].attributes[ORCHARD_FIELD_NAMES.LONGITUDE]);

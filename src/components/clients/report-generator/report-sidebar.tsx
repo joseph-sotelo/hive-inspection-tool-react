@@ -12,7 +12,7 @@ import {
   import { Checkbox } from "@/components/ui/checkbox"
 import { useClientsData } from "@/context/clientsData/useClientsData";
 import { useEffect } from "react";
-import { getOrchardData } from "./getOrchardData";
+import { getOrchardData } from "./report-preview/getOrchardData";
 import { useOrchardReportData } from "@/context/orchardReportData/useOrchardReportData";
 
 export default function ReportSidebar() {
@@ -23,6 +23,7 @@ export default function ReportSidebar() {
         orchardGrades 
     } = useClientsData();
     const { 
+        setClientName,
         setStatus, 
         setHiveCount, 
         setAverage, 
@@ -44,6 +45,7 @@ export default function ReportSidebar() {
 
     useEffect(() => {
         getOrchardData(
+            setClientName,
             setStatus,
             setHiveCount,
             setAverage,
@@ -101,6 +103,7 @@ export default function ReportSidebar() {
                         onChange={(value) => {
                             const index = fieldmapIdPrimary.findIndex(item => item === value);
                             getOrchardData(
+                                setClientName,
                                 setStatus,
                                 setHiveCount,
                                 setAverage,

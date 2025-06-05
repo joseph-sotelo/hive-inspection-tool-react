@@ -1,12 +1,12 @@
 import OrchardReportDataProvider from "@/context/orchardReportData/OrchardReportData";
 import ReportSidebar from "./report-sidebar";
-import PdfViewer from "./pdf-viewer";
+import ReportPreview from "./report-preview/report-preview";
 
 export const ReportGenerator = ({ onBack }: { onBack: () => void }) => {
     return (
         <div className="w-full flex justify-between">
             <OrchardReportDataProvider>
-                <PdfViewer />  
+                <ReportPreview />  
                 <ReportSidebar />   
             </OrchardReportDataProvider>
         </div>
