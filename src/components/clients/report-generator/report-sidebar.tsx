@@ -16,20 +16,51 @@ import { getOrchardData } from "./getOrchardData";
 import { useOrchardReportData } from "@/context/orchardReportData/useOrchardReportData";
 
 export default function ReportSidebar() {
-    const { fieldmapIdPrimary, statuses, hiveCounts, orchardGrades } = useClientsData();
-    const { setStatus, setHiveCount, setAverage, setFieldmapIdPrimary, setTeamLeader, setInspectionDate, setLatitude, setLongitude, setRecordId } = useOrchardReportData();
+    const { 
+        fieldmapIdPrimary, 
+        statuses, 
+        hiveCounts, 
+        orchardGrades 
+    } = useClientsData();
+    const { 
+        setStatus, 
+        setHiveCount, 
+        setAverage, 
+        setFieldmapIdPrimary, 
+        setTeamLeader, 
+        setInspectionDate, 
+        setLatitude, 
+        setLongitude, 
+        setRecordId, 
+        setFieldmapIdAuxiliary, 
+        setPartdeliv_yn, 
+        setBeeBroker, 
+        setDeliveryDate, 
+        setBeekeeper, 
+        setAvgContracted,
+        setMinimum,
+        setAssistants
+    } = useOrchardReportData();
 
     useEffect(() => {
         getOrchardData(
             setStatus,
             setHiveCount,
             setAverage,
-            setFieldmapIdPrimary,
+            setFieldmapIdPrimary,   
             setTeamLeader,
             setInspectionDate,
             setLatitude,
             setLongitude,
             setRecordId,
+            setFieldmapIdAuxiliary,
+            setPartdeliv_yn,    
+            setBeeBroker,
+            setDeliveryDate,
+            setBeekeeper,
+            setAvgContracted,
+            setMinimum,
+            setAssistants,
             statuses[0],
             hiveCounts[0],
             orchardGrades[0],
@@ -79,10 +110,18 @@ export default function ReportSidebar() {
                                 setLatitude,
                                 setLongitude,
                                 setRecordId,
+                                setFieldmapIdAuxiliary,
+                                setPartdeliv_yn,
+                                setBeeBroker,
+                                setDeliveryDate,
+                                setBeekeeper,
+                                setAvgContracted,
+                                setMinimum,
+                                setAssistants,
                                 statuses[index],
                                 hiveCounts[index],
                                 orchardGrades[index],
-                                fieldmapIdPrimary[index],
+                                fieldmapIdPrimary[index]                                
                             );
                         }}
                     />   

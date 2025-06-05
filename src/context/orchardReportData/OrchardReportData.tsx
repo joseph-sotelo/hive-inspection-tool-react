@@ -18,7 +18,23 @@ interface ContextType {
   latitude: number,
   setLatitude: (arg: number) => void,
   longitude: number,
-  setLongitude: (arg: number) => void
+  setLongitude: (arg: number) => void,
+  fieldmapIdAuxiliary: string,
+  setFieldmapIdAuxiliary: (arg: string) => void,
+  partdeliv_yn: string,
+  setPartdeliv_yn: (arg: string) => void,
+  beeBroker: string,
+  setBeeBroker: (arg: string) => void,
+  deliveryDate: string,
+  setDeliveryDate: (arg: string) => void,
+  beekeeper: string,
+  setBeekeeper: (arg: string) => void,
+  avgContracted: number,
+  setAvgContracted: (arg: number) => void,
+  minimum: number,
+  setMinimum: (arg: number) => void,
+  assistants: string,
+  setAssistants: (arg: string) => void,
 }
 
 export const OrchardReportDataContext = React.createContext<ContextType>({
@@ -39,7 +55,23 @@ export const OrchardReportDataContext = React.createContext<ContextType>({
   latitude: 0,
   setLatitude: () => {},
   longitude: 0,
-  setLongitude: () => {}
+  setLongitude: () => {},
+  fieldmapIdAuxiliary: "",
+  setFieldmapIdAuxiliary: () => {},
+  partdeliv_yn: "",
+  setPartdeliv_yn: () => {},
+  beeBroker: "",
+  setBeeBroker: () => {},
+  deliveryDate: "",
+  setDeliveryDate: () => {},
+  beekeeper: "",
+  setBeekeeper: () => {},
+  avgContracted: 0,
+  setAvgContracted: () => {},
+  minimum: 0,
+  setMinimum: () => {},
+  assistants: "",
+  setAssistants: () => {},
 });
 
 interface Props {
@@ -56,6 +88,14 @@ const OrchardReportDataProvider = ({ children }: Props) => {
   const [inspectionDate, setInspectionDate] = React.useState<string>("");
   const [latitude, setLatitude] = React.useState<number>(0);
   const [longitude, setLongitude] = React.useState<number>(0);
+  const [fieldmapIdAuxiliary, setFieldmapIdAuxiliary] = React.useState<string>("");
+  const [partdeliv_yn, setPartdeliv_yn] = React.useState<string>("");
+  const [beeBroker, setBeeBroker] = React.useState<string>("");
+  const [deliveryDate, setDeliveryDate] = React.useState<string>("");
+  const [beekeeper, setBeekeeper] = React.useState<string>("");
+  const [avgContracted, setAvgContracted] = React.useState<number>(0);
+  const [minimum, setMinimum] = React.useState<number>(0);
+  const [assistants, setAssistants] = React.useState<string>("");
   return (
     <OrchardReportDataContext.Provider value={{
       recordId,
@@ -75,7 +115,23 @@ const OrchardReportDataProvider = ({ children }: Props) => {
       latitude,
       setLatitude,
       longitude,
-      setLongitude
+      setLongitude,
+      fieldmapIdAuxiliary,
+      setFieldmapIdAuxiliary,
+      partdeliv_yn,
+      setPartdeliv_yn,
+      beeBroker,
+      setBeeBroker,
+      deliveryDate,
+      setDeliveryDate,
+      beekeeper,
+      setBeekeeper,
+      avgContracted,
+      setAvgContracted,
+      minimum,
+      setMinimum,
+      assistants,
+      setAssistants
     }}>
       {children}
     </OrchardReportDataContext.Provider>

@@ -6,13 +6,13 @@ import { useClientsData } from "@/context/clientsData/useClientsData";
 import ReportMap from "./report-map";
 import StatusBadge from '@/components/ui/status-badge';
 
-export default function ReportPreview() {
+export default function OrchardReportCover() {
     const { status, average, fieldmapIdPrimary, inspectionDate, latitude, longitude } = useOrchardReportData();
     const { name } = useClientsData();
     const reportCreatedDate = new Date().toLocaleDateString();
     
     return (
-        <div className="aspect-letter w-[8.5in] border-2 border-border flex flex-col">
+        <div className="w-[8.5in] h-[11in] border-2 border-border flex flex-col">
             <div id="header" className="grid grid-cols-12 gap-4 m-6 flex-shrink-0">
                 <div id="info" className="col-span-3 text-right flex flex-col gap-8 mt-2">
                     <small>
@@ -34,7 +34,7 @@ export default function ReportPreview() {
                         San Joaquin Bee Inspection
                     </small>
                     <small>
-                        <strong>Date Inspected:</strong> 
+                        <strong>Inspected:</strong> 
                         <div className="h-2" />
                         {inspectionDate}
                     </small>

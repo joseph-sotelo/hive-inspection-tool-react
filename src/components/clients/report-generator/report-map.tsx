@@ -28,13 +28,10 @@ export default function ReportMap() {
 
     useEffect(() => {            
 
-        const perimitersLayer = createPerimitersLayer(`${PERIMITERS_FIELD_NAMES.MAP_ID} = '${fieldmapIdPrimary}'`);
-
         const createHiveDropsLayer = () => {
             const layer = new FeatureLayer({
               url: ENV.VITE_ARCGIS_HIVEDROPS_LAYER_API_URL,
-              outFields: [
-              ],
+              outFields: [],
               definitionExpression: `${HIVEDROP_FIELD_NAMES.F_RECORD_ID} = '${recordId}'`  
             });
           
@@ -67,7 +64,8 @@ export default function ReportMap() {
           
             return layer;
           };
-        
+
+        const perimitersLayer = createPerimitersLayer(`${PERIMITERS_FIELD_NAMES.MAP_ID} = '${fieldmapIdPrimary}'`);
         const hiveDropsLayer = createHiveDropsLayer();
 
         const map = new ArcGISMap({
@@ -86,16 +84,18 @@ export default function ReportMap() {
           view.ui.remove("zoom");
 
           // Zoom to the perimeters layer once it loads
-          perimitersLayer.when(() => {
-            perimitersLayer.queryExtent().then((result) => {
-              if (result.extent) {
-                view.goTo({
-                  target: result.extent,
-                  padding: MAP_CONFIG.ZOOM_PADDING
-                });
-              }
+          if (recordId) {
+            perimitersLayer.when(() => {
+              perimitersLayer.queryExtent().then((result) => {
+                if (result.extent) {
+                  view.goTo({
+                    target: result.extent,
+                    padding: MAP_CONFIG.ZOOM_PADDING
+                  });
+                }
+              });
             });
-          });
+          }
 
         // Cleanup on unmount
         return () => {
@@ -104,7 +104,7 @@ export default function ReportMap() {
             }
         };
     
-    }, [recordId, fieldmapIdPrimary]);
+    }, [recordId]);
 
     return (
         <div id="viewDiv" className="w-full h-full" />

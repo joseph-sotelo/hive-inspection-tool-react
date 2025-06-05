@@ -44,7 +44,10 @@ export const ORCHARD_FIELD_NAMES = {
   OBJECT_ID: "ObjectId",
   INSPECTION_DATE: "inspection_date",
   LATITUDE: "F_latitude",
-  LONGITUDE: "F_longitude"
+  LONGITUDE: "F_longitude",
+  DATE_PARTDELIV: "date_partdeliv",
+  DATE_FULLDELIV: "date_fulldeliv",
+  AVG_CONTRACTED: "average",
 } as const;
 
 export const HIVEDROP_FIELD_NAMES = {

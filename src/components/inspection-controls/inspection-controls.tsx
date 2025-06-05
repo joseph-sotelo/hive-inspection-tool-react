@@ -98,7 +98,7 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
                         </Button>
                     </div>
                 </DialogTrigger>
-                <DialogContent>
+                <DialogContent className="max-h-[90vh] overflow-y-scroll">
                     <DialogHeader>
                         <DialogTitle>
                             New Hive-Drop
@@ -125,7 +125,7 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
                     </div>
                     <Separator />
                     <h4>Hives graded: {hiveDropHiveGrades.length}</h4>
-                    <div className="max-h-[300px] overflow-y-scroll flex flex-col gap-8 border-1 border-border rounded-md p-5">
+                    <div className="max-h-[200px] overflow-y-scroll flex flex-col gap-8 border-1 border-border rounded-md p-5">
                         {hiveDropHiveGrades.map((value, index) => (
                             <div key={index} className="flex gap-6">
                                 <p className="text-nowrap">Hive {index + 1}</p>

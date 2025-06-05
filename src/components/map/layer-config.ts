@@ -2,7 +2,7 @@
 // By separating layer configs, we make the code easier to test and modify
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import { symbolAlert, symbolFail, symbolLow, symbolPass, symbolHivePass, symbolHiveLow, symbolHiveFail, symbolHiveNoData } from "@/assets/symbols";
-import { ORCHARD_FIELD_NAMES, LAYER_EXPRESSIONS, HIVEDROP_FIELD_NAMES, PERIMITERS_LAYER_SYMBOL, PERIMITERS_FIELD_NAMES } from "@/constants";
+import { ORCHARD_FIELD_NAMES, LAYER_EXPRESSIONS, HIVEDROP_FIELD_NAMES, PERIMITERS_LAYER_SYMBOL, PERIMITERS_FIELD_NAMES, PERIMITERS_LAYER_SYMBOL_BLUE } from "@/constants";
 
 // Validated environment variables - ensures all required config is present
 import { ENV } from "@/utils/env-validation";

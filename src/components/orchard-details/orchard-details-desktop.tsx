@@ -51,7 +51,7 @@ export default function OrchardDetailsDesktop({ props }: { props: OrchardDetails
       <div 
         ref={sheetRef} 
         className={clsx(
-          `shadow-md transition-all ${SHEET.ANIMATION_DURATION} overflow-hidden bottom-0 absolute z-10 w-[440px] h-full`,
+          `shadow-md transition-all ${SHEET.ANIMATION_DURATION} overflow-hidden bottom-0 absolute z-10 w-[600px] h-full`,
           {
             [`${SHEET.POSITIONS.HIDDEN} md:h-full`]: isOffScreen && !isOpen || isOffScreen && isOpen,
             [`${SHEET.POSITIONS.COLLAPSED} md:h-full`]: !isOffScreen && !isOpen,
