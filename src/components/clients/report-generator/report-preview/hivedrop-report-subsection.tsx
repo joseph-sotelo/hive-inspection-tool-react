@@ -5,12 +5,13 @@ import { useOrchardReportData } from "@/context/orchardReportData/useOrchardRepo
 import { type ChartConfig } from "@/components/ui/chart"
 
 // UI
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Cell } from "recharts"
 
 import { ChartContainer } from "@/components/ui/chart"
+import AverageBadge from "@/components/ui/average-badge";
 
 const chartConfig = {
-    desktop: {
+    grade: {
       label: "Desktop",
       color: "#2563eb",
     },
@@ -19,6 +20,13 @@ const chartConfig = {
       color: "#60a5fa",
     },
   } satisfies ChartConfig
+
+const getBarColorByGrade = (grade: number): string => {
+  if (grade <= 4) return "var(--color-status-fail)";
+  if (grade >= 5 && grade <= 6) return "var(--color-status-low)";
+  if (grade >= 7) return "var(--color-status-pass-muted)";
+  return "var(--color-muted)";
+};
 
 export default function HiveDropReportSubsection() {
     const { hiveDropData } = useOrchardReportData();    
@@ -58,29 +66,52 @@ export default function HiveDropReportSubsection() {
                             </h4> 
                         </div>
                         <div id="data" className="col-span-9 flex flex-col gap-2">
-                        <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
-                            <BarChart data={chartData} >
-                                <CartesianGrid vertical={false} />
-                                <XAxis                                    
-                                    dataKey="grade"
-                                    tickLine={false}
-                                    tickMargin={0}
-                                    axisLine={false}
-                                    label={{ value: 'Grade', position: 'insideBottom', offset: -5 }}
-                                    // tickFormatter={(value) => value.toString()}
-                                />
-                                <YAxis                                    
-                                    dataKey="count"
-                                    tickLine={false}
-                                    tickMargin={0}
-                                    axisLine={false}
-                                    reversed={false}
-                                    label={{ value: 'Count', angle: -90, position: 'insideLeft' }}
-                                    // tickFormatter={(value) => value.toString()}
-                                />
-                                <Bar dataKey="count" fill="var(--color-desktop)" radius={4} />
-                            </BarChart>
-                        </ChartContainer>
+                            <AverageBadge value={hivedrop.average}>Average:{Number(hivedrop.average).toFixed(1)}</AverageBadge>
+                            <small>
+                                <strong>
+                                    Hives counted:
+                                </strong>
+                                {hivedrop.hivesCounted}
+                            </small>
+                            <small>
+                                <strong>
+                                    Hives graded:
+                                </strong>
+                                {hivedrop.hivesGraded}
+                            </small>
+                            <div id="chart-wrapper" className="-ml-13">
+                                <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
+                                    <BarChart data={chartData} >
+                                        <CartesianGrid vertical={false} />
+                                        <XAxis                                    
+                                            dataKey="grade"
+                                            // domain={[-0.4, 14]}
+                                            // type="number"
+                                            tickLine={false}
+                                            // ticks={[0, 2, 4, 6, 8, 10]}
+                                            tickMargin={0}
+                                            axisLine={false}
+                                            label={{ value: 'Grade', position: 'insideBottom', offset: -5 }}
+                                            // tickFormatter={(value) => value.toString()}
+                                        />
+                                        <YAxis                                    
+                                            dataKey="count"
+                                            domain={[0, 6]}
+                                            tickLine={false}
+                                            tickMargin={0}
+                                            axisLine={false}
+                                            reversed={false}
+                                            label={{ value: 'Count', angle: -90, position: 'insideLeft', offset: 20 }}
+                                            // tickFormatter={(value) => value.toString()}
+                                        />
+                                        <Bar dataKey="count" radius={4} maxBarSize={150}>
+                                            {chartData.map((entry, index) => (
+                                                <Cell key={`cell-${index}`} fill={getBarColorByGrade(entry.grade)} />
+                                            ))}
+                                        </Bar>
+                                    </BarChart>
+                                </ChartContainer>
+                            </div>                        
                         </div>
                     </div>
                 );

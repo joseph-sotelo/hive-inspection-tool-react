@@ -161,6 +161,7 @@ export const getHiveDropData = async (
   query.outFields = [
     HIVEDROP_FIELD_NAMES.OBJECT_ID,    
     HIVEDROP_FIELD_NAMES.HIVES_COUNTED,
+    HIVEDROP_FIELD_NAMES.HIVES_GRADED,
     HIVEDROP_FIELD_NAMES.AVERAGE,
     ...HIVEDROP_FIELD_NAMES.GRADES,
   ];
@@ -171,7 +172,8 @@ export const getHiveDropData = async (
 
     results.features.forEach((feature) => {
       const object_id = feature.attributes[HIVEDROP_FIELD_NAMES.OBJECT_ID];
-      const count = feature.attributes[HIVEDROP_FIELD_NAMES.HIVES_COUNTED];      
+      const hivesCounted = feature.attributes[HIVEDROP_FIELD_NAMES.HIVES_COUNTED];      
+      const hivesGraded = feature.attributes[HIVEDROP_FIELD_NAMES.HIVES_GRADED];
       const average = feature.attributes[HIVEDROP_FIELD_NAMES.AVERAGE];
 
       let grades: number[] = [];
@@ -184,11 +186,12 @@ export const getHiveDropData = async (
 
       const hiveDropData: HiveDropData = { 
         object_id: object_id, 
-        count: count, 
+        hivesCounted: hivesCounted, 
         grades: grades, 
-        average: average 
+        average: average,
+        hivesGraded: hivesGraded
       }
-      if (grades.length !== 0) {
+      if (hivesGraded !== 0) {
         hiveDropDataArray.push(hiveDropData);
       }
     });      

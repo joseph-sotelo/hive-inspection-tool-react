@@ -58,10 +58,12 @@ html, body, #root {
   --color-status-fail: oklch(0.73 0.1672 13.59);
   --color-status-low: oklch(0.79 0.1462 58.55);
   --color-status-pass: oklch(0.89 0.2093 121.36);
+  --color-status-pass-muted: oklch(0.8634 0.2022 121.51);
   --color-brand-light: oklch(0.81 0.1389 169.53);
   --color-brand-dark: oklch(0.56 0.103 176.56);
   --inset-shadow-md: inset 0 2px 6px -1px rgb(0 0 0 / 0.1), inset 0 2px 4px -2px rgb(0 0 0 / 0.1);  
   --aspect-letter: 8.5 / 11;
+  --color-chart-6: oklch(0.8438 0.041 174.81);
 }
 
 :root {
