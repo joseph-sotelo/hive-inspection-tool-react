@@ -1,5 +1,6 @@
 import { Separator } from "@/components/ui/separator";
 import { useOrchardReportData } from "@/context/orchardReportData/useOrchardReportData";
+import HiveDropReportSubsection from "./hivedrop-report-subsection";
 
 export default function ReportSectionGeneral() {
 
@@ -38,17 +39,8 @@ export default function ReportSectionGeneral() {
                     </small>         
                 </div>
             </div>
-            <Separator />
-            <div className="grid grid-cols-12 gap-4 p-6 section">
-                <div id="headers" className="col-span-3 text-right flex flex-col gap-8">
-                    <h4>
-                        Data
-                    </h4> 
-                </div>
-                <div id="data"className="col-span-9 flex flex-col gap-2">
-                      
-                </div>
-            </div>
+            <Separator /> 
+            <HiveDropReportSubsection />
         </>
     )
 }

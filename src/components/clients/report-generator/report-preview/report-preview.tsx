@@ -3,7 +3,7 @@ import OrchardReportPage from "./orchard-report-page";
 
 export default function ReportPreview() {
     return (
-        <div className="w-full flex flex-col justify-center pt-6">
+        <div className="w-full flex flex-col gap-6 justify-center pt-6">
             <OrchardReportCover />
             <OrchardReportPage />         
         </div>

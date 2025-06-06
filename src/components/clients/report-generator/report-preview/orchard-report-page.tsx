@@ -8,7 +8,7 @@ export default function OrchardReportPage() {
        
     
     return (  
-        <div className="w-[8.5in] border-2 border-border p-6">            
+        <div className="w-[8.5in] h-[11in] border-2 border-border p-6">            
             <ReportSectionGeneral />                        
             <Separator />
             <ReportSectionInspection />
