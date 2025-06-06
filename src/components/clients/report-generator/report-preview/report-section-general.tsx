@@ -1,5 +1,4 @@
 import { useOrchardReportData } from "@/context/orchardReportData/useOrchardReportData";
-import { Separator } from "@/components/ui/separator";
 import { STATUS_CONFIG } from "@/constants/ui";
 
 export default function ReportSectionGeneral() {
@@ -23,56 +22,55 @@ export default function ReportSectionGeneral() {
 
     return(
         <>
-            <h1 className="text-left ml-50">General</h1>
+            <h1 className="text-left ml-51">General</h1>
             <div className="grid grid-cols-12 gap-4 p-6 section">
                 <div id="headers" className="col-span-3 text-right flex flex-col gap-8">
                     <h4>
                         Orchard Info
                     </h4> 
                 </div>
-                <div id="data"className="col-span-9 flex flex-col gap-2">
+                <div id="data"className="col-span-9 flex flex-col gap-2 mt-[10px]">
                     <small>
                         <strong>
-                            Client:
+                            {'Client: '}
                         </strong>
                         {clientName}
                     </small>
                     <small>
-                        <strong>Primary Field ID:</strong>
+                        <strong>{'Primary Field ID: '}</strong>
                         {fieldmapIdPrimary}
                     </small>
                     {fieldmapIdAuxiliary && (
                         <small>
-                            <strong>Auxiliary Field ID:</strong>
+                            <strong>{'Auxiliary Field ID: '}</strong>
                             {fieldmapIdAuxiliary}
                         </small>
                     )}
                 </div>
-            </div>
-            <Separator />
+            </div>            
             <div className="grid grid-cols-12 gap-4 p-6 section">
                 <div id="headers" className="col-span-3 text-right flex flex-col gap-8">
                     <h4>
                         Bee Contract Info
                     </h4> 
                 </div>
-                <div id="data"className="col-span-9 flex flex-col gap-2">
+                <div id="data"className="col-span-9 flex flex-col gap-2 mt-[10px]">
                     <small>
                         <strong>
-                            Delivery status:
+                            {'Delivery status: '}
                         </strong>
                         {deliveryStatus}
                     </small> 
                     <small>
                         <strong>
-                            Delivery date:
+                            {'Delivery date: '}
                         </strong>
                         {deliveryDate}
                     </small>     
                     {beeBroker && (
                         <small>
                             <strong>
-                                Bee broker:
+                                {'Bee broker: '}
                         </strong>
                             {beeBroker}
                         </small>    
@@ -80,27 +78,27 @@ export default function ReportSectionGeneral() {
                     {beekeeper && (
                     <small>
                         <strong>
-                            Beekeeper:
+                            {'Beekeeper: '}
                         </strong>
                             {beekeeper}
                         </small>
                     )}
                     <small>
                         <strong>
-                            Total hives delivered:
+                            {'Total hives delivered: '}
                         </strong>
                         {hiveCount}
                     </small> 
                     <small>
                         <strong>
-                            Average frames per hive:
+                            {'Average frames per hive: '}
                         </strong>
                         {avgContracted}
                     </small>  
                     {minimum && (
                     <small>
                         <strong>
-                            Minimum frames per hive:
+                            {'Minimum frames per hive: '}
                         </strong>
                         {minimum}
                     </small>

@@ -59,23 +59,23 @@ export default function HiveDropReportSubsection() {
                 }
 
                 return (
-                    <div key={index} className="grid grid-cols-12 gap-4 p-6 section">                
+                    <div key={index} className="grid grid-cols-12 gap-4 p-6 section w-[8.5in] h-[11in] border-2 border-border">                
                         <div id="headers" className="col-span-3 text-right flex flex-col gap-8">
                             <h4>
                                 Hive Drop {index + 1}
                             </h4> 
                         </div>
-                        <div id="data" className="col-span-9 flex flex-col gap-2">
+                        <div id="data" className="col-span-9 flex flex-col gap-2 mt-[2px]">
                             <AverageBadge value={hivedrop.average}>Average:{Number(hivedrop.average).toFixed(1)}</AverageBadge>
-                            <small>
+                            <small className="mt-[6px]">
                                 <strong>
-                                    Hives counted:
+                                    {'Hives counted: '}
                                 </strong>
                                 {hivedrop.hivesCounted}
                             </small>
-                            <small>
+                            <small className="mb-[6px]">
                                 <strong>
-                                    Hives graded:
+                                    {'Hives graded: '}
                                 </strong>
                                 {hivedrop.hivesGraded}
                             </small>
@@ -85,10 +85,10 @@ export default function HiveDropReportSubsection() {
                                         <CartesianGrid vertical={false} />
                                         <XAxis                                    
                                             dataKey="grade"
-                                            // domain={[-0.4, 14]}
-                                            // type="number"
+                                            domain={[-0.4, 14]}
+                                            type="number"
                                             tickLine={false}
-                                            // ticks={[0, 2, 4, 6, 8, 10]}
+                                            ticks={[0, 2, 4, 6, 8, 10, 12, 14]}
                                             tickMargin={0}
                                             axisLine={false}
                                             label={{ value: 'Grade', position: 'insideBottom', offset: -5 }}
