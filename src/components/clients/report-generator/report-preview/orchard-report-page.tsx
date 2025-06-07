@@ -9,7 +9,7 @@ export default function OrchardReportPage() {
         <div className="w-[8.5in] h-[11in] border-2 border-border p-6 flex flex-col gap-4">            
             <ReportSectionGeneral />                        
             <Separator />
-            <ReportSectionInspection />            
+            <ReportSectionInspection />                
         </div>
     )
 }
