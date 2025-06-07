@@ -1,8 +1,6 @@
 // context
 import { useOrchardReportData } from "@/context/orchardReportData/useOrchardReportData";
-
-// types
-import { type HiveDropData } from "@/components/types";
+import { useOverviewReportData } from "@/context/overviewReportData/useOverviewReportData";
 
 // chart configuration
 import { type ChartConfig } from "@/components/ui/chart"
@@ -33,6 +31,7 @@ const getBarColorByGrade = (grade: number): string => {
 
 export default function OverviewSubsection() {
     const { hiveDropData } = useOrchardReportData();    
+    const { allHiveDrops } = useOverviewReportData();
 
     // Combine all grades from all hivedrops
     const allGrades = hiveDropData.flatMap(hivedrop => hivedrop.grades);
