@@ -14,14 +14,20 @@ import { useClientsData } from "@/context/clientsData/useClientsData";
 import { useEffect } from "react";
 import { getOrchardData } from "./report-preview/getOrchardData";
 import { useOrchardReportData } from "@/context/orchardReportData/useOrchardReportData";
+import { getGlobalData } from "./report-preview/getGlobalData";
+import { useOverviewReportData } from "@/context/overviewReportData/useOverviewReportData";
 
 export default function ReportSidebar() {
+    
     const { 
         fieldmapIdPrimary, 
         statuses, 
         hiveCounts, 
         orchardGrades 
     } = useClientsData();
+
+
+// getting variables from context that will be passed to hooks and updated
     const { 
         setClientName,
         setStatus, 
@@ -43,6 +49,11 @@ export default function ReportSidebar() {
         setAssistants
     } = useOrchardReportData();
 
+    const {
+        setAllHiveDrops
+    } = useOverviewReportData();
+
+// initializing context values
     useEffect(() => {
         getOrchardData(
             setClientName,
@@ -67,6 +78,9 @@ export default function ReportSidebar() {
             hiveCounts[0],
             orchardGrades[0],
             fieldmapIdPrimary[0]
+        );
+        getGlobalData(
+            setAllHiveDrops
         );
     }, []);
 
