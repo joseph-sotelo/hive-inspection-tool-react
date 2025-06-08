@@ -1,6 +1,5 @@
 import { Map, User, Users } from "lucide-react"
 import { Link } from "react-router-dom"
-import ClientsSidebar from "../clients/clients-sidebar"
 
 import { 
     Sidebar, 
@@ -35,7 +34,7 @@ const items = [
     return (
       <Sidebar
         collapsible="none"
-        className="w-[calc(var(--sidebar-width-icon)+1px)]! border-r"
+        className="w-[calc(var(--sidebar-width-icon)+1px)]! border-r h-screen"
       >
         <SidebarContent>                    
             <SidebarGroup>                

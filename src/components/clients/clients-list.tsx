@@ -14,13 +14,16 @@ export default function Clients({ types }: {types: string[] }) {
                 <li>
                     <Link to={`/clients/${encodeURIComponent(value)}`}
                     >
-                        <div className="flex gap-2 items-center">
+                        <div className="flex gap-2 items-center pr-12 py-2">
                             <Avatar>                                
                                 <AvatarFallback>
                                     {value.split(' ').map(word => word[0]).join('').toUpperCase()}
                                 </AvatarFallback>
                             </Avatar>
-                            <div className="text-base">{value}</div>                            
+                            <div className="grid flex-1 text-left text-sm leading-tight">
+                                <span className="font-medium font-semibold">{value}</span>
+                                <span className="truncate text-xs text-muted-foreground">{"3 pending orchards"}</span>
+                            </div>                                                      
                         </div>                        
                     </Link>
                 </li>

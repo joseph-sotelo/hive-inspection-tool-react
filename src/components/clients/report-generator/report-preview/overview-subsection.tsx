@@ -125,42 +125,42 @@ export default function OverviewSubsection() {
                 </div>
             </div>
             <div id="chart-wrapper" className="ml-10 flex flex-col h-full justify-center">
-                        <ChartContainer config={chartConfig} className="w-full h-[300px]">
-                            <BarChart data={chartData} >
-                                <CartesianGrid vertical={true} />
-                                <XAxis                                    
-                                    dataKey="grade"
-                                    domain={[-0.4, 16.4]}
-                                    type="number"
-                                    tickLine={false}
-                                    ticks={ticks.filter(tick => tick <= 16)}
-                                    tickMargin={0}
-                                    axisLine={false}
-                                    allowDataOverflow={false}
-                                    scale="linear"
-                                    label={{ value: 'Grade', position: 'insideBottom', offset: -5 }}
-                                />
-                                <YAxis                                    
-                                    domain={[0, (dataMax: number) => Math.ceil(dataMax)]}
-                                    tickLine={false}
-                                    tickMargin={0}
-                                    axisLine={false}
-                                    reversed={false}
-                                    label={{ value: 'Count', angle: -90, position: 'insideLeft', offset: 20 }}
-                                />
-                                <Bar dataKey="current" fill="var(--color-current)" radius={4} maxBarSize={75} >
-                                    {chartData.map((entry, index) => (
-                                        <Cell key={`cell-${index}`} fill={getOrchardBarColorByGrade(entry.grade)} />
-                                    ))}
-                                </Bar>
-                                <Bar dataKey="average" fill="var(--color-average)" radius={4} maxBarSize={75} >
-                                    {chartData.map((entry, index) => (
-                                        <Cell key={`cell-${index}`} fill={getOverviewBarColorByGrade(entry.grade)} />
-                                    ))}
-                                </Bar>
-                            </BarChart>
-                        </ChartContainer>
-                    </div>                 
+                <ChartContainer config={chartConfig} className="w-full h-[200px]">
+                    <BarChart data={chartData} >
+                        <CartesianGrid vertical={true} />
+                        <XAxis                                    
+                            dataKey="grade"
+                            domain={[-0.4, 16.4]}
+                            type="number"
+                            tickLine={false}
+                            ticks={ticks.filter(tick => tick <= 16)}
+                            tickMargin={0}
+                            axisLine={false}
+                            allowDataOverflow={false}
+                            scale="linear"
+                            label={{ value: 'Grade', position: 'insideBottom', offset: -5 }}
+                        />
+                        <YAxis                                    
+                            domain={[0, (dataMax: number) => Math.ceil(dataMax)]}
+                            tickLine={false}
+                            tickMargin={0}
+                            axisLine={false}
+                            reversed={false}
+                            label={{ value: 'Count', angle: -90, position: 'insideLeft', offset: 20 }}
+                        />
+                        <Bar dataKey="current" fill="var(--color-current)" radius={4} maxBarSize={75} >
+                            {chartData.map((entry, index) => (
+                                <Cell key={`cell-${index}`} fill={getOrchardBarColorByGrade(entry.grade)} />
+                            ))}
+                        </Bar>
+                        <Bar dataKey="average" fill="var(--color-average)" radius={4} maxBarSize={75} >
+                            {chartData.map((entry, index) => (
+                                <Cell key={`cell-${index}`} fill={getOverviewBarColorByGrade(entry.grade)} />
+                            ))}
+                        </Bar>
+                    </BarChart>
+                </ChartContainer>
+            </div>                 
         </div>
     );
 }

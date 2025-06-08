@@ -16,6 +16,8 @@ import { getOrchardData } from "./report-preview/getOrchardData";
 import { useOrchardReportData } from "@/context/orchardReportData/useOrchardReportData";
 import { getGlobalData } from "./report-preview/getGlobalData";
 import { useOverviewReportData } from "@/context/overviewReportData/useOverviewReportData";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 
 export default function ReportSidebar() {
     
@@ -93,14 +95,18 @@ export default function ReportSidebar() {
     };
 
     return (       
-        <div className="w-[440px] border-l-1 border-border">
+        <div className="w-[440px] border-l-1 border-border flex flex-col gap-6 p-6">
             <div>
-                <h1>Generate Report</h1>
+                <h3>Generate Report</h3>
             </div>
-            <div> 
-                <Select>
+            <Separator />
+            <div className="flex flex-col gap-6"> 
+                <div className="grid w-full max-w-sm items-center gap-1.5">
+                <Label>Report Type</Label>
+                <Select defaultValue="orchard report">
                     <SelectTrigger>
-                        <SelectValue placeholder="Select a report type" />
+                        <SelectValue 
+                            placeholder="Select a report type" />
                     </SelectTrigger>
                     <SelectContent>
                         <SelectGroup>
@@ -110,7 +116,9 @@ export default function ReportSidebar() {
                         </SelectGroup>
                     </SelectContent>
                 </Select>
-                <Label>Orchard</Label>
+                </div>
+                <div className="grid w-full max-w-sm items-center gap-1.5">
+                    <Label>Orchard</Label>
                     <Combobox 
                         props={orchardProps} 
                         defaultValue={fieldmapIdPrimary[0]}
@@ -142,6 +150,7 @@ export default function ReportSidebar() {
                             );
                         }}
                     />   
+                </div>
                 <div className="flex items-start gap-3">
                     <Checkbox id="toggle" />
                     <Label htmlFor="toggle">Include time of report creation</Label>
@@ -154,6 +163,9 @@ export default function ReportSidebar() {
                     <Checkbox id="toggle" />
                     <Label htmlFor="toggle">Include Field ID</Label>
                 </div>
+                <Separator />
+                <Button variant="outline">Print</Button>
+                <Button variant="customSecondary">Download</Button>
             </div>
         </div>        
     )
