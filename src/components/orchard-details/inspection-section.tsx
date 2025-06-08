@@ -27,7 +27,7 @@ export default function InspectionSection({ toggleOpen }: InspectionSectionProps
   return (
     <>
       <Separator className="mb-5"/>
-      <div className="flex flex-col gap-2 bg-[#ffffff]">
+      <div className="flex flex-col gap-2 bg-background">
         <Label>
           <p className="text-sm text-muted-foreground">
             Enter the orchard to begin an inspection

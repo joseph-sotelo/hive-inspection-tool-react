@@ -75,7 +75,7 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
     }, [shouldClearForm]);
 
     return (
-        <div id="inspection-controls-wrapper" className={clsx("absolute right-0 w-full md:w-[calc(100vw-500px)] z-5 flex gap-2 p-2 items-stretch pointer-events-none", isShown ? "block" : "hidden")}>             
+        <div id="inspection-controls-wrapper" className={clsx("absolute right-0 w-full md:w-[calc(100vw-488px)] z-5 flex gap-2 p-2 items-stretch pointer-events-none", isShown ? "block" : "hidden")}>             
             <div className="pointer-events-auto w-full shadow-lg">
                 <Accordion type="single" collapsible defaultValue="progress">
                     <AccordionItem value="progress">
@@ -94,7 +94,7 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
                 <DialogTrigger>
                     <div id="button-wrapper" className="h-full pointer-events-auto">
                         <Button variant="map" size="map">
-                            Add hive-drop
+                            Add hive-drop +
                         </Button>
                     </div>
                 </DialogTrigger>

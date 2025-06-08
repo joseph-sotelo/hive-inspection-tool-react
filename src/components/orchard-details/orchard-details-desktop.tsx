@@ -2,7 +2,7 @@ import { useRef } from "react";
 import clsx from "clsx";
 
 // UI imports
-import { ChevronDown } from "lucide-react";
+import { ChartNoAxesColumn, Check, ChevronDown, MapPin, ReceiptText, Users } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import StatusBadge from "@/components/ui/status-badge";
@@ -51,18 +51,17 @@ export default function OrchardDetailsDesktop({ props }: { props: OrchardDetails
       <div 
         ref={sheetRef} 
         className={clsx(
-          `shadow-md transition-all ${SHEET.ANIMATION_DURATION} overflow-hidden bottom-0 absolute z-10 w-[600px] h-full`,
-          {
-            [`${SHEET.POSITIONS.HIDDEN} md:h-full`]: isOffScreen && !isOpen || isOffScreen && isOpen,
-            [`${SHEET.POSITIONS.COLLAPSED} md:h-full`]: !isOffScreen && !isOpen,
-            [`${SHEET.POSITIONS.EXPANDED} md:h-full`]: !isOffScreen && isOpen
+          `shadow-md transition-all ${SHEET.ANIMATION_DURATION} overflow-hidden bottom-0 absolute z-10 h-full border-r-1`,
+          {            
+            [`${SHEET.POSITIONS_DESKTOP.COLLAPSED}`]: isOffScreen,
+            [`${SHEET.POSITIONS_DESKTOP.EXPANDED}`]: !isOffScreen
           }
         )}
       >
         {/* Header/Peek section */}
         <div 
           id="peek" 
-          className="p-6 flex justify-between border-1 rounded-none bg-background"
+          className="p-6 flex justify-between border-b-1 rounded-none bg-background w-[440px]"
         >
           <div className="flex flex-col gap-2">
             <h4>
@@ -76,19 +75,24 @@ export default function OrchardDetailsDesktop({ props }: { props: OrchardDetails
             </div>
           </div>
           <div onClick={toggleOpen}>
-            <ChevronDown className={clsx("md:hidden", { "rotate-180": !isOpen })} />
+            <ChevronDown className={clsx("md:hidden", { "rotate-180": !isOffScreen })} />
           </div>
         </div>
 
         {/* Main content body */}
         <div 
           id="body" 
-          className="p-2 flex flex-col gap-6 items-center h-full overflow-scroll bg-background-secondary border-x-1 border-border"
+          className="p-2 flex flex-col gap-6 items-center h-full overflow-scroll bg-background-secondary w-[440px]"
         >
           <Accordion type="single" collapsible defaultValue="item-4">
             {/* Hive Contract Information */}
             <AccordionItem value="item-1">
-              <AccordionTrigger>Hive Contract Info</AccordionTrigger>
+              <AccordionTrigger>
+                <div className="flex items-center gap-2"> 
+                  <ReceiptText width="16" height="16" />
+                  Hive Contract Info
+                </div>
+                </AccordionTrigger>
               <AccordionContent>
                 <HiveContractSection formData={formData} handleChange={handleChange} />
               </AccordionContent>
@@ -96,7 +100,12 @@ export default function OrchardDetailsDesktop({ props }: { props: OrchardDetails
 
             {/* Field Information */}
             <AccordionItem value="item-2">
-              <AccordionTrigger>Field Info</AccordionTrigger>
+              <AccordionTrigger>
+                <div className="flex items-center gap-2"> 
+                  <MapPin width="16" height="16" />
+                  Field Info
+                </div>
+              </AccordionTrigger>
               <AccordionContent>
                 <FieldInfoSection formData={formData} handleChange={handleChange} />
               </AccordionContent>
@@ -104,7 +113,12 @@ export default function OrchardDetailsDesktop({ props }: { props: OrchardDetails
 
             {/* Team Information */}
             <AccordionItem value="item-3">
-              <AccordionTrigger>Team Info</AccordionTrigger>
+              <AccordionTrigger>
+                <div className="flex items-center gap-2"> 
+                  <Users width="16" height="16" />
+                  Team Info
+                </div>
+              </AccordionTrigger>
               <AccordionContent>
                 <TeamInfoSection formData={formData} handleChange={handleChange} />
               </AccordionContent>
@@ -112,7 +126,12 @@ export default function OrchardDetailsDesktop({ props }: { props: OrchardDetails
 
             {/* Inspection Data */}
             <AccordionItem value="item-4">
-              <AccordionTrigger>Inspection Data</AccordionTrigger>
+              <AccordionTrigger className="flex items-center gap-2">
+                <div className="flex items-center gap-2">     
+                  <ChartNoAxesColumn width="16" height="16" />             
+                  Inspection Data                   
+                </div>                
+              </AccordionTrigger>
               <AccordionContent>
                 <InspectionSection toggleOpen={toggleOpen} />
               </AccordionContent>
@@ -130,6 +149,7 @@ export default function OrchardDetailsDesktop({ props }: { props: OrchardDetails
               props.onMarkComplete(formData);
               setIsShown(false);
             }}>
+            <Check width="16" height="16" />
             Mark Complete
           </Button>
         </div>

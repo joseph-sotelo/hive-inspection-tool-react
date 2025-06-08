@@ -2,10 +2,14 @@
 // Centralizing UI values prevents inconsistencies and makes theming easier
 export const SHEET = {
   // Height values for different states
-  POSITIONS: {
+  POSITIONS_MOBILE: {
     HIDDEN: "h-0",
     COLLAPSED: "h-[108px]", 
     EXPANDED: "h-9/10",    
+  },
+  POSITIONS_DESKTOP: {    
+    COLLAPSED: "w-[0]", 
+    EXPANDED: "w-[440px]",    
   },
   SIDEBAR_WIDTH: "w-[440px]",
   // Animation duration
@@ -31,7 +35,7 @@ export const SIGNATURE_CANVAS = {
   WIDTH: 270,
   HEIGHT: 200,
   PEN_COLOR: "black",
-  BACKGROUND_COLOR: "rgba(255, 255, 255, 1)"
+  BACKGROUND_COLOR: "rgb(251 251 255)"
 } as const;
 
 export const CORNERS = {

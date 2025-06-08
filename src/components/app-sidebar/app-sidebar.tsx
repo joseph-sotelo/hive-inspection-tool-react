@@ -34,7 +34,7 @@ const items = [
     return (
       <Sidebar
         collapsible="none"
-        className="w-[calc(var(--sidebar-width-icon)+1px)]! border-r h-screen"
+        className="w-[calc(var(--sidebar-width-icon)+1px)]! border-r h-screen shadow-lg z-50 bg-background"
       >
         <SidebarContent>                    
             <SidebarGroup>                
