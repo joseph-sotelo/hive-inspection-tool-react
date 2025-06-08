@@ -137,7 +137,7 @@ export default function HiveDropReportSubsection() {
     return (
         <>
             {hiveDropPairs.map((pair, pairIndex) => (
-                <div key={pairIndex} className="p-6 section w-[8.5in] h-[11in] border-1 shadow-lg border-border">
+                <div key={pairIndex} className="p-12 section w-[8.5in] h-[11in] border-1 shadow-lg border-border">
                     {pair.map((hivedrop, indexInPair) => {
                         const globalIndex = pairIndex * 2 + indexInPair;
                         return renderHiveDrop(hivedrop, globalIndex);

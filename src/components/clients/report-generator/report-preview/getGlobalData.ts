@@ -45,8 +45,5 @@ export const getGlobalData = async (
     // Convert to array of arrays and pass to setter
     const allHiveDropGrades = Object.values(recordGroups);
     setAllHiveDrops(allHiveDropGrades);
-    
-    console.log("Grouped hive drop grades by record ID:", recordGroups);
-    console.log("All hive drop grades arrays:", allHiveDropGrades);
 };
 

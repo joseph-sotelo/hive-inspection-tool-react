@@ -12,8 +12,8 @@ export default function OrchardReportCover() {
     const reportCreatedDate = new Date().toLocaleDateString();
     
     return (
-        <div className="w-[8.5in] h-[11in] border-2 border-border flex flex-col">
-            <div id="header" className="grid grid-cols-12 gap-4 m-6 flex-shrink-0">
+        <div className="w-[8.5in] h-[11in] border-1 shadow-lg border-border flex flex-col">
+            <div id="header" className="grid grid-cols-12 gap-4 m-12 flex-shrink-0">
                 <div id="info" className="col-span-3 text-right flex flex-col gap-8 mt-2">
                     <small>
                         <StatusBadge status={status} />
