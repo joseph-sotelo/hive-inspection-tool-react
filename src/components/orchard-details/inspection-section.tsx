@@ -55,12 +55,15 @@ export default function InspectionSection({ toggleOpen }: InspectionSectionProps
           </TableHeader>            
           <TableBody>            
               {hivesCounted.map((count, index) => {
+                console.log('average: ', average[index])
                 return (
                   <TableRow key={index}>                    
                     <TableCell>{count}</TableCell>
                     <TableCell>{hivesGraded[index]}</TableCell>
                     <TableCell>
-                      <AverageBadge value={average[index]}>{Number(average[index]).toFixed(1)}</AverageBadge>
+                      {average[index] !== null && (
+                        <AverageBadge value={average[index]}>{Number(average[index]).toFixed(1)}</AverageBadge>
+                      )}
                     </TableCell>
                   </TableRow>
                 )

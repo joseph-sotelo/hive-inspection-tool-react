@@ -240,9 +240,9 @@ export default function Map() {
           id="viewDiv" 
           className="w-full h-full relative" 
           style={{ 
-            width: '102%', 
-            height: '102%', 
-            margin: '-1%',            
+            width: '101%', 
+            height: '101%', 
+            margin: '-0.5%',            
           }} 
         />
       </div>      
