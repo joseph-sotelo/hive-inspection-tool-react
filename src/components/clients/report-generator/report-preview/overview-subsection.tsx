@@ -3,10 +3,10 @@ import { useOrchardReportData } from "@/context/orchardReportData/useOrchardRepo
 import { useOverviewReportData } from "@/context/overviewReportData/useOverviewReportData";
 
 // chart configuration
-import { type ChartConfig } from "@/components/ui/chart"
+import { type ChartConfig, ChartLegend, ChartLegendContent } from "@/components/ui/chart"
 
 // UI
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Cell } from "recharts"
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Cell,  } from "recharts"
 import { ChartContainer } from "@/components/ui/chart"
 import AverageBadge from "@/components/ui/average-badge";
 
@@ -15,28 +15,28 @@ import { useEffect, useState } from "react";
 
 const chartConfig = {
     current: {
-      label: "Current",
-      color: "#2563eb",
+      label: "This orchard",
+      color: "var(--color-brand-light)",
     },
     average: {
-      label: "Average",
-      color: "#60a5fa",
+      label: "All orchards average",
+      color: "var(--color-brand-light-muted)",
     },
   } satisfies ChartConfig
 
-const getOrchardBarColorByGrade = (grade: number): string => {
-  if (grade <= 4) return "var(--color-status-fail)";
-  if (grade >= 5 && grade <= 6) return "var(--color-status-low)";
-  if (grade >= 7) return "var(--color-status-pass-muted)";
-  return "var(--color-muted)";
-};
+// const getOrchardBarColorByGrade = (grade: number): string => {
+//   if (grade <= 4) return "var(--color-status-fail)";
+//   if (grade >= 5 && grade <= 6) return "var(--color-status-low)";
+//   if (grade >= 7) return "var(--color-status-pass-muted)";
+//   return "var(--color-muted)";
+// };
 
-const getOverviewBarColorByGrade = (grade: number): string => {
-  if (grade <= 4) return "var(--color-status-fail-secondary)";
-  if (grade >= 5 && grade <= 6) return "var(--color-status-low-secondary)";
-  if (grade >= 7) return "var(--color-status-pass-muted-secondary)";
-  return "var(--color-muted)";
-};
+// const getOverviewBarColorByGrade = (grade: number): string => {
+//   if (grade <= 4) return "var(--color-status-fail-secondary)";
+//   if (grade >= 5 && grade <= 6) return "var(--color-status-low-secondary)";
+//   if (grade >= 7) return "var(--color-status-pass-muted-secondary)";
+//   return "var(--color-muted)";
+// };
 
 export default function OverviewSubsection() {
     const { hiveDropData } = useOrchardReportData();    
@@ -101,7 +101,7 @@ export default function OverviewSubsection() {
         }).sort((a, b) => a.grade - b.grade);
 
     return (
-        <div>
+        <div className="flex flex-col gap-8">
             <div className="grid grid-cols-12 gap-4">                
                 <div id="headers" className="col-span-3 text-right flex flex-col gap-8">
                     <h4>
@@ -125,7 +125,7 @@ export default function OverviewSubsection() {
                 </div>
             </div>
             <div id="chart-wrapper" className="ml-10 flex flex-col h-full justify-center">
-                <ChartContainer config={chartConfig} className="w-full h-[200px]">
+                <ChartContainer config={chartConfig} className="w-full h-[350px]">
                     <BarChart data={chartData} >
                         <CartesianGrid vertical={true} />
                         <XAxis                                    
@@ -138,7 +138,7 @@ export default function OverviewSubsection() {
                             axisLine={false}
                             allowDataOverflow={false}
                             scale="linear"
-                            label={{ value: 'Grade', position: 'insideBottom', offset: -5 }}
+                            label={{ value: 'Frames counted', position: 'insideBottom', offset: -5 }}
                         />
                         <YAxis                                    
                             domain={[0, (dataMax: number) => Math.ceil(dataMax)]}
@@ -146,17 +146,18 @@ export default function OverviewSubsection() {
                             tickMargin={0}
                             axisLine={false}
                             reversed={false}
-                            label={{ value: 'Count', angle: -90, position: 'insideLeft', offset: 20 }}
+                            label={{ value: 'Number of hives', angle: -90, position: 'insideLeft', offset: 20 }}
                         />
+                        <ChartLegend content={<ChartLegendContent />} className="-ml-93" />
                         <Bar dataKey="current" fill="var(--color-current)" radius={4} maxBarSize={75} >
-                            {chartData.map((entry, index) => (
+                            {/* {chartData.map((entry, index) => (
                                 <Cell key={`cell-${index}`} fill={getOrchardBarColorByGrade(entry.grade)} />
-                            ))}
+                            ))} */}
                         </Bar>
                         <Bar dataKey="average" fill="var(--color-average)" radius={4} maxBarSize={75} >
-                            {chartData.map((entry, index) => (
+                            {/* {chartData.map((entry, index) => (
                                 <Cell key={`cell-${index}`} fill={getOverviewBarColorByGrade(entry.grade)} />
-                            ))}
+                            ))} */}
                         </Bar>
                     </BarChart>
                 </ChartContainer>

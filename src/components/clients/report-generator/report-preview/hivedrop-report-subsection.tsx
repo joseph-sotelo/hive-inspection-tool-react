@@ -108,7 +108,7 @@ export default function HiveDropReportSubsection() {
                                     ticks={ticks}
                                     tickMargin={0}
                                     axisLine={false}
-                                    label={{ value: 'Grade', position: 'insideBottom', offset: -5 }}
+                                    label={{ value: 'Frames counted', position: 'insideBottom', offset: -5 }}
                                     // tickFormatter={(value) => value.toString()}
                                 />
                                 <YAxis                                    
@@ -118,7 +118,7 @@ export default function HiveDropReportSubsection() {
                                     tickMargin={0}
                                     axisLine={false}
                                     reversed={false}
-                                    label={{ value: 'Count', angle: -90, position: 'insideLeft', offset: 20 }}
+                                    label={{ value: 'Number of hives', angle: -90, position: 'insideLeft', offset: 20 }}
                                     // tickFormatter={(value) => value.toString()}
                                 />
                                 <Bar dataKey="count" radius={4} maxBarSize={150}>

@@ -112,6 +112,6 @@ export default function ReportMap() {
     }, [recordId]);
 
     return (
-        <div id="viewDiv" className="w-full h-[574px]" />
+        <div id="viewDiv" className="w-full h-full" />
     )
 }

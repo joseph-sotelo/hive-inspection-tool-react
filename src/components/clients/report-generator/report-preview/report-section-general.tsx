@@ -22,8 +22,8 @@ export default function ReportSectionGeneral() {
 
     return(
         <>
-            <h1 className="text-left ml-51">General</h1>
-            <div className="grid grid-cols-12 gap-4 p-6 section">
+            <h1 className="text-left ml-48">General</h1>
+            <div className="grid grid-cols-12 gap-4 section">
                 <div id="headers" className="col-span-3 text-right flex flex-col gap-8">
                     <h4>
                         Orchard Info
@@ -48,7 +48,7 @@ export default function ReportSectionGeneral() {
                     )}
                 </div>
             </div>            
-            <div className="grid grid-cols-12 gap-4 p-6 section">
+            <div className="grid grid-cols-12 gap-4 section">
                 <div id="headers" className="col-span-3 text-right flex flex-col gap-8">
                     <h4>
                         Bee Contract Info
