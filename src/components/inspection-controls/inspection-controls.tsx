@@ -102,13 +102,13 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
                     <DialogHeader>
                         <DialogTitle>
                             New Hive-Drop
-                        </DialogTitle>
-                        <Progress 
+                        </DialogTitle>                        
+                    </DialogHeader>   
+                    <Progress 
                             className={clsx("border-1 border-foreground-flexible-light", CORNERS.CHILD)}   
                             value={Math.min(hiveDropHiveGrades.length, hivesCountedLocal[hiveDropIndex]*samplePercentage)}
                             max={hivesCountedLocal[hiveDropIndex]*samplePercentage}
-                        />
-                    </DialogHeader>                
+                        />             
                     <Button variant="customSecondary"> Re-capture Location </Button>
                     <div className="grid w-full max-w-sm items-center gap-1.5">
                         <Label htmlFor="count">Hives counted</Label>
@@ -120,8 +120,8 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
                                 const newHivesCountedLocal = [...hivesCountedLocal];
                                 newHivesCountedLocal[hiveDropIndex] = Number(event.target.value);
                                 setHivesCountedLocal(newHivesCountedLocal);                                                                   
-                            }}/>
-                        <p className="text-sm text-muted-foreground">How many hives are there in this hive-drop?</p>
+                        }}/>
+                        <span className="text-sm text-muted-foreground">How many hives are there in this hive-drop?</span>
                     </div>
                     <Separator />
                     <h4>Hives graded: {hiveDropHiveGrades.length}</h4>
