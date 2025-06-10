@@ -2,7 +2,7 @@ import { useRef } from "react";
 import clsx from "clsx";
 
 // UI imports
-import { ChartNoAxesColumn, Check, ChevronDown, MapPin, ReceiptText, Users, X } from "lucide-react";
+import { ChartNoAxesColumn, Check, MapPin, ReceiptText, Users, X } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import StatusBadge from "@/components/ui/status-badge";
@@ -29,7 +29,6 @@ import { useInspectionData } from "@/context/inspectionData"
 export default function OrchardDetailsDesktop({ props }: { props: OrchardDetailsProps }) {
 
   const { setIsShown } = useInspectionData();
-
   const sheetRef = useRef<HTMLDivElement>(null);
 
   // Use custom hooks to manage complex logic
@@ -70,9 +69,6 @@ export default function OrchardDetailsDesktop({ props }: { props: OrchardDetails
                 Delivery {deliveryStatus}: {props.hives_contracted} hives
               </small>
             </div>
-          </div>
-          <div onClick={() => setIsOffScreen(true)}>
-            <X width="16" height="16" />
           </div>
         </div>
 

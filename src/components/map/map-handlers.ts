@@ -12,7 +12,6 @@ export const handleOrchardFeatureSelection = (
   view: MapView,
   setMobileSheetProps: (props: OrchardDetailsProps) => void,
   setIsMobileSheetOpen: (open: boolean) => void,
-  setIsDesktopSheetOpen: (open: boolean) => void,
   updateFeature: (formData: any) => void,
   setHivesCounted: (hivesCounted: number[]) => void,
   setHivesGraded: (hivesGraded: number[]) => void,
@@ -60,7 +59,6 @@ export const handleOrchardFeatureSelection = (
   setMobileSheetProps(mobileSheetContent);
   setTotalHivesContracted(feature.attributes[ORCHARD_FIELD_NAMES.HIVES_CONTRACTED]);
   setIsMobileSheetOpen(true);
-  setIsDesktopSheetOpen(true);
 
   // gets attributes from each visible hivedrop
   const loopThroughHiveDrops = async () => {

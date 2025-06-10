@@ -27,7 +27,7 @@ import { useMediaQuery } from "@/hooks";
 
 // context
 import { useInspectionData } from "@/context/inspectionData/useInspectionData";
-import MapSidebar from "./map-sidebar";
+import { useOrchardDetailsData } from "@/context/orchardDetailsData/useOrchardDetailsData";
 
 // Environment setup with validation
 config.apiKey = ENV.VITE_ARCGIS_LAYER_API_KEY;
@@ -61,7 +61,7 @@ export default function Map() {
   // State for mobile sheet
   const [orchardDetailsProps, setOrchardDetailsProps] = useState<OrchardDetailsProps | null>(null);
   const [isMobileSheetOpen, setIsMobileSheetOpen] = useState(false);
-  const [isDesktopSheetOpen, setIsDesktopSheetOpen] = useState(false);
+  const { isDesktopSheetOpen, setIsDesktopSheetOpen } = useOrchardDetailsData();
 
   // State for hive drop dialog
   const [hiveDropDialogProps, setHiveDropDialogProps] = useState<HiveDropDialogProps | null>(null);
@@ -128,6 +128,12 @@ export default function Map() {
 
     // Handle map clicks
     view.on("click", async (event) => {
+      // Check if click is within inspection controls
+      const inspectionControls = document.getElementById('inspection-controls-wrapper');
+      if (inspectionControls && inspectionControls.contains(event.native.target)) {
+        return; // Exit early if click is within inspection controls
+      }
+
       // Test for feature hits
       const response = await view.hitTest(event);      
       
@@ -142,6 +148,8 @@ export default function Map() {
         if (feature.graphic.layer === orchardLayer && feature.graphic.attributes[ORCHARD_FIELD_NAMES.FIELDMAP_ID_PRIMARY] != undefined) {
           // Store feature ID for updates
           featureObjectIdRef.current = feature.graphic.attributes[ORCHARD_FIELD_NAMES.OBJECT_ID];
+
+          setIsDesktopSheetOpen(!isDesktopSheetOpen);
           
           handleOrchardFeatureSelection(
             feature.graphic,
@@ -150,8 +158,7 @@ export default function Map() {
             perimitersLayer,
             view,
             setOrchardDetailsProps,
-            setIsMobileSheetOpen,
-            setIsDesktopSheetOpen,
+            setIsMobileSheetOpen,            
             updateFeature,
             setHivesCounted,
             setHivesGraded,
@@ -170,6 +177,9 @@ export default function Map() {
           );
         }
       } else {
+
+        setIsDesktopSheetOpen(false);
+
         handleDeselection(
           orchardLayer,
           hiveDropsLayer,
@@ -229,10 +239,8 @@ export default function Map() {
         />
       )}
       
-      {/* Always render inspection controls */}
       <InspectionControls totalHivesContracted={totalHivesContracted} />
       
-      {/* Map container */}
       <div id="viewDivWrapper" className="w-full h-screen overflow-hidden">
         <div 
           id="viewDiv" 
