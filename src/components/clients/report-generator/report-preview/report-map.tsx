@@ -93,10 +93,14 @@ export default function ReportMap() {
             perimitersLayer.when(() => {
               perimitersLayer.queryExtent().then((result) => {
                 if (result.extent) {
-                  view.goTo({
-                    target: result.extent,
+                  view.goTo(                  
+                  {
+                    target: result.extent.expand(1.1),
                     padding: MAP_CONFIG.ZOOM_PADDING
-                  });
+                  },
+                {
+                  animate: false
+                },);
                 }
               });
             });

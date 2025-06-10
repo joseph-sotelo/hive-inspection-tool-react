@@ -3,18 +3,23 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { Link } from "react-router-dom";
+import { useClientsData } from "@/context/clientsData/useClientsData";
 
 export default function Clients({ types }: {types: string[] }) {    
-
+    
+    const { setShowReportGenerator } = useClientsData();
+    
     return (
-        <ul className="flex flex-col gap-3">
+        <ul className="flex flex-col">
             {types.map((value, index) => (
-                <div key={`${value}-${index}`}>
-                    <Separator className="mb-3"/>
+                <div key={`${value}-${index}`} className="hover:bg-secondary transition-colors duration-300">
+                    <Separator/>
                     <li>
-                        <Link to={`/clients/${encodeURIComponent(value)}`}
+                        <Link 
+                            to={`/clients/${encodeURIComponent(value)}`}
+                            onClick={() => setShowReportGenerator(false)}
                         >
-                            <div className="flex gap-2 items-center pr-12 py-2">
+                            <div className="flex gap-2 items-center pr-12 pl-6 py-2 my-3">
                                 <Avatar style={{ backgroundColor: getRandomPastelColor() }}>                                
                                     <AvatarFallback>
                                         {value.split(' ').map(word => word[0]).join('').toUpperCase()}

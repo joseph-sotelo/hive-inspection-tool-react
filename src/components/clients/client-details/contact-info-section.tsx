@@ -10,10 +10,12 @@ export default function ContactInfoSection({
     email = "custom@client.com" 
 }: ContactInfoSectionProps) {
     return (
-        <div id="contact-info">
+        <div id="contact-info" className="flex flex-col gap-6">
             <h4>Contact Information</h4>
-            <ContactChip contactType="phone" value={phone} />
-            <ContactChip contactType="email" value={email} />
+            <div className='flex flex-col gap-2'>
+                <ContactChip contactType="phone" value={phone} />
+                <ContactChip contactType="email" value={email} />
+            </div>            
         </div>
     );
 } 

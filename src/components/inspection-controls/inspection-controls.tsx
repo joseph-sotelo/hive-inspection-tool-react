@@ -81,7 +81,7 @@ export default function InspectionControls({ totalHivesContracted }: InspectionC
                     <AccordionItem value="progress">
                         <AccordionTrigger>
                             <Progress 
-                                className={clsx("border-1 border-foreground-flexible-light", CORNERS.CHILD)} 
+                                className={clsx("border-1 border-foreground-flexible-light rounded-xs")} 
                                 value={Math.min(orchardHiveGrades.flat().length, totalHivesContracted*samplePercentage)} 
                                 max={totalHivesContracted*samplePercentage} /> 
                         </AccordionTrigger>

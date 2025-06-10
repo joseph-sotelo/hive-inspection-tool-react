@@ -53,9 +53,9 @@ export default function OrchardDetailsMobile({ props }: { props: OrchardDetailsP
         className={clsx(
           `shadow-md-reverse w-full transition-all ${SHEET.ANIMATION_DURATION} overflow-hidden bottom-0 absolute z-10`,
           {
-            [SHEET.POSITIONS.HIDDEN]: isOffScreen && !isOpen || isOffScreen && isOpen,
-            [SHEET.POSITIONS.COLLAPSED]: !isOffScreen && !isOpen,
-            [SHEET.POSITIONS.EXPANDED]: !isOffScreen && isOpen
+            [SHEET.POSITIONS_MOBILE.HIDDEN]: isOffScreen && !isOpen || isOffScreen && isOpen,
+            [SHEET.POSITIONS_MOBILE.COLLAPSED]: !isOffScreen && !isOpen,
+            [SHEET.POSITIONS_MOBILE.EXPANDED]: !isOffScreen && isOpen
           }
         )}
       >

@@ -60,7 +60,8 @@ export default function Map() {
 
   // State for mobile sheet
   const [orchardDetailsProps, setOrchardDetailsProps] = useState<OrchardDetailsProps | null>(null);
-  const [isMobileSheetOpen, setIsMobileSheetOpen] = useState(false);  
+  const [isMobileSheetOpen, setIsMobileSheetOpen] = useState(false);
+  const [isDesktopSheetOpen, setIsDesktopSheetOpen] = useState(false);
 
   // State for hive drop dialog
   const [hiveDropDialogProps, setHiveDropDialogProps] = useState<HiveDropDialogProps | null>(null);
@@ -150,6 +151,7 @@ export default function Map() {
             view,
             setOrchardDetailsProps,
             setIsMobileSheetOpen,
+            setIsDesktopSheetOpen,
             updateFeature,
             setHivesCounted,
             setHivesGraded,
@@ -205,22 +207,18 @@ export default function Map() {
 
   return (
     <div>
-      {/* <MapSidebar /> */}
-      {/* Conditionally render mobile vs desktop based on screen size */}
-      {isMobileSheetOpen && orchardDetailsProps && (
-        <>
-          {isDesktop ? (
+      {isMobileSheetOpen && orchardDetailsProps && !isDesktop && ( 
+
+            <OrchardDetailsMobile 
+              props={orchardDetailsProps} 
+              key={orchardDetailsProps.fieldmap_id_primary}
+            />          
+      )}
+      {isDesktopSheetOpen && orchardDetailsProps && isDesktop && (
             <OrchardDetailsDesktop
               props={orchardDetailsProps} 
               key={orchardDetailsProps.fieldmap_id_primary}
             />
-          ) : (
-            <OrchardDetailsMobile 
-              props={orchardDetailsProps} 
-              key={orchardDetailsProps.fieldmap_id_primary}
-            />
-          )}
-        </>
       )}
       
       {/* Conditionally render hive drop dialog */}

@@ -15,7 +15,7 @@ export default function SignatureSection() {
       </div>
       <div 
         id="signature-canvas-wrapper" 
-        className="bg-white inset-shadow-md rounded-2xl border-1 border-border p-2 flex items-center justify-center"
+        className='bg-background inset-shadow-md rounded-2xl border-1 border-border p-2 flex items-center justify-center'
       >
         <SignatureCanvas 
           penColor={SIGNATURE_CANVAS.PEN_COLOR}

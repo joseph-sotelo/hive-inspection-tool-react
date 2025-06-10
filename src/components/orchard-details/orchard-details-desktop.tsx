@@ -2,13 +2,13 @@ import { useRef } from "react";
 import clsx from "clsx";
 
 // UI imports
-import { ChartNoAxesColumn, Check, ChevronDown, MapPin, ReceiptText, Users } from "lucide-react";
+import { ChartNoAxesColumn, Check, ChevronDown, MapPin, ReceiptText, Users, X } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import StatusBadge from "@/components/ui/status-badge";
 
 // Custom hooks - extracted logic for reusability and testability
-import { useMobileSheetAnimation, useFormData, useClickOutside } from "@/hooks";
+import { useMobileSheetAnimation, useFormData } from "@/hooks";
 
 // Local component imports - each section is now its own component
 import HiveContractSection from "./hive-contract-section";
@@ -34,12 +34,9 @@ export default function OrchardDetailsDesktop({ props }: { props: OrchardDetails
 
   // Use custom hooks to manage complex logic
   const { formData, handleChange } = useFormData(props);
-  const { isOffScreen, isOpen, setIsOffScreen, toggleOpen } = useMobileSheetAnimation({
+  const { isOffScreen, setIsOffScreen, toggleOpen } = useMobileSheetAnimation({
     fieldmapId: props.fieldmap_id_primary
   });
-
-  // Handle clicking outside to close the sheet
-  useClickOutside(sheetRef, () => setIsOffScreen(true));
 
   // Determine delivery status text using constants
   let deliveryStatus = props.partdeliv_yn === "no" 
@@ -74,8 +71,8 @@ export default function OrchardDetailsDesktop({ props }: { props: OrchardDetails
               </small>
             </div>
           </div>
-          <div onClick={toggleOpen}>
-            <ChevronDown className={clsx("md:hidden", { "rotate-180": !isOffScreen })} />
+          <div onClick={() => setIsOffScreen(true)}>
+            <X width="16" height="16" />
           </div>
         </div>
 

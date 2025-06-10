@@ -30,6 +30,8 @@ const buttonVariants = cva(
           "hover:text-accent-foreground dark:hover:bg-accent/50 items-start",
         map:
           "bg-brand-light border-2 border-foreground-flexible-light text-foreground-flexible font-bold tracking-wide shadow-lg hover:bg-brand-light/60",
+        iconGhost:
+          "",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3 text-sm rounded-md",
@@ -39,7 +41,8 @@ const buttonVariants = cva(
         icon: "size-9 text-sm rounded-md",
         text: "pl-0 text-sm rounded-md",
         map: `h-full text-lg rounded-xl px-6 ${CORNERS.CHILD}`,
-        left: "h-9 px-0 py-2 has-[>svg]:px-0 text-sm rounded-md"        
+        left: "h-9 px-0 py-2 has-[>svg]:px-0 text-sm rounded-md",
+        iconGhost: "p-0 justify-start"    
       },
     },
     defaultVariants: {

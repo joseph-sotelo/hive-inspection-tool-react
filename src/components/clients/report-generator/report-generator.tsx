@@ -3,11 +3,11 @@ import OverviewReportDataProvider from "@/context/overviewReportData/OverviewRep
 import ReportSidebar from "./report-sidebar";
 import ReportPreview from "./report-preview/report-preview";
 
-export const ReportGenerator = ({ onBack }: { onBack: () => void }) => {
+export const ReportGenerator = () => {
     return (
         <div className="w-full flex justify-between">
             <OrchardReportDataProvider>
-                <OverviewReportDataProvider>
+                <OverviewReportDataProvider>                    
                     <ReportPreview />  
                     <ReportSidebar />   
                 </OverviewReportDataProvider>
