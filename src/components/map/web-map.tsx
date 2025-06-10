@@ -115,12 +115,17 @@ export default function Map() {
           setUserLocation([longitude, latitude]); // match your format
         },
         (error) => {
-          console.error("Error getting initial location:", error);
+          console.warn("Geolocation not available:", error.message);
+          // Set a default location (e.g., Central Valley, CA)
+          setUserLocation(MAP_CONFIG.DEFAULT_CENTER);
         },
         {
           enableHighAccuracy: true
         }
       );
+    } else {
+      // Set default location if geolocation is not supported
+      setUserLocation(MAP_CONFIG.DEFAULT_CENTER);
     }
 
     // Create function for updating orchard features
