@@ -1,8 +1,10 @@
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
-import { useClientsData } from '@/context/clientsData/useClientsData';
 import { getClientData } from '@/components/clients/getClientData';
 import { Separator } from '@/components/ui/separator';
+
+// context
+import { useClientsData } from '@/context/clientsData/useClientsData';
 
 // Local component imports - each section is now its own component
 import ClientHeader from './client-header';
@@ -17,7 +19,20 @@ interface ClientDetailsProps {
 
 function ClientDetailContent({ toggleReportGenerator }: ClientDetailsProps) {
     const { slug } = useParams<{ slug: string }>();
-    const { setName, setStatuses, setHiveCounts, setOrchardGrades, name, statuses, hiveCounts, orchardGrades, setDefinitionExpression, setFieldmapIdPrimary, fieldmapIdPrimary } = useClientsData();
+    const { 
+        setName, 
+        setStatuses, 
+        setHiveCounts, 
+        setOrchardGrades, 
+        name, 
+        statuses, 
+        hiveCounts, 
+        orchardGrades, 
+        setDefinitionExpression, 
+        setFieldmapIdPrimary, 
+        fieldmapIdPrimary,         
+    } = useClientsData();
+
 
     // Decode the URL-encoded slug to get the actual client name
     const clientName = slug ? decodeURIComponent(slug) : '';
@@ -31,7 +46,7 @@ function ClientDetailContent({ toggleReportGenerator }: ClientDetailsProps) {
                 setHiveCounts,
                 setOrchardGrades,
                 setDefinitionExpression,
-                setFieldmapIdPrimary
+                setFieldmapIdPrimary,
             );
         }
     }, [clientName]);
