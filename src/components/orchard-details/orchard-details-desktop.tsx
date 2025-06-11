@@ -47,7 +47,7 @@ export default function OrchardDetailsDesktop({ props }: { props: OrchardDetails
       <div 
         ref={sheetRef} 
         className={clsx(
-          `shadow-md transition-all ${SHEET.ANIMATION_DURATION} overflow-hidden bottom-0 absolute z-10 h-full border-r-1`,
+          `shadow-md transition-all ${SHEET.ANIMATION_DURATION} overflow-hidden bottom-0 absolute z-10 h-full border-r-1 border-border`,
           {            
             [`${SHEET.POSITIONS_DESKTOP.COLLAPSED}`]: isOffScreen,
             [`${SHEET.POSITIONS_DESKTOP.EXPANDED}`]: !isOffScreen
@@ -57,7 +57,7 @@ export default function OrchardDetailsDesktop({ props }: { props: OrchardDetails
         {/* Header/Peek section */}
         <div 
           id="peek" 
-          className="p-6 flex justify-between border-b-1 rounded-none bg-background w-[440px]"
+          className="p-6 flex justify-between border-b-1 border-border rounded-none bg-background w-[440px]"
         >
           <div className="flex flex-col gap-2">
             <h4>

@@ -26,37 +26,37 @@ export default function OrchardsSection({
     return (
         <div id="orchards" className="flex flex-col gap-6">
             <h4>Orchards</h4>  
-            <div className="flex flex-row gap-6 h-[350px]">                
-                    <div className="border rounded-md overflow-y-auto w-1/2">
-                        <Table>
-                            <TableHeader className="sticky top-0 bg-background border-b z-10">
-                                <TableRow>              
-                                    <TableHead>Fieldmap ID</TableHead>
-                                    <TableHead>Status</TableHead>
-                                    <TableHead>Hive Count</TableHead>
-                                    <TableHead>Grade Average</TableHead>
-                                </TableRow>
-                            </TableHeader>            
-                            <TableBody>            
-                                {statuses.map((status, index) => {
-                                    return (
-                                        <TableRow key={index} 
-                                            onClick={() => setDefinitionExpression(`fieldmap_id_primary='${fieldmapIdPrimary[index]}'`)}>
-                                            <TableCell>
-                                                {fieldmapIdPrimary[index]}
-                                            </TableCell>
-                                            <TableCell>
-                                                <StatusBadge status={status} />
-                                            </TableCell>
-                                            <TableCell>{hiveCounts[index]}</TableCell>
-                                            <TableCell>{orchardGrades[index]}</TableCell>
-                                        </TableRow>
-                                    )
-                                })}
-                            </TableBody>
-                        </Table>
-                    </div>                                    
-                <div className="w-1/2">
+            <div className="flex flex-col gap-6 h-[550px] xl:h-[350px]">                
+                <div className="border border-border rounded-md overflow-y-auto w-full h-1/2 xl:h-full xl:w-1/2">
+                    <Table>
+                        <TableHeader className="sticky top-0 bg-background border-b z-10">
+                            <TableRow>              
+                                <TableHead>Fieldmap ID</TableHead>
+                                <TableHead>Status</TableHead>
+                                <TableHead>Hive Count</TableHead>
+                                <TableHead>Grade Average</TableHead>
+                            </TableRow>
+                        </TableHeader>            
+                        <TableBody>            
+                            {statuses.map((status, index) => {
+                                return (
+                                    <TableRow key={index} 
+                                        onClick={() => setDefinitionExpression(`fieldmap_id_primary='${fieldmapIdPrimary[index]}'`)}>
+                                        <TableCell>
+                                            {fieldmapIdPrimary[index]}
+                                        </TableCell>
+                                        <TableCell>
+                                            <StatusBadge status={status} />
+                                        </TableCell>
+                                        <TableCell>{hiveCounts[index]}</TableCell>
+                                        <TableCell>{orchardGrades[index]}</TableCell>
+                                    </TableRow>
+                                )
+                            })}
+                        </TableBody>
+                    </Table>
+                </div>                                    
+                <div className="w-full xl:w-1/2 h-1/2 xl:h-full">
                     <ClientDetailsMap />    
                 </div>                
             </div>                                     

@@ -11,6 +11,7 @@ import ClientHeader from './client-header';
 import ContactInfoSection from './contact-info-section';
 import OrchardsSection from './orchards-section';
 import { Button } from '@/components/ui/button';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 
 function ClientDetailContent() {
     const { slug } = useParams<{ slug: string }>();
@@ -26,9 +27,10 @@ function ClientDetailContent() {
         setDefinitionExpression, 
         setFieldmapIdPrimary, 
         fieldmapIdPrimary,         
-        setShowReportGenerator,
-        showReportGenerator,
+        setShowReportGenerator        
     } = useClientsData();
+
+    const isDesktop = useMediaQuery('(min-width: 1212px)');
 
 
     // Decode the URL-encoded slug to get the actual client name
@@ -84,7 +86,11 @@ function ClientDetailContent() {
                     >
                         Add Orchard
                     </Button>        
-                    <Button variant="action" onClick={() => setShowReportGenerator(true)}>
+                    <Button 
+                        variant="action" 
+                        disabled={!isDesktop} 
+                        onClick={() => setShowReportGenerator(true)}
+                    >
                         Generate Report
                     </Button>
                 </div>                

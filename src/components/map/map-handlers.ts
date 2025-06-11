@@ -31,8 +31,7 @@ export const handleOrchardFeatureSelection = (
   // Zoom to selected feature with padding for mobile sheet
   view.goTo({
     target: feature.geometry,
-    zoom: MAP_CONFIG.FEATURE_ZOOM,
-    padding: MAP_CONFIG.ZOOM_PADDING
+    zoom: MAP_CONFIG.FEATURE_ZOOM
   });
   
   // Create mobile sheet props from feature attributes

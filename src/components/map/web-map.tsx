@@ -117,7 +117,7 @@ export default function Map() {
         (error) => {
           console.warn("Geolocation not available:", error.message);
           // Set a default location (e.g., Central Valley, CA)
-          setUserLocation(MAP_CONFIG.DEFAULT_CENTER);
+          setUserLocation(MAP_CONFIG.CMD_CENTER);
         },
         {
           enableHighAccuracy: true

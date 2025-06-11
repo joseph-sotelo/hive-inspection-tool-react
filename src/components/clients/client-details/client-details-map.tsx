@@ -70,6 +70,6 @@ export default function ClientDetailsMap() {
     }, [definitionExpression]);
 
     return (
-        <div id="viewDiv" className="w-full border rounded-md h-full overflow-hidden" />
+        <div id="viewDiv" className="w-full border border-border rounded-md h-full overflow-hidden" />
     )
 }
