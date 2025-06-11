@@ -24,8 +24,7 @@ const items = [
       icon: Users,
     },
     {
-      title: "Account",
-      url: "/account",
+      title: "Account",      
       icon: User,
     }
   ]
@@ -43,7 +42,7 @@ const items = [
                   {items.map((item) => (
                     <SidebarMenuItem key={item.title}>
                       <SidebarMenuButton asChild>
-                        <Link to={item.url}>
+                        <Link to={item.url || '/'}>
                           <item.icon />
                           <span className="sr-only">{item.title}</span>
                         </Link>

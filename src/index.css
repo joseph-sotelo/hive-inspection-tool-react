@@ -48,7 +48,7 @@ html, body, #root {
   /* customized vars */
   --color-background: var(--background);
   --color-secondary: var(--secondary);
-  --color-foreground: oklch(0.3212 0.0109 168.01);
+  --color-foreground: oklch(0.3212 0.0109 168.01);  
 
   /* custom vars */
   --color-background-secondary: oklch(0.97 0.0025 165.08);
@@ -203,8 +203,6 @@ p:not(:first-child) {
 
 /* Table styles */
 .table-container {
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
   width: 100%;
   overflow-y: auto;
 }
@@ -214,8 +212,7 @@ p:not(:first-child) {
 }
 
 .table-container tr {
-  margin: 0;
-  border-top: 1px solid var(--border);
+  margin: 0;  
   padding: 0;
 }
 
@@ -225,7 +222,6 @@ p:not(:first-child) {
 
 .table-container th,
 .table-container td {
-  border: 1px solid var(--border);
   padding: 0.5rem 1rem;
   text-align: left;
 }

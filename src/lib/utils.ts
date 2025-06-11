@@ -1,31 +1,41 @@
+// types
 import { ComboBoxType } from "@/components/combobox";
-import config from "@arcgis/core/config";
-import { executeQueryJSON } from "@arcgis/core/rest/query";
 
+// hooks
 import { useState } from "react";
 import { clsx, type ClassValue } from "clsx"
 import { useEffect } from "react";
 import { twMerge } from "tailwind-merge"
-import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 
+// arcgis
+import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
+import config from "@arcgis/core/config";
+import { executeQueryJSON } from "@arcgis/core/rest/query";
+
+// used for overriding tailwind classes
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-// below function is used for getting all of the values for a given field
+// below function is used for getting all of the values for a given geojson field
 config.request.useIdentity = false;
 config.apiKey = import.meta.env.VITE_ARCGIS_LAYER_API_KEY as string;
 const URL = import.meta.env.VITE_ARCGIS_ORCHARDS_LAYER_GEOJSON_URL;
 
 export const getValues = async (outField: string) => {
 
+  // creates query with whatever outfield is passed in
     const query = {
         outFields: [outField],
         where: "1=1",
         returnDistinctValues: true,
         returnGeometry: false,
     };
+
+    // queries the json
     const results = await executeQueryJSON(URL, query);
+
+    // packages the results
     const values = results.features
         .map((feature) => feature.attributes[outField])
         .filter(Boolean)
