@@ -23,7 +23,7 @@ import { createPerimitersLayer } from "@/components/map/layer-config";
 import { useOrchardReportData } from "@/context/orchardReportData/useOrchardReportData";
 import { getHiveDropData } from "@/components/map/map-handlers";
 
-export default function ReportMap() {
+export default function MapReportSection() {
 
     const { recordId, fieldmapIdPrimary, setHiveDropData } = useOrchardReportData();
 

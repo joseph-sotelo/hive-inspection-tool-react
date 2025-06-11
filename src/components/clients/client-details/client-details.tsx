@@ -1,12 +1,15 @@
+// Displays information pertaining to the selected client. It's the main focus of the clients page.
+
+// hooks
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { getClientData } from '@/components/clients/getClientData';
-import { Separator } from '@/components/ui/separator';
 
 // context
 import { useClientsData } from '@/context/clientsData/useClientsData';
 
-// Local component imports - each section is now its own component
+// UI
+import { Separator } from '@/components/ui/separator';
 import ClientHeader from './client-header';
 import ContactInfoSection from './contact-info-section';
 import OrchardsSection from './orchards-section';
@@ -14,7 +17,13 @@ import { Button } from '@/components/ui/button';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 
 function ClientDetailContent() {
+
+    // used to get the client's name from the url. Then, client name is used as the 'where' clause for the query to get the client's orchards.
     const { slug } = useParams<{ slug: string }>();
+    // Decode the URL-encoded slug to get the actual client name
+    const clientName = slug ? decodeURIComponent(slug) : '';
+
+    // hooks to update context
     const { 
         setName, 
         setStatuses, 
@@ -30,12 +39,10 @@ function ClientDetailContent() {
         setShowReportGenerator        
     } = useClientsData();
 
+    // used to disable button on mobile - can't be done with tailwind
     const isDesktop = useMediaQuery('(min-width: 1212px)');
 
-
-    // Decode the URL-encoded slug to get the actual client name
-    const clientName = slug ? decodeURIComponent(slug) : '';
-
+    // updates client context
     useEffect(() => {
         if (clientName) {
             getClientData(
@@ -50,15 +57,13 @@ function ClientDetailContent() {
         }
     }, [clientName]);
 
-    // Handler functions for section components
+    // placeholder for editing client details
     const handleEdit = () => {
-        // TODO: Implement edit functionality
-        console.log('Edit client clicked');
+
     };
 
+    // placeholder for adding new orchards
     const handleAddOrchard = () => {
-        // TODO: Implement add orchard functionality  
-        console.log('Add orchard clicked');
     };
 
     return (

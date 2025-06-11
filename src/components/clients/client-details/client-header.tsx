@@ -1,6 +1,6 @@
 import { Pencil } from 'lucide-react';
 
-interface ClientHeaderProps {
+type ClientHeaderProps = {
     name: string;
     slug: string;
     onEdit?: () => void;

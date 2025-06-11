@@ -1,3 +1,5 @@
+// this hook was auto-installed as part of Sidebar.tsx from shadcn
+
 import * as React from "react"
 
 const MOBILE_BREAKPOINT = 768

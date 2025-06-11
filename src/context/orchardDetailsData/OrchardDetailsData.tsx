@@ -1,3 +1,6 @@
+// used to toggle orchard-details.tsx open and closed on desktop only
+// TODO: move more orchard-details data into this context
+
 import React from "react";
 
 interface ContextType {

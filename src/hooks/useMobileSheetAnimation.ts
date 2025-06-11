@@ -1,5 +1,4 @@
 // Custom hook for mobile sheet animation logic
-// Custom hooks are a great way to extract and reuse stateful logic
 import { useState, useEffect } from "react";
 
 interface UseMobileSheetAnimationProps {

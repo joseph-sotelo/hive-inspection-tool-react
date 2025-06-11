@@ -1,7 +1,13 @@
+// used to get the data about an individual client's orchards. Parent component applies the data to context (ClientsData.tsx), then it is displayed in client-details.tsx
+
+// arcgis
 import config from "@arcgis/core/config";
 import { executeQueryJSON } from "@arcgis/core/rest/query";
+
+// constants
 import { ORCHARD_FIELD_NAMES } from "@/constants/map";
 
+// arcgis config
 config.request.useIdentity = false;
 config.apiKey = import.meta.env.VITE_ARCGIS_LAYER_API_KEY as string;
 const URL = import.meta.env.VITE_ARCGIS_ORCHARDS_LAYER_GEOJSON_URL;
@@ -37,6 +43,7 @@ export const getClientData = async (
     const newOrchardGrades: string[] = [];
     const newFieldmapIdPrimary: string[] = [];
 
+    // loop through each feature and apply their values to the local arrays.
     results.features.forEach((feature) => {
         newStatuses.push(feature.attributes[ORCHARD_FIELD_NAMES.F_STATUS]);
         newHiveCounts.push(feature.attributes[ORCHARD_FIELD_NAMES.HIVES_CONTRACTED]);

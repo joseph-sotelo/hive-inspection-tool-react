@@ -1,3 +1,7 @@
+// used for customizing reports
+// TODO: only one option currently affects the report preview. Implement the rest.
+
+// UI
 import { Combobox } from "@/components/combobox";
 import { Label } from "@/components/ui/label";
 import {
@@ -9,19 +13,24 @@ import {
     SelectTrigger,
     SelectValue,
   } from "@/components/ui/select"
-  import { Checkbox } from "@/components/ui/checkbox"
-import { useClientsData } from "@/context/clientsData/useClientsData";
-import { useEffect } from "react";
-import { getOrchardData } from "./report-preview/getOrchardData";
-import { useOrchardReportData } from "@/context/orchardReportData/useOrchardReportData";
-import { getGlobalData } from "./report-preview/getGlobalData";
-import { useOverviewReportData } from "@/context/overviewReportData/useOverviewReportData";
+import { Checkbox } from "@/components/ui/checkbox"
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { ChevronLeft } from "lucide-react";
 
+// context
+import { useClientsData } from "@/context/clientsData/useClientsData";
+import { getOrchardData } from "./report-preview/getOrchardData";
+import { useOrchardReportData } from "@/context/orchardReportData/useOrchardReportData";
+import { getGlobalData } from "./report-preview/getGlobalData";
+import { useOverviewReportData } from "@/context/overviewReportData/useOverviewReportData";
+
+// hooks
+import { useEffect } from "react";
+
 export default function ReportSidebar() {    
     
+    // used to close the report generator and edit data that the report preview displays
     const { 
         fieldmapIdPrimary, 
         statuses, 
@@ -32,7 +41,6 @@ export default function ReportSidebar() {
     } = useClientsData();
 
 
-// getting variables from context that will be passed to hooks and updated
     const { 
         setClientName,
         setStatus, 
@@ -89,6 +97,7 @@ export default function ReportSidebar() {
         );
     }, []);
 
+    // used to populate the orchard combobox based on array from context
     const orchardProps = {
         optionsType: "fieldmap_id_primary",
         options: fieldmapIdPrimary.map((value) => ({

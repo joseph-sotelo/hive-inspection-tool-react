@@ -1,3 +1,5 @@
+// This data is used for displaying and changing inspection data. It is mainly displayed and manipulated from inspection-controls.tsx.
+
 import React from "react";
 
 interface ContextType {

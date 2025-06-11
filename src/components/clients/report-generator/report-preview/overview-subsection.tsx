@@ -24,25 +24,10 @@ const chartConfig = {
     },
   } satisfies ChartConfig
 
-// const getOrchardBarColorByGrade = (grade: number): string => {
-//   if (grade <= 4) return "var(--color-status-fail)";
-//   if (grade >= 5 && grade <= 6) return "var(--color-status-low)";
-//   if (grade >= 7) return "var(--color-status-pass-muted)";
-//   return "var(--color-muted)";
-// };
-
-// const getOverviewBarColorByGrade = (grade: number): string => {
-//   if (grade <= 4) return "var(--color-status-fail-secondary)";
-//   if (grade >= 5 && grade <= 6) return "var(--color-status-low-secondary)";
-//   if (grade >= 7) return "var(--color-status-pass-muted-secondary)";
-//   return "var(--color-muted)";
-// };
-
 export default function OverviewSubsection() {
     const { hiveDropData } = useOrchardReportData();    
     const { allHiveDrops } = useOverviewReportData();
     
-    // const [allOrchardSummaries, setAllOrchardSummaries] = useState<{grade: number, count: number}[][]>([]);
     const [averagedData, setAveragedData] = useState<{grade: number, count: number}[]>([]);
 
     // Combine all grades from all hivedrops

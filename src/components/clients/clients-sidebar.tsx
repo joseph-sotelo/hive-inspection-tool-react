@@ -1,3 +1,6 @@
+// Displays a list of all clients that the user can use for navigation
+
+// UI
 import { Button } from "../ui/button";
 import ClientsListRenderer from "./clients-list-renderer";
 import { Separator } from "../ui/separator";

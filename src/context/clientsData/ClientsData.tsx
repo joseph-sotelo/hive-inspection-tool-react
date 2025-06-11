@@ -1,7 +1,8 @@
+// data pertaining to a single client. Data is displayed in client-details.tsx based on what client was selected. Data is also displayed in some parts of the client report.
+
 import React from "react";
 
-interface ContextType {
-  // data pertaining to a single client
+interface ContextType {  
   index: number,
   setIndex: (arg: number) => void
   name: string;

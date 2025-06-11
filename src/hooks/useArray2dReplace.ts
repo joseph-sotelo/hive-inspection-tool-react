@@ -1,4 +1,4 @@
-// useful for updating state that is an array
+// useful for updating state that is a 2d array
 type ArrayReplace2dProps = {
     array: number[][],
     index: number,

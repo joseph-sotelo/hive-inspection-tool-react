@@ -1,8 +1,11 @@
+// Displays contact info
+
+// icons
 import { Phone, Mail } from "lucide-react";
 
 type ContactType = "email" | "phone";
 
-interface ContactChipProps {
+type ContactChipProps = {
     contactType: ContactType;
     value?: string;
 }

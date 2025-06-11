@@ -1,9 +1,8 @@
 // Custom hook for form data management
-// Extracting form logic makes it testable and reusable
 import { useState, useEffect } from "react";
-import { MobileSheetProps } from "@/components/types";
+import { OrchardDetailsProps } from "@/components/types";
 
-export const useFormData = (props: MobileSheetProps) => {
+export const useFormData = (props: OrchardDetailsProps) => {
   const [formData, setFormData] = useState({
     client: props.client,
     F_status: props.F_status,

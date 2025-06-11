@@ -1,9 +1,12 @@
+// displays the inspection team info for the client report
+
 import { useOrchardReportData } from "@/context/orchardReportData/useOrchardReportData";
 
-export default function ReportSectionGeneral() {
+export default function TeamReportSection() {
 
     const { teamLeader, assistants } = useOrchardReportData();
 
+    // used to turn assistants from a strin ginto an array
     let assistantsArray = [];
     try {
         if (assistants && assistants.trim()) {

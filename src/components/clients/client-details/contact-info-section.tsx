@@ -1,3 +1,6 @@
+// Displays client's contact info
+// TODO: replace mock data with actual data
+
 import ContactChip from '@/components/clients/contact-chip';
 
 interface ContactInfoSectionProps {

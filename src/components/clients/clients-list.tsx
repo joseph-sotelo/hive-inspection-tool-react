@@ -1,4 +1,4 @@
-// this function came from a Rene Rubalcava tutorial
+// this function came from an ArcGIS tutorial
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";

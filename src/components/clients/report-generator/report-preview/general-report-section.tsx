@@ -1,7 +1,7 @@
 import { useOrchardReportData } from "@/context/orchardReportData/useOrchardReportData";
 import { STATUS_CONFIG } from "@/constants/ui";
 
-export default function ReportSectionGeneral() {
+export default function GeneralReportSection() {
 
     const { 
         clientName, 

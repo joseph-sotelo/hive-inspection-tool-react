@@ -1,3 +1,6 @@
+// map for orchards section of client-details.tsx
+// TODO: consider merging this map with the other two maps in the UI for reusability
+
 // ArcGIS imports
 import config from "@arcgis/core/config";
 import ArcGISMap from "@arcgis/core/Map";
@@ -18,9 +21,8 @@ import { useClientsData } from "@/context/clientsData/useClientsData";
 
 export default function ClientDetailsMap() {
 
+    // used to change the map's displayed features
     const { definitionExpression } = useClientsData();
-
-    
 
     useEffect(() => {    
         

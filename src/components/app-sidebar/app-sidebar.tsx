@@ -1,15 +1,20 @@
-import { Map, User, Users } from "lucide-react"
-import { Link } from "react-router-dom"
+// for navigation
+// TODO: make it disappear on mobile
 
+// UI
+import { Map, User, Users } from "lucide-react"
 import { 
-    Sidebar, 
-    SidebarContent,    
-    SidebarGroup,
-    SidebarGroupContent,
-    SidebarMenu,
-    SidebarMenuButton,
-    SidebarMenuItem    
+  Sidebar, 
+  SidebarContent,    
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem    
 } from "@/components/ui/sidebar"
+
+// routing
+import { Link } from "react-router-dom"
 
 // Menu items.
 const items = [
