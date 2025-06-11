@@ -1,7 +1,7 @@
 import { Badge, badgeVariantsType } from "@/components/ui/badge";
 import { STATUS_CONFIG } from "@/constants";
 
-interface StatusBadgeProps {
+type StatusBadgeProps = {
     status: string;
     showLabel?: boolean;
     className?: string;

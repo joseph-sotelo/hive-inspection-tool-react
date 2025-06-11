@@ -3,7 +3,7 @@ import { getSamplePercentage } from "./getSamplePercentage";
 
 // UI
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTrigger } from "../ui/dialog";
 import { Separator } from "../ui/separator";
 import { Slider } from "../ui/slider";
 import { Input } from "../ui/input";

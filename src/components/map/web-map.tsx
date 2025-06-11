@@ -104,7 +104,9 @@ export default function Map() {
     // Listen for location updates
     track.on("track", (event) => {
       const location = event.position;
-      setUserLocation([location.longitude, location.latitude]);
+      console.log("Track widget location update:", location);
+      // The position object has coords property with latitude and longitude
+      setUserLocation([location.coords.longitude, location.coords.latitude]);
     });
 
     // Immediately fetch initial location before waiting on "track" events
@@ -112,6 +114,7 @@ export default function Map() {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
+          console.log("Initial geolocation:", { latitude, longitude });
           setUserLocation([longitude, latitude]); // match your format
         },
         (error) => {

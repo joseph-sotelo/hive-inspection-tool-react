@@ -33,7 +33,7 @@ export default function OrchardDetailsDesktop({ props }: { props: OrchardDetails
 
   // Use custom hooks to manage complex logic
   const { formData, handleChange } = useFormData(props);
-  const { isOffScreen, setIsOffScreen, toggleOpen } = useMobileSheetAnimation({
+  const { isOffScreen, toggleOpen } = useMobileSheetAnimation({
     fieldmapId: props.fieldmap_id_primary
   });
 
@@ -47,7 +47,7 @@ export default function OrchardDetailsDesktop({ props }: { props: OrchardDetails
       <div 
         ref={sheetRef} 
         className={clsx(
-          `shadow-md transition-all ${SHEET.ANIMATION_DURATION} overflow-hidden bottom-0 absolute z-10 h-full border-r-1 border-border`,
+          `shadow-md transition-all ${SHEET.ANIMATION_DURATION} overflow-y-scroll bg-background-secondary bottom-0 absolute z-10 h-full border-r-1 border-border`,
           {            
             [`${SHEET.POSITIONS_DESKTOP.COLLAPSED}`]: isOffScreen,
             [`${SHEET.POSITIONS_DESKTOP.EXPANDED}`]: !isOffScreen
@@ -75,7 +75,7 @@ export default function OrchardDetailsDesktop({ props }: { props: OrchardDetails
         {/* Main content body */}
         <div 
           id="body" 
-          className="p-2 flex flex-col gap-6 items-center h-full overflow-scroll bg-background-secondary w-[440px]"
+          className="px-2 pt-2 pb-10 flex flex-col gap-6 items-center bg-background-secondary w-[440px]"
         >
           <Accordion type="single" collapsible defaultValue="item-4">
             {/* Hive Contract Information */}
@@ -130,11 +130,9 @@ export default function OrchardDetailsDesktop({ props }: { props: OrchardDetails
               </AccordionContent>
             </AccordionItem>
           </Accordion>
-
-          {/* Signature section */}
+          
           <SignatureSection />
-
-          {/* Submit button */}
+          
           <Button 
             variant="customSecondary" 
             size="lg" 

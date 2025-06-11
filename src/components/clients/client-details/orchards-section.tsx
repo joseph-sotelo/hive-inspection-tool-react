@@ -26,8 +26,8 @@ export default function OrchardsSection({
     return (
         <div id="orchards" className="flex flex-col gap-6">
             <h4>Orchards</h4>  
-            <div className="flex flex-col xl:flex-row gap-6 h-[550px]">                
-                <div className="border border-border rounded-md overflow-y-auto w-full h-[250px] xl:h-full xl:w-1/2 table-container">
+            <div className="flex flex-col xl:grid xl:grid-cols-2 gap-6 h-[550px]">                
+                <div className="border border-border rounded-md overflow-y-auto w-full h-[250px] xl:h-full xl:col-span-1 table-container">
                     <Table>
                         <TableHeader className="bg-background border-b z-10">
                             <TableRow>              
@@ -56,7 +56,7 @@ export default function OrchardsSection({
                         </TableBody>
                     </Table>
                 </div>                                    
-                <div className="w-full h-[250px] xl:h-full xl:w-1/2">
+                <div className="w-full h-[250px] xl:h-full xl:col-span-1">
                     <ClientDetailsMap />    
                 </div>                
             </div>                                     

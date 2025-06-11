@@ -14,7 +14,7 @@ export const addHiveDrop = (
   average: number[],
   hivesGraded: number[]
 ) => {    
- 
+  console.log("userLocation: ", userLocation);
   const newHiveDrop = new Graphic({
     geometry: {
       type: "point",
