@@ -7,7 +7,7 @@ import "@arcgis/core/assets/esri/themes/light/main.css";
 // Map utilities
 import { createOrchardsLayer } from "@/components/map/layer-config";
 import { MAP_CONFIG } from "@/constants";
-import { ENV } from "@/utils/env-validation";
+import { ENV } from "@/lib/utils/env-validation";
 import { useEffect } from "react";
 
 // Environment setup with validation

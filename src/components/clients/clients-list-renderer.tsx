@@ -1,4 +1,4 @@
-import { getValues } from '@/lib/utils';
+import { getValues } from '@/lib/utils/getValues';
 import { useEffect, useState } from 'react';
 import Clients from './clients-list';
 

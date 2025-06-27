@@ -6,7 +6,7 @@ import "@arcgis/core/assets/esri/themes/light/main.css";
 
 // Map utilities
 import { HIVEDROP_FIELD_NAMES, MAP_CONFIG, PERIMITERS_FIELD_NAMES } from "@/constants";
-import { ENV } from "@/utils/env-validation";
+import { ENV } from "@/lib/utils/env-validation";
 import { useEffect } from "react";
 
 // Environment setup with validation
