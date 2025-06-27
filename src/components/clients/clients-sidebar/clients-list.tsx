@@ -1,11 +1,18 @@
-// this function came from a Rene Rubalcava tutorial
+// Clients list placed inside clients-sidebar.tsx
+// this programming came from a Rene Rubalcava tutorial
 
+// ui
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
+
+// routing
 import { Link } from "react-router-dom";
+
+// context
 import { useClientsData } from "@/context/clientsData/useClientsData";
 
-export default function Clients({ types }: {types: string[] }) {    
+// function
+export default function ClientsList({ types }: {types: string[] }) {    
     
     const { setShowReportGenerator } = useClientsData();
     
@@ -38,7 +45,7 @@ export default function Clients({ types }: {types: string[] }) {
     );
 }
 
-// generates a random pastel color
+// generates a random pastel color to help differentiate clients.
 const getRandomPastelColor = () => {
     // Generate random RGB values with higher minimums for pastel effect
     const r = Math.floor(Math.random() * 25 + 220); // 200-255 range for lighter colors

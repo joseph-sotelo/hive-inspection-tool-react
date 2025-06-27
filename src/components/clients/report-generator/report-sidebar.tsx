@@ -1,4 +1,7 @@
-import { Combobox } from "@/components/combobox";
+// This sidebar presents the user with options customize the client report
+
+// ui
+import { Combobox } from "@/components/ui/combobox";
 import { Label } from "@/components/ui/label";
 import {
     Select,
@@ -9,19 +12,24 @@ import {
     SelectTrigger,
     SelectValue,
   } from "@/components/ui/select"
-  import { Checkbox } from "@/components/ui/checkbox"
-import { useClientsData } from "@/context/clientsData/useClientsData";
-import { useEffect } from "react";
-import { getOrchardData } from "./report-preview/getOrchardData";
-import { useOrchardReportData } from "@/context/orchardReportData/useOrchardReportData";
-import { getGlobalData } from "./report-preview/getGlobalData";
-import { useOverviewReportData } from "@/context/overviewReportData/useOverviewReportData";
+import { Checkbox } from "@/components/ui/checkbox"
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { ChevronLeft } from "lucide-react";
 
+// context
+import { useClientsData } from "@/context/clientsData/useClientsData";
+import { useOrchardReportData } from "@/context/orchardReportData/useOrchardReportData";
+import { useOverviewReportData } from "@/context/overviewReportData/useOverviewReportData";
+
+// hooks
+import { useEffect } from "react";
+import { getOrchardData } from "./report-preview/getOrchardData";
+import { getGlobalData } from "./report-preview/getGlobalData";
+
 export default function ReportSidebar() {    
     
+    // accessing some relevant parts of clientsData context that had been previously set
     const { 
         fieldmapIdPrimary, 
         statuses, 
@@ -32,7 +40,7 @@ export default function ReportSidebar() {
     } = useClientsData();
 
 
-// getting variables from context that will be passed to hooks and updated
+// getting variables from context that will be set and displayed in the report
     const { 
         setClientName,
         setStatus, 
@@ -54,11 +62,12 @@ export default function ReportSidebar() {
         setAssistants
     } = useOrchardReportData();
 
+    // this value is used to create the overview chart for both the orchard and overview reports
     const {
         setAllHiveDrops
     } = useOverviewReportData();
 
-// initializing context values
+    // initializing context values
     useEffect(() => {
         getOrchardData(
             setClientName,
@@ -89,6 +98,7 @@ export default function ReportSidebar() {
         );
     }, []);
 
+    // creates an object used to populate the orchard combobox
     const orchardProps = {
         optionsType: "fieldmap_id_primary",
         options: fieldmapIdPrimary.map((value) => ({

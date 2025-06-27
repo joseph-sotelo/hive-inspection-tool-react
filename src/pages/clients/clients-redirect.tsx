@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 
 // used to get a list of all client names found in our geojson
-import { getValues } from '@/lib/utils';
+import { getValues } from '@/lib/utils/getValues';
 
 export default function ClientsRedirect() {
     const [firstClient, setFirstClient] = useState<string | null>(null);

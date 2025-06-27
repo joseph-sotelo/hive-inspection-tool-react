@@ -1,6 +1,12 @@
+// navigation Sidebar. Disappears on mobile
+
+// icons
 import { Map, User, Users } from "lucide-react"
+
+// routing
 import { Link } from "react-router-dom"
 
+// ui
 import { 
     Sidebar, 
     SidebarContent,    

@@ -5,7 +5,7 @@ import { symbolAlert, symbolFail, symbolLow, symbolPass, symbolHivePass, symbolH
 import { ORCHARD_FIELD_NAMES, LAYER_EXPRESSIONS, HIVEDROP_FIELD_NAMES, PERIMITERS_LAYER_SYMBOL, PERIMITERS_FIELD_NAMES } from "@/constants";
 
 // Validated environment variables - ensures all required config is present
-import { ENV } from "@/utils/env-validation";
+import { ENV } from "@/lib/utils/env-validation";
 
 // Create orchards layer with proper field mapping
 export const createOrchardsLayer = (definitionExpression: string) => {

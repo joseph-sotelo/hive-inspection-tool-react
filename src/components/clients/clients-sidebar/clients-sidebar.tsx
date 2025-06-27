@@ -1,6 +1,7 @@
-import { Button } from "../ui/button";
+// Persistent sidebar for navigating from client to client.
+import { Button } from "@/components/ui/button";
 import ClientsListRenderer from "./clients-list-renderer";
-import { Separator } from "../ui/separator";
+import { Separator } from "@/components/ui/separator";
 
 
 export default function ClientsSidebar() {

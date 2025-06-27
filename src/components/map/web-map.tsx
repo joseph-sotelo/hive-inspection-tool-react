@@ -19,7 +19,7 @@ import { createOrchardsLayer, createHiveDropsLayer, createPerimitersLayer } from
 import { handleOrchardFeatureSelection, handleDeselection, handleHiveDropFeatureSelection } from "./map-handlers";
 import { createFeatureUpdater } from "./feature-updater";
 import { LAYER_EXPRESSIONS, MAP_CONFIG, ORCHARD_FIELD_NAMES } from "@/constants";
-import { ENV } from "@/utils/env-validation";
+import { ENV } from "@/lib/utils/env-validation";
 import { addHiveDrop } from "./add-hivedrop";
 
 // Custom hooks

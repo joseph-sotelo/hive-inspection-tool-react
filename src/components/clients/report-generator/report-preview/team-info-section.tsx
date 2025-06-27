@@ -1,9 +1,13 @@
+// displays the team leader and assistants for the orchard report
+
+// context
 import { useOrchardReportData } from "@/context/orchardReportData/useOrchardReportData";
 
-export default function ReportSectionGeneral() {
-
+export default function TeamInfoSection() {
+    // get values from context
     const { teamLeader, assistants } = useOrchardReportData();
 
+    // turn the single string that the json provides into an array
     let assistantsArray = [];
     try {
         if (assistants && assistants.trim()) {

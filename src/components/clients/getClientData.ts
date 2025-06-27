@@ -1,3 +1,5 @@
+// used for getting the data for a given client. Data is displayed in clien-details.tsx and client reports. Data is stored in context and replaced when a new client is selected.
+
 import config from "@arcgis/core/config";
 import { executeQueryJSON } from "@arcgis/core/rest/query";
 import { ORCHARD_FIELD_NAMES } from "@/constants/map";
@@ -49,6 +51,4 @@ export const getClientData = async (
     setHiveCounts(newHiveCounts);
     setOrchardGrades(newOrchardGrades);
     setFieldmapIdPrimary(newFieldmapIdPrimary);
-
-    
 };

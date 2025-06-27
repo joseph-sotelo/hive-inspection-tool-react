@@ -1,6 +1,6 @@
 // UI
 import ClientDetails from '@/components/clients/client-details/client-details';
-import ClientsSidebar from '@/components/clients/clients-sidebar';
+import ClientsSidebar from '@/components/clients/clients-sidebar/clients-sidebar';
 import { ReportGenerator } from '@/components/clients/report-generator/report-generator';
 
 // context
