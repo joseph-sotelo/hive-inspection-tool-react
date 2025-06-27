@@ -1,6 +1,8 @@
+// populates clients-list with data. This programming patter came from a Rene Rubalcava tutorial
+
 import { getValues } from '@/lib/utils/getValues';
 import { useEffect, useState } from 'react';
-import Clients from './clients-list';
+import ClientsList from './clients-list';
 
 export default function ClientsListRenderer() {
   const [data, setData] = useState<ClientsData | null>(null);
@@ -17,7 +19,7 @@ export default function ClientsListRenderer() {
 
   return (
     <>
-      {data && <Clients {...data} />}
+      {data && <ClientsList {...data} />}
     </>
   );
 }

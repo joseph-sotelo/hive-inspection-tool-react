@@ -1,18 +1,19 @@
+// displays a chart comparing the selected orchard with all orchard averages
+
 // context
 import { useOrchardReportData } from "@/context/orchardReportData/useOrchardReportData";
 import { useOverviewReportData } from "@/context/overviewReportData/useOverviewReportData";
 
-// chart configuration
-import { type ChartConfig, ChartLegend, ChartLegendContent } from "@/components/ui/chart"
-
 // UI
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Cell,  } from "recharts"
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
 import { ChartContainer } from "@/components/ui/chart"
 import AverageBadge from "@/components/ui/average-badge";
+import { type ChartConfig, ChartLegend, ChartLegendContent } from "@/components/ui/chart"
 
 // hooks
 import { useEffect, useState } from "react";
 
+// object used to configure the chart
 const chartConfig = {
     current: {
       label: "This orchard",
@@ -24,16 +25,21 @@ const chartConfig = {
     },
   } satisfies ChartConfig
 
-export default function OverviewSubsection() {
+export default function OverviewSection() {
+
+    // gets data for the selected orchard
     const { hiveDropData } = useOrchardReportData();    
+
+    // gets data for all orchards
     const { allHiveDrops } = useOverviewReportData();
     
+    // used to store averaged data for all orchards
     const [averagedData, setAveragedData] = useState<{grade: number, count: number}[]>([]);
 
     // Combine all grades from all hivedrops
     const allGrades = hiveDropData.flatMap(hivedrop => hivedrop.grades);
     
-    // Find highest grade from both current data and averaged data
+    // Find highest grade from both current data and averaged data; used to set the chart's max value
     const allGradesFromBothDatasets = [
         ...allGrades,
         ...averagedData.map(item => item.grade)

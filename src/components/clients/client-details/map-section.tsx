@@ -1,3 +1,5 @@
+// Map that displays all orchards for a given client. USed in client-details.tsx
+
 // ArcGIS imports
 import config from "@arcgis/core/config";
 import ArcGISMap from "@arcgis/core/Map";
@@ -10,22 +12,20 @@ import { MAP_CONFIG } from "@/constants";
 import { ENV } from "@/lib/utils/env-validation";
 import { useEffect } from "react";
 
-// Environment setup with validation
+// Environment setup
 config.apiKey = ENV.VITE_ARCGIS_LAYER_API_KEY;
 
 // context
 import { useClientsData } from "@/context/clientsData/useClientsData";
 
-export default function ClientDetailsMap() {
+export default function MapSection() {
 
     const { definitionExpression } = useClientsData();
 
-    
-
-    useEffect(() => {    
-        
+    useEffect(() => {   
+        // create feature layer
         const orchardLayer = createOrchardsLayer(definitionExpression);
-
+        // create map
         const map = new ArcGISMap({
             layers: [orchardLayer],
             basemap: "arcgis/outdoor"      

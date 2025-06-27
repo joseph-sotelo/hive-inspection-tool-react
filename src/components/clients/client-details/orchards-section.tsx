@@ -1,12 +1,14 @@
+// displays a table of all the client's orchards and a map displaying selected orchards. The map defaults to showing all orchards.
+
 // context
 import { useClientsData } from "@/context/clientsData/useClientsData";
 
 // UI
-import ClientDetailsMap from './client-details-map';
+import MapSection from './map-section';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
 import StatusBadge from '@/components/ui/status-badge';
 
-interface OrchardsSectionProps {
+type OrchardsSectionProps = {
     statuses: string[];
     hiveCounts: number[];
     orchardGrades: string[];
@@ -21,6 +23,7 @@ export default function OrchardsSection({
     fieldmapIdPrimary,    
 }: OrchardsSectionProps) {
 
+    // the map's definition expression comes from context
     const { setDefinitionExpression } = useClientsData();
 
     return (
@@ -57,7 +60,7 @@ export default function OrchardsSection({
                     </Table>
                 </div>                                    
                 <div className="w-full h-[250px] xl:h-full xl:col-span-1">
-                    <ClientDetailsMap />    
+                    <MapSection />    
                 </div>                
             </div>                                     
         </div>

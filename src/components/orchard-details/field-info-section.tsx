@@ -3,7 +3,7 @@
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { Combobox } from "../combobox";
+import { Combobox } from "../ui/combobox";
 import { comboBoxOptions } from "@/lib/utils/comboBoxOptions";
 
 interface FieldInfoSectionProps {

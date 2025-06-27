@@ -1,12 +1,12 @@
 import { Pencil } from 'lucide-react';
 
-interface ClientHeaderProps {
+type HeaderSectionProps = {
     name: string;
     slug: string;
     onEdit?: () => void;
 }
 
-export default function ClientHeader({ name, slug, onEdit }: ClientHeaderProps) {
+export default function HeaderSection({ name, slug, onEdit }: HeaderSectionProps) {
     return (
         <div id="header" className="flex flex-row justify-between w-full items-center">
             <h1 className="text-2xl font-bold">{name || slug}</h1>

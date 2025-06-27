@@ -3,7 +3,7 @@ import { useOrchardReportData } from "@/context/orchardReportData/useOrchardRepo
 import { useClientsData } from "@/context/clientsData/useClientsData";
 
 // ui
-import ReportMap from "./report-map.tsx";
+import MapSection from "./map-section.tsx";
 import StatusBadge from '@/components/ui/status-badge';
 
 export default function OrchardReportCover() {
@@ -56,7 +56,7 @@ export default function OrchardReportCover() {
                 </div>
             </div>
             <div id="map" className="flex-1 h-full">
-                <ReportMap />
+                <MapSection />
             </div>
         </div>
     )

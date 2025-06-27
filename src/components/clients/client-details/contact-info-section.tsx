@@ -1,4 +1,4 @@
-import ContactChip from '@/components/clients/contact-chip';
+import ContactChip from '@/components/clients/client-details/contact-chip';
 
 interface ContactInfoSectionProps {
     phone?: string;

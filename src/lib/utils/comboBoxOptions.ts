@@ -1,5 +1,5 @@
 // types
-import { ComboBoxType } from "@/components/combobox";
+import { ComboBoxType } from "@/components/ui/combobox";
 
 // hooks
 import { useState } from "react";

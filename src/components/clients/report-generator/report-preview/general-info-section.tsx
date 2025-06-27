@@ -1,8 +1,14 @@
+// displays client, orchard, and bee contract info for the orchard report
+
+// context
 import { useOrchardReportData } from "@/context/orchardReportData/useOrchardReportData";
+
+// constants
 import { STATUS_CONFIG } from "@/constants/ui";
 
-export default function ReportSectionGeneral() {
+export default function GeneralInfoSection() {
 
+    // get relevantvalues from context
     const { 
         clientName, 
         fieldmapIdPrimary, 
@@ -16,6 +22,7 @@ export default function ReportSectionGeneral() {
         minimum 
     } = useOrchardReportData();
 
+    // simplify delivery status to be more readable than what the json provides
     let deliveryStatus = partdeliv_yn === "no" 
     ? STATUS_CONFIG.DELIVERY_STATUS.COMPLETE 
     : STATUS_CONFIG.DELIVERY_STATUS.INCOMPLETE;
