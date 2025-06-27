@@ -1,5 +1,14 @@
-# React + TypeScript + Vite
+# HiveFive
 
+# Description
+Hive-Inspection-Tool-React, pubicly known as HiveFive, is a GIS application that help large-scale beehive inspection operations function in an optimal and time-efficient manner. 
+
+# Modules
+- ArGIS: host the data in a database.
+- ArcGIS Core: used for the map as well as any map-related components and methods. 
+- Shadcn: UI component library.
+
+# React + TypeScript + Vite
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
@@ -52,4 +61,3 @@ export default tseslint.config({
   },
 })
 ```
-# hive-inspection-tool-react
