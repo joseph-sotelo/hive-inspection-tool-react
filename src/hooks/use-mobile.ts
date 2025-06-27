@@ -1,3 +1,5 @@
+// used for detecting if the user is on a mobile device
+
 import * as React from "react"
 
 const MOBILE_BREAKPOINT = 768

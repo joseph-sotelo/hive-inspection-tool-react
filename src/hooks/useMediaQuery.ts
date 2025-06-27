@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 /**
- * Custom hook to detect media query matches
+ * Custom hook to detect media query matches. Used for responsive design where tailwind won't work
  * @param query - The media query string (e.g., '(min-width: 768px)')
  * @returns boolean indicating if the media query matches
  */
