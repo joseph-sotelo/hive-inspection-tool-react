@@ -24,8 +24,7 @@ const items = [
       icon: Users,
     },
     {
-      title: "Account",
-      url: "/account",
+      title: "Account",      
       icon: User,
     }
   ]
@@ -34,7 +33,7 @@ const items = [
     return (
       <Sidebar
         collapsible="none"
-        className="w-[calc(var(--sidebar-width-icon)+1px)]! border-r h-screen shadow-lg z-50 bg-background"
+        className="w-[calc(var(--sidebar-width-icon)+1px)]! border-r border-border h-screen shadow-lg z-50 bg-background sticky top-0 left-0 hidden md:block"
       >
         <SidebarContent>                    
             <SidebarGroup>                
@@ -43,7 +42,7 @@ const items = [
                   {items.map((item) => (
                     <SidebarMenuItem key={item.title}>
                       <SidebarMenuButton asChild>
-                        <Link to={item.url}>
+                        <Link to={item.url || '/'}>
                           <item.icon />
                           <span className="sr-only">{item.title}</span>
                         </Link>

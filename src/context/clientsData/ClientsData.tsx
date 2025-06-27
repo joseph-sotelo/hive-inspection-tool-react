@@ -19,7 +19,9 @@ interface ContextType {
   definitionExpression: string,
   setDefinitionExpression: (arg: string) => void,
   fieldmapIdPrimary: string[],
-  setFieldmapIdPrimary: (arg: string[]) => void
+  setFieldmapIdPrimary: (arg: string[]) => void,
+  showReportGenerator: boolean,
+  setShowReportGenerator: (arg: boolean) => void
 }
 
 export const ClientsDataContext = React.createContext<ContextType>({
@@ -40,7 +42,9 @@ export const ClientsDataContext = React.createContext<ContextType>({
   definitionExpression: "",
   setDefinitionExpression: () => {},
   fieldmapIdPrimary: [],
-  setFieldmapIdPrimary: () => {}
+  setFieldmapIdPrimary: () => {},
+  showReportGenerator: false,
+  setShowReportGenerator: () => {}
 });
 
 interface Props {
@@ -56,6 +60,7 @@ const ClientsDataProvider = ({ children }: Props) => {
   const [orchardGrades, setOrchardGrades] = React.useState<string[]>([]);
   const [definitionExpression, setDefinitionExpression] = React.useState<string>("");
   const [fieldmapIdPrimary, setFieldmapIdPrimary] = React.useState<string[]>([]);
+  const [showReportGenerator, setShowReportGenerator] = React.useState<boolean>(false);
   return (
     <ClientsDataContext.Provider value={{
       index,
@@ -75,7 +80,9 @@ const ClientsDataProvider = ({ children }: Props) => {
       definitionExpression,
       setDefinitionExpression,
       fieldmapIdPrimary,
-      setFieldmapIdPrimary
+      setFieldmapIdPrimary,
+      showReportGenerator,
+      setShowReportGenerator
     }}>
       {children}
     </ClientsDataContext.Provider>

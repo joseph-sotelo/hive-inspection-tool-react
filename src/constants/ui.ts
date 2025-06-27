@@ -1,5 +1,4 @@
 // UI-related constants for consistency across components
-// Centralizing UI values prevents inconsistencies and makes theming easier
 export const SHEET = {
   // Height values for different states
   POSITIONS_MOBILE: {

@@ -18,14 +18,17 @@ import { getGlobalData } from "./report-preview/getGlobalData";
 import { useOverviewReportData } from "@/context/overviewReportData/useOverviewReportData";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { ChevronLeft } from "lucide-react";
 
-export default function ReportSidebar() {
+export default function ReportSidebar() {    
     
     const { 
         fieldmapIdPrimary, 
         statuses, 
         hiveCounts, 
-        orchardGrades 
+        orchardGrades,
+        setShowReportGenerator,
+        showReportGenerator
     } = useClientsData();
 
 
@@ -96,9 +99,13 @@ export default function ReportSidebar() {
 
     return (       
         <div className="w-[440px] border-l-1 border-border flex flex-col gap-6 p-6">
-            <div>
-                <h3>Generate Report</h3>
-            </div>
+            <Button 
+                variant="iconGhost"
+                size="iconGhost"                                         
+                onClick={() => setShowReportGenerator(!showReportGenerator)}>
+                <ChevronLeft />
+            </Button>
+            <h3>Generate Report</h3>
             <Separator />
             <div className="flex flex-col gap-6"> 
                 <div className="grid w-full max-w-sm items-center gap-1.5">

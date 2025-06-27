@@ -1,23 +1,37 @@
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
-import { useClientsData } from '@/context/clientsData/useClientsData';
 import { getClientData } from '@/components/clients/getClientData';
 import { Separator } from '@/components/ui/separator';
+
+// context
+import { useClientsData } from '@/context/clientsData/useClientsData';
 
 // Local component imports - each section is now its own component
 import ClientHeader from './client-header';
 import ContactInfoSection from './contact-info-section';
 import OrchardsSection from './orchards-section';
-import ClientDetailsMap from './client-details-map';
 import { Button } from '@/components/ui/button';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 
-interface ClientDetailsProps {
-    toggleReportGenerator?: () => void;
-}
-
-function ClientDetailContent({ toggleReportGenerator }: ClientDetailsProps) {
+function ClientDetailContent() {
     const { slug } = useParams<{ slug: string }>();
-    const { setName, setStatuses, setHiveCounts, setOrchardGrades, name, statuses, hiveCounts, orchardGrades, setDefinitionExpression, setFieldmapIdPrimary, fieldmapIdPrimary } = useClientsData();
+    const { 
+        setName, 
+        setStatuses, 
+        setHiveCounts, 
+        setOrchardGrades, 
+        name, 
+        statuses, 
+        hiveCounts, 
+        orchardGrades, 
+        setDefinitionExpression, 
+        setFieldmapIdPrimary, 
+        fieldmapIdPrimary,         
+        setShowReportGenerator        
+    } = useClientsData();
+
+    const isDesktop = useMediaQuery('(min-width: 1212px)');
+
 
     // Decode the URL-encoded slug to get the actual client name
     const clientName = slug ? decodeURIComponent(slug) : '';
@@ -31,7 +45,7 @@ function ClientDetailContent({ toggleReportGenerator }: ClientDetailsProps) {
                 setHiveCounts,
                 setOrchardGrades,
                 setDefinitionExpression,
-                setFieldmapIdPrimary
+                setFieldmapIdPrimary,
             );
         }
     }, [clientName]);
@@ -48,41 +62,45 @@ function ClientDetailContent({ toggleReportGenerator }: ClientDetailsProps) {
     };
 
     return (
-        <div className="p-6 flex flex-col 2xl:flex-row w-full">            
-            <div id="info" className="w-full">
+        <div className="p-6 flex flex-col gap-12 2xl:flex-row w-7/10">            
+            <div id="info" className="w-full flex flex-col gap-6">
                 <ClientHeader 
                     name={name} 
                     slug={slug || ''} 
                     onEdit={handleEdit} 
-                />
-                
-                <Separator />
-                
+                />                
+                <Separator />                
                 <ContactInfoSection />
-                
-                <Separator />
-                
+                <Separator />                                                                                 
                 <OrchardsSection 
-                    statuses={statuses}
-                    hiveCounts={hiveCounts}
-                    orchardGrades={orchardGrades}
-                    fieldmapIdPrimary={fieldmapIdPrimary}
-                    onAddOrchard={handleAddOrchard}
-                />
-                <Separator />
-                <Button variant="action" size="sm" className="w-full" onClick={toggleReportGenerator}>
-                    Generate Report
-                </Button>
-            </div>
-            <div id="map" className="w-full">
-                <ClientDetailsMap />
+                        statuses={statuses}
+                        hiveCounts={hiveCounts}
+                        orchardGrades={orchardGrades}
+                        fieldmapIdPrimary={fieldmapIdPrimary}
+                        onAddOrchard={handleAddOrchard}                        
+                />  
+                <div className="flex flex-row gap-4">
+                    <Button 
+                        variant="customSecondary" 
+                        className="w-fit"                 
+                    >
+                        Add Orchard
+                    </Button>        
+                    <Button 
+                        variant="action" 
+                        disabled={!isDesktop} 
+                        onClick={() => setShowReportGenerator(true)}
+                    >
+                        Generate Report
+                    </Button>
+                </div>                
             </div>
         </div>
     );
 }
 
-export default function ClientDetails({ toggleReportGenerator }: ClientDetailsProps) {
+export default function ClientDetails() {
     return (
-        <ClientDetailContent toggleReportGenerator={toggleReportGenerator} />
+        <ClientDetailContent/>
     );
 }

@@ -31,8 +31,7 @@ export const handleOrchardFeatureSelection = (
   // Zoom to selected feature with padding for mobile sheet
   view.goTo({
     target: feature.geometry,
-    zoom: MAP_CONFIG.FEATURE_ZOOM,
-    padding: MAP_CONFIG.ZOOM_PADDING
+    zoom: MAP_CONFIG.FEATURE_ZOOM
   });
   
   // Create mobile sheet props from feature attributes
@@ -58,7 +57,7 @@ export const handleOrchardFeatureSelection = (
 
   setMobileSheetProps(mobileSheetContent);
   setTotalHivesContracted(feature.attributes[ORCHARD_FIELD_NAMES.HIVES_CONTRACTED]);
-  setIsMobileSheetOpen(true);  
+  setIsMobileSheetOpen(true);
 
   // gets attributes from each visible hivedrop
   const loopThroughHiveDrops = async () => {

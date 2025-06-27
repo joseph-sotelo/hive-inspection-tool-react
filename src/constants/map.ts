@@ -3,6 +3,7 @@
 export const MAP_CONFIG = {
   // Default map center (Central Valley, CA)
   DEFAULT_CENTER: [-119.4179, 36.7783] as [number, number],
+  CMD_CENTER: [-118.467902, 34.030731] as [number, number],
   DEFAULT_ZOOM: 10,
   
   // Feature selection zoom level

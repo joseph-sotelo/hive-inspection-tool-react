@@ -108,8 +108,7 @@ export default function HiveDropReportSubsection() {
                                     ticks={ticks}
                                     tickMargin={0}
                                     axisLine={false}
-                                    label={{ value: 'Grade', position: 'insideBottom', offset: -5 }}
-                                    // tickFormatter={(value) => value.toString()}
+                                    label={{ value: 'Frames counted', position: 'insideBottom', offset: -5 }}                                    
                                 />
                                 <YAxis                                    
                                     dataKey="count"
@@ -118,8 +117,7 @@ export default function HiveDropReportSubsection() {
                                     tickMargin={0}
                                     axisLine={false}
                                     reversed={false}
-                                    label={{ value: 'Count', angle: -90, position: 'insideLeft', offset: 20 }}
-                                    // tickFormatter={(value) => value.toString()}
+                                    label={{ value: 'Number of hives', angle: -90, position: 'insideLeft', offset: 20 }}
                                 />
                                 <Bar dataKey="count" radius={4} maxBarSize={150}>
                                     {chartData.map((entry, index) => (
@@ -137,7 +135,7 @@ export default function HiveDropReportSubsection() {
     return (
         <>
             {hiveDropPairs.map((pair, pairIndex) => (
-                <div key={pairIndex} className="p-12 section w-[8.5in] h-[11in] border-1 shadow-lg border-border flex flex-col justify-between">
+                <div key={pairIndex} className="p-12 section w-[8.5in] h-[11in] border-1 shadow-lg border-border flex flex-col justify-between bg-background">
                     {pair.map((hivedrop, indexInPair) => {
                         const globalIndex = pairIndex * 2 + indexInPair;
                         return renderHiveDrop(hivedrop, globalIndex);

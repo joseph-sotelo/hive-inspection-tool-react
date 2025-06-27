@@ -2,13 +2,13 @@ import { useRef } from "react";
 import clsx from "clsx";
 
 // UI imports
-import { ChartNoAxesColumn, Check, ChevronDown, MapPin, ReceiptText, Users } from "lucide-react";
+import { ChartNoAxesColumn, Check, MapPin, ReceiptText, Users, X } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import StatusBadge from "@/components/ui/status-badge";
 
 // Custom hooks - extracted logic for reusability and testability
-import { useMobileSheetAnimation, useFormData, useClickOutside } from "@/hooks";
+import { useMobileSheetAnimation, useFormData } from "@/hooks";
 
 // Local component imports - each section is now its own component
 import HiveContractSection from "./hive-contract-section";
@@ -29,17 +29,13 @@ import { useInspectionData } from "@/context/inspectionData"
 export default function OrchardDetailsDesktop({ props }: { props: OrchardDetailsProps }) {
 
   const { setIsShown } = useInspectionData();
-
   const sheetRef = useRef<HTMLDivElement>(null);
 
   // Use custom hooks to manage complex logic
   const { formData, handleChange } = useFormData(props);
-  const { isOffScreen, isOpen, setIsOffScreen, toggleOpen } = useMobileSheetAnimation({
+  const { isOffScreen, toggleOpen } = useMobileSheetAnimation({
     fieldmapId: props.fieldmap_id_primary
   });
-
-  // Handle clicking outside to close the sheet
-  useClickOutside(sheetRef, () => setIsOffScreen(true));
 
   // Determine delivery status text using constants
   let deliveryStatus = props.partdeliv_yn === "no" 
@@ -51,7 +47,7 @@ export default function OrchardDetailsDesktop({ props }: { props: OrchardDetails
       <div 
         ref={sheetRef} 
         className={clsx(
-          `shadow-md transition-all ${SHEET.ANIMATION_DURATION} overflow-hidden bottom-0 absolute z-10 h-full border-r-1`,
+          `shadow-md transition-all ${SHEET.ANIMATION_DURATION} overflow-y-scroll bg-background-secondary bottom-0 absolute z-10 h-full border-r-1 border-border`,
           {            
             [`${SHEET.POSITIONS_DESKTOP.COLLAPSED}`]: isOffScreen,
             [`${SHEET.POSITIONS_DESKTOP.EXPANDED}`]: !isOffScreen
@@ -61,7 +57,7 @@ export default function OrchardDetailsDesktop({ props }: { props: OrchardDetails
         {/* Header/Peek section */}
         <div 
           id="peek" 
-          className="p-6 flex justify-between border-b-1 rounded-none bg-background w-[440px]"
+          className="p-6 flex justify-between border-b-1 border-border rounded-none bg-background w-[440px]"
         >
           <div className="flex flex-col gap-2">
             <h4>
@@ -74,15 +70,12 @@ export default function OrchardDetailsDesktop({ props }: { props: OrchardDetails
               </small>
             </div>
           </div>
-          <div onClick={toggleOpen}>
-            <ChevronDown className={clsx("md:hidden", { "rotate-180": !isOffScreen })} />
-          </div>
         </div>
 
         {/* Main content body */}
         <div 
           id="body" 
-          className="p-2 flex flex-col gap-6 items-center h-full overflow-scroll bg-background-secondary w-[440px]"
+          className="px-2 pt-2 pb-10 flex flex-col gap-6 items-center bg-background-secondary w-[440px]"
         >
           <Accordion type="single" collapsible defaultValue="item-4">
             {/* Hive Contract Information */}
@@ -137,11 +130,9 @@ export default function OrchardDetailsDesktop({ props }: { props: OrchardDetails
               </AccordionContent>
             </AccordionItem>
           </Accordion>
-
-          {/* Signature section */}
+          
           <SignatureSection />
-
-          {/* Submit button */}
+          
           <Button 
             variant="customSecondary" 
             size="lg" 

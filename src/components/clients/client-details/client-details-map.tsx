@@ -41,6 +41,25 @@ export default function ClientDetailsMap() {
       
           view.ui.move("zoom", "bottom-right");
 
+          // Zoom to features when layer loads
+          orchardLayer.when(() => {
+            view.whenLayerView(orchardLayer).then((layerView) => {
+              // Wait for layer view to finish updating
+              layerView.when(() => {
+                // Query the extent of visible features
+                const query = orchardLayer.createQuery();
+                query.where = definitionExpression || "1=1";
+                
+                orchardLayer.queryExtent(query).then((result) => {
+                  if (result.extent && !result.extent.isEmpty) {
+                    // Zoom to the extent with more padding
+                    view.goTo(result.extent.expand(1.1));
+                  }
+                });
+              });
+            });
+          });
+
         // Cleanup on unmount
         return () => {
             if (view) {
@@ -51,6 +70,6 @@ export default function ClientDetailsMap() {
     }, [definitionExpression]);
 
     return (
-        <div id="viewDiv" className="w-full h-[300px]" />
+        <div id="viewDiv" className="w-full border border-border rounded-md h-full overflow-hidden" />
     )
 }

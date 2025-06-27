@@ -15,8 +15,8 @@ export default function ReportSectionGeneral() {
 
     return(
         <>
-            <h1 className="text-right ml-51">Inspection</h1>
-            <div className="grid grid-cols-12 gap-4 p-6 section">
+            <h1 className="text-right ml-48">Inspection</h1>
+            <div className="grid grid-cols-12 gap-4 section">
                 <div id="headers" className="col-span-3 text-right flex flex-col gap-8">
                     <h4>
                         Team

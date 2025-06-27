@@ -27,7 +27,7 @@ import { useMediaQuery } from "@/hooks";
 
 // context
 import { useInspectionData } from "@/context/inspectionData/useInspectionData";
-import MapSidebar from "./map-sidebar";
+import { useOrchardDetailsData } from "@/context/orchardDetailsData/useOrchardDetailsData";
 
 // Environment setup with validation
 config.apiKey = ENV.VITE_ARCGIS_LAYER_API_KEY;
@@ -60,7 +60,8 @@ export default function Map() {
 
   // State for mobile sheet
   const [orchardDetailsProps, setOrchardDetailsProps] = useState<OrchardDetailsProps | null>(null);
-  const [isMobileSheetOpen, setIsMobileSheetOpen] = useState(false);  
+  const [isMobileSheetOpen, setIsMobileSheetOpen] = useState(false);
+  const { isDesktopSheetOpen, setIsDesktopSheetOpen } = useOrchardDetailsData();
 
   // State for hive drop dialog
   const [hiveDropDialogProps, setHiveDropDialogProps] = useState<HiveDropDialogProps | null>(null);
@@ -103,7 +104,9 @@ export default function Map() {
     // Listen for location updates
     track.on("track", (event) => {
       const location = event.position;
-      setUserLocation([location.longitude, location.latitude]);
+      console.log("Track widget location update:", location);
+      // The position object has coords property with latitude and longitude
+      setUserLocation([location.coords.longitude, location.coords.latitude]);
     });
 
     // Immediately fetch initial location before waiting on "track" events
@@ -111,15 +114,21 @@ export default function Map() {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
+          console.log("Initial geolocation:", { latitude, longitude });
           setUserLocation([longitude, latitude]); // match your format
         },
         (error) => {
-          console.error("Error getting initial location:", error);
+          console.warn("Geolocation not available:", error.message);
+          // Set a default location (e.g., Central Valley, CA)
+          setUserLocation(MAP_CONFIG.CMD_CENTER);
         },
         {
           enableHighAccuracy: true
         }
       );
+    } else {
+      // Set default location if geolocation is not supported
+      setUserLocation(MAP_CONFIG.DEFAULT_CENTER);
     }
 
     // Create function for updating orchard features
@@ -127,6 +136,12 @@ export default function Map() {
 
     // Handle map clicks
     view.on("click", async (event) => {
+      // Check if click is within inspection controls
+      const inspectionControls = document.getElementById('inspection-controls-wrapper');
+      if (inspectionControls && inspectionControls.contains(event.native.target)) {
+        return; // Exit early if click is within inspection controls
+      }
+
       // Test for feature hits
       const response = await view.hitTest(event);      
       
@@ -141,6 +156,8 @@ export default function Map() {
         if (feature.graphic.layer === orchardLayer && feature.graphic.attributes[ORCHARD_FIELD_NAMES.FIELDMAP_ID_PRIMARY] != undefined) {
           // Store feature ID for updates
           featureObjectIdRef.current = feature.graphic.attributes[ORCHARD_FIELD_NAMES.OBJECT_ID];
+
+          setIsDesktopSheetOpen(!isDesktopSheetOpen);
           
           handleOrchardFeatureSelection(
             feature.graphic,
@@ -149,7 +166,7 @@ export default function Map() {
             perimitersLayer,
             view,
             setOrchardDetailsProps,
-            setIsMobileSheetOpen,
+            setIsMobileSheetOpen,            
             updateFeature,
             setHivesCounted,
             setHivesGraded,
@@ -168,6 +185,9 @@ export default function Map() {
           );
         }
       } else {
+
+        setIsDesktopSheetOpen(false);
+
         handleDeselection(
           orchardLayer,
           hiveDropsLayer,
@@ -205,22 +225,18 @@ export default function Map() {
 
   return (
     <div>
-      {/* <MapSidebar /> */}
-      {/* Conditionally render mobile vs desktop based on screen size */}
-      {isMobileSheetOpen && orchardDetailsProps && (
-        <>
-          {isDesktop ? (
+      {isMobileSheetOpen && orchardDetailsProps && !isDesktop && ( 
+
+            <OrchardDetailsMobile 
+              props={orchardDetailsProps} 
+              key={orchardDetailsProps.fieldmap_id_primary}
+            />          
+      )}
+      {isDesktopSheetOpen && orchardDetailsProps && isDesktop && (
             <OrchardDetailsDesktop
               props={orchardDetailsProps} 
               key={orchardDetailsProps.fieldmap_id_primary}
             />
-          ) : (
-            <OrchardDetailsMobile 
-              props={orchardDetailsProps} 
-              key={orchardDetailsProps.fieldmap_id_primary}
-            />
-          )}
-        </>
       )}
       
       {/* Conditionally render hive drop dialog */}
@@ -231,10 +247,8 @@ export default function Map() {
         />
       )}
       
-      {/* Always render inspection controls */}
       <InspectionControls totalHivesContracted={totalHivesContracted} />
       
-      {/* Map container */}
       <div id="viewDivWrapper" className="w-full h-screen overflow-hidden">
         <div 
           id="viewDiv" 

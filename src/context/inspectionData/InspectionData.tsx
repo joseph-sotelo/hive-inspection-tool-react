@@ -83,6 +83,13 @@ const InspectionDataProvider = ({ children }: Props) => {
   const [average, setAverage] = React.useState<number[]>([]);
   const [notes, setNotes] = React.useState<string>("");
   const [isHiveDropDialogOpen, setIsHiveDropDialogOpen] = React.useState<boolean>(false);
+  
+  // Wrap setUserLocation to add logging
+  const setUserLocationWithLog = React.useCallback((location: number[]) => {
+    console.log("Setting user location in context:", location);
+    setUserLocation(location);
+  }, []);
+
   return (
     <InspectionDataContext.Provider value={{ 
         isShown,        
@@ -94,7 +101,7 @@ const InspectionDataProvider = ({ children }: Props) => {
         orchardHiveGrades,
         setOrchardHiveGrades,
         userLocation,
-        setUserLocation,
+        setUserLocation: setUserLocationWithLog,
         applyHiveDrop,
         setApplyHiveDrop,
         hiveDropIndex,
